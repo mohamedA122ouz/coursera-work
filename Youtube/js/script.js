@@ -300,6 +300,24 @@ function openiframe(i, vCode) {
         iframe = '<iframe id="waiting" style="display:block;" src="https://www.youtube.com/embed/' + vCode + '"?rel="0" frameborder="0" allowfullscreen></iframe>';
         document.querySelector("#videosContainer").innerHTML = iframe + "<hr>";
     }
+    for (var i in atGlobal.list) {
+        let listsign = document.querySelector(".listsign" + atGlobal.list[i])
+        if (listsign != null) {
+            listsignst = listsign.style;
+            listsignst.display = "block";
+            listsignst.position = "absolute";
+            listsignst.left = "0px";
+            listsignst.top = "0px";
+            listsignst.fontSize = "2vw";
+            listsignst.zIndex = "12";
+            listsignst.backgroundColor ="black";
+            listsignst.opacity = "50%"
+            listsignst.height = "20%";
+            listsignst.width = "15%";
+            listsignst.padding = "1%";
+            listsignst.borderRadius = " 0 0 1vw 0";
+        }
+    }
 }
 ///////////////////////////////Make Sure Server Connected//////////////////////////////////////////////////
 function mksure(i, ii) {
