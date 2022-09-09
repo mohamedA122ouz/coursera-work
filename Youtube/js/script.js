@@ -269,7 +269,7 @@ function openiframe(i, vCode) {
             iframe = '<iframe id="waiting" src="https://www.youtube.com/embed/' + youtubeDt.videoID[i] + '"?rel="0" frameborder="0" allowfullscreen></iframe>';
             document.querySelector("#videosContainer").innerHTML = iframe + '<br>' + ' <button style="display:block;"  class="down dbt"><span id="download">Download</span></button>' + "<hr>" + totalHtml;
             var redirect = document.createElement('a');
-            redirect.href = "#open";
+            redirect.href = "#openplace";
             redirect.click();
             redirect.remove();
             mksure(2, i);
