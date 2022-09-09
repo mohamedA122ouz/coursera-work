@@ -1,0 +1,719 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+span {
+    margin: -.5vw;
+    padding: 0;
+}
+
+span:nth-child(1) {
+    color: #3F7EE8;
+    font-weight: bolder;
+}
+
+span:nth-child(4) {
+    color: #3F7EE8;
+    font-weight: bolder;
+
+}
+
+span:nth-child(2) {
+    color: #DE4032;
+}
+
+span:nth-child(3) {
+    color: #EEB205;
+}
+
+span:nth-child(5) {
+
+    color: #319F4F;
+}
+
+span:nth-child(6) {
+    color: #DE4032;
+}
+
+span:nth-child(7) {
+    font-weight: bolder;
+    color: #EEB205;
+}
+
+.dbt {
+    background-color: #42cc27;
+    font-size: 1.5vw;
+    color: white;
+    vertical-align: top;
+    border: 0.1vw solid white;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    transition: 500ms;
+}
+
+.dbt:hover {
+    background-color: #46da28;
+    transition: 500ms;
+
+}
+
+#obt {
+    background-color: #3582c0;
+    font-size: 1.5vw;
+    color: white;
+    vertical-align: top;
+    border: 0.1vw solid white;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    transition: 500ms;
+}
+
+#obt:hover {
+    cursor: pointer;
+    background-color: #3582c0;
+    transition: 500ms;
+
+}
+
+#obt>span {
+    color: white;
+    padding: 3vw;
+    padding-bottom: 1vh;
+    padding-top: 0.5vh;
+    margin-bottom: 1vh;
+}
+
+#download {
+    color: white;
+    margin-left: 0.5vw;
+    margin-top: -1vh;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 1vw;
+
+}
+
+body {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 1vw;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    font-family: 'Bree Serif', serif;
+    box-sizing: border-box;
+
+}
+
+h1 {
+    font-size: 7vw;
+    text-align: center;
+    font-family: 'Bree Serif', serif;
+    user-select: none;
+}
+
+#youtubeSearchBox {
+    width: 80%;
+    height: 5vh;
+    margin: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    outline: none;
+    border: .5px solid #80808059;
+    border-radius: 6vh;
+    font-size: 2vh;
+    padding-left: 2.8vh;
+    box-sizing: border-box;
+    position: relative;
+    font-weight: 100;
+}
+
+#youtubeSearchBox:focus {
+    box-shadow: 0 0 6px 0 #77C3EC;
+    outline: none;
+    transition: 250ms;
+
+}
+
+#URLText {
+    width: 20%;
+    height: 3vh;
+    margin: 5px;
+    margin-left: 40%;
+    margin-right: 40%;
+    outline: none;
+    border: .5px solid rgba(128, 128, 128, 0.348);
+    border-radius: 6vh;
+    font-size: 2vh;
+    padding-left: 2.8vh;
+    position: relative;
+    font-weight: 100;
+    box-sizing: border-box;
+}
+
+iframe {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 9vh;
+    width: 60vw;
+    min-height: 177px;
+    height: 35vw;
+}
+
+hr {
+    margin: 4vh 1vw 4vh 1vw;
+}
+
+@keyframes hideIcon {
+    from {
+        top: 0px;
+        font-size: 7vw;
+    }
+
+    to {
+        display: none;
+        font-size: 1.5vw;
+        letter-spacing: .4vw;
+    }
+}
+
+@keyframes returnWhenNull {
+    from {
+        top: 0px;
+    }
+
+    to {
+        display: block;
+        margin-top: 0px;
+    }
+}
+
+#openplace {
+    text-align: center;
+    margin-top: -5px;
+    font-size: 1.5vh;
+}
+
+#openplace>a {
+    color: #3F7EE8;
+}
+
+h2 {
+    font-size: 3vw;
+}
+
+/*///////////////////////Styling YouTube Place/////////////////////*/
+#videosContainer {
+    box-sizing: border-box;
+    width: max-content;
+    max-width: 90vw;
+    height: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vh;
+    font-weight: 100;
+    padding: 4%;
+    border-radius: 2vw;
+    position: relative;
+    display: none;
+
+}
+
+div.thumbnail {
+    width: 320px;
+    height: 200px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.text {
+    display: inline-block;
+    padding-left: 1vw;
+}
+
+.vTitle {
+
+    font-size: 1.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 50vw;
+    padding-top: 10px;
+
+}
+
+.publishTime {
+
+    font-size: 1.2rem;
+    opacity: 0.6;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: .5vh;
+}
+
+.channelName {
+
+    font-size: 1.2rem;
+    opacity: 0.6;
+
+}
+
+.details {
+    margin-top: 1vh;
+    display: flex;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+
+.channel {
+    position: relative;
+    border-radius: 50%;
+    left: 12%;
+    width: 200px;
+    height: 200px;
+    vertical-align: top;
+}
+
+.videoIcon {
+    position: relative;
+    left: 0;
+    width: 100%;
+    vertical-align: top;
+}
+
+/*/////////////Loading Icon///////////////*/
+#looding-icon {
+    border-radius: 50%;
+    background-color: transparent;
+    height: 5vw;
+    width: 5vw;
+    animation: infinite 1400ms loading linear;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#looding-icon::after {
+    border-radius: 50%;
+    content: "";
+
+    box-sizing: border-box;
+    width: 1vw;
+    height: 1vw;
+    position: absolute;
+    z-index: 5;
+    margin: 0.3vw;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.down {
+    opacity: 50%;
+    cursor: no-drop;
+
+}
+
+footer {
+    text-align: center;
+    position: fixed;
+    bottom: 0vh;
+    font-size: 1vw;
+    opacity: 70%;
+    width: 99%;
+    z-index: 4;
+
+}
+
+/*////////////////Darkmode Button///////////////*/
+#darkmode {
+    width: 4vw;
+    height: 1.7vw;
+    border-radius: 1vw;
+    position: relative;
+    top: 0.5vh;
+    margin: 1vw;
+    box-sizing: border-box;
+    padding: 0;
+    background-color: #49fc79;
+    z-index: 5;
+    /* max-width: 57px;
+    max-height: 28px; */
+}
+
+.dmodeOn {
+    animation: bon forwards 250ms;
+}
+
+.dmodeOff {
+    animation: boff forwards 250ms;
+}
+
+@keyframes bon {
+    from {
+        background-color: #49fc79;
+    }
+
+    to {
+        background-color: gray;
+    }
+}
+
+@keyframes boff {
+    from {
+        background-color: gray;
+    }
+
+    to {
+        background-color: #49fc79;
+    }
+}
+
+#ball {
+    border: 0.5vw solid white;
+    height: 1.7vw;
+    width: 1.7vw;
+    border-radius: 1vw;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    vertical-align: middle;
+    box-shadow: 0 0 25px 0 black;
+    box-sizing: border-box;
+}
+
+.dmodeBallOn {
+    animation: on 50ms ease-out forwards;
+}
+
+.dmodeBallOff {
+    animation: off 50ms ease-out forwards;
+}
+
+@keyframes on {
+    from {
+        left: 0vw;
+    }
+
+    to {
+        left: 2.4vw;
+        background-color: gray;
+    }
+}
+
+@keyframes off {
+    from {
+        left: 2.5vw;
+    }
+
+    to {
+        left: 0vw;
+    }
+}
+
+/*///////////////////////////////////////////////*/
+/*///////////////////settings button/////////////*/
+ul {
+    position: relative;
+    display: none;
+    padding: 1vw;
+    user-select: none;
+    list-style: none;
+    z-index: 5;
+    top: 0vw;
+    left: 4vw;
+    background-color: azure;
+    margin-top: 0;
+    margin-left: -200%;
+    width: max-content;
+    height: max-content;
+    border-radius: 1vw;
+    box-shadow: 0px 12px 16px -10px black;
+}
+
+ul>span {
+    font-size: 1vw;
+}
+
+#settings {
+    height: 3vw;
+    width: 3vw;
+    position: absolute;
+    left: 89vw;
+    top: 1%;
+}
+
+#settings > svg {
+    position: relative;
+    z-index: 6;
+    color: #3582c0;
+    width: 3vw;
+}
+.liststyle{
+    width:100%;
+    top:0px;
+}
+/*///////////Small screens////*************************************************/
+@media (max-width:960px) {
+
+    /*///////////////////////Styling YouTube Place/////////////////////*/
+    a {
+        font-size: 2vw;
+    }
+
+    #videosContainer {
+        box-sizing: border-box;
+        width: 95vw;
+        height: max-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2vh;
+        padding: 4%;
+        position: relative;
+        display: none;
+    }
+
+    .dbt {
+        font-size: 4vw;
+        vertical-align: top;
+        display: none;
+        margin-left: auto;
+        margin-right: auto;
+        transition: 500ms;
+    }
+
+    .text {
+        display: inline-block;
+        padding-left: 1vw;
+
+    }
+
+    div.thumbnail {
+        width: 120px;
+        height: 95px;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        overflow: hidden;
+    }
+
+    .vTitle {
+        padding-top: 10px;
+        font-size: 0.7rem;
+        width: calc(70vw - 120px);
+        max-width: 50vw;
+
+    }
+
+    .publishTime {
+        font-size: 0.6rem;
+        opacity: 0.6;
+    }
+
+    .URLText {
+        width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
+        font-size: 2vh;
+
+    }
+
+    .channelName {
+        font-size: 0.6rem;
+        opacity: 0.6;
+
+    }
+
+    .details {
+        margin-top: 1vh;
+    }
+
+    /*/////////////Loading Icon///////////////*/
+    #looding-icon {
+        border-radius: 50%;
+        background-color: transparent;
+        height: 5vw;
+        width: 5vw;
+        animation: infinite 1400ms loading linear;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+
+    #looding-icon::after {
+        border-radius: 50%;
+        content: "";
+        box-sizing: border-box;
+        width: 1vw;
+        height: 1vw;
+        position: absolute;
+        z-index: 5;
+        margin: 0.3vw;
+    }
+
+    iframe {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 9vh;
+        width: 70vw;
+        height: 40vw;
+    }
+
+    #youtubeSearchBox {
+        height: 5.5vh;
+        font-size: 2.5vh;
+    }
+
+    #URLText {
+        height: 4vh;
+        width: 50%;
+        margin-left: 25%;
+        font-size: 2.5vh;
+    }
+
+    #obt {
+        height: 10vw;
+        width: 20vw;
+        font-size: 4vw;
+    }
+
+    .channel {
+        width: 92px;
+        height: 92px;
+    }
+
+    .videoIcon {
+        width: 100%;
+    }
+
+    /*////////////////Darkmode Button///////////////*/
+    #darkmode {
+        width: 10vw;
+        height: 5vw;
+        border-radius: 5vw;
+        padding: 0;
+        background-color: #49fc79;
+        margin-top: 2vw;
+    }
+
+    .dmodeOn {
+        animation: bon forwards 250ms;
+    }
+
+    .dmodeOff {
+        animation: boff forwards 250ms;
+    }
+
+    @keyframes bon {
+        from {
+            background-color: #49fc79;
+        }
+
+        to {
+            background-color: gray;
+        }
+    }
+
+    @keyframes boff {
+        from {
+            background-color: gray;
+        }
+
+        to {
+            background-color: #49fc79;
+        }
+    }
+
+    #ball {
+        border: 0.5vw solid white;
+        height: 5vw;
+        width: 5vw;
+        border-radius: 7vw;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        vertical-align: middle;
+        box-shadow: 0 0 1px 0 black;
+    }
+
+    .dmodeBallOn {
+        animation: on 50ms ease-out forwards;
+    }
+
+    .dmodeBallOff {
+        animation: off 50ms ease-out forwards;
+    }
+
+    @keyframes on {
+        from {
+            left: 0vw;
+        }
+
+        to {
+            left: 4.9vw;
+        }
+    }
+
+    @keyframes off {
+        from {
+            left: 2.5vw;
+        }
+
+        to {
+            left: 0vw;
+        }
+    }
+
+    ul {
+        position: relative;
+        display: none;
+        padding: 1vw;
+        user-select: none;
+        list-style: none;
+        z-index: 5;
+        top: 1vw;
+        margin-top: -50%;
+        background-color: azure;
+        margin-left: -350%;
+        width: max-content;
+        height: max-content;
+    }
+
+    ul>li>span {
+        font-size: 200%;
+    }
+
+    #settings > svg {
+        position: relative;
+        z-index: 6;
+        color: #3582c0;
+        width: 7vw;
+    }
+
+    footer {
+        font-size: 2vw;
+    }
+    .liststyle{
+        width:100%;
+        top:0px;
+    }
+    /*///////////////////////////////////////////////*/
+}
