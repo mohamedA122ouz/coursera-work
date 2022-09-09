@@ -13,6 +13,8 @@
         res.header('Content-DisPosition','attachment; filename="Video.mp4"');
         
         ytdl(URL,{
-            format:'mp4'
+            format:'mp4',
+            quality: 'highest',
+            filter:'videoandaudio'
         }).pipe(res);
     });
