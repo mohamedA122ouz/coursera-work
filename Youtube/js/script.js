@@ -152,32 +152,37 @@ function showloading() {
     document.querySelector("#videosContainer").innerHTML = '<div id="looding-icon"></div>';
 }
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
-function getdata(dataSource, type) {
+function getdata(dataSource, type, route) {
     var request = new XMLHttpRequest;
     request.open("GET", dataSource);
     request.send(null);
-    showloading();
-    getResponse(request, type);
-}
-function getResponse(request, type) {
+    if (route == "mainroute")
+        showloading();
+    getResponse(request, type, route);
+} 
+function getResponse(request, type, route) {
     request.onreadystatechange = function () {
         if (request.status == 200 && request.readyState == 4) {
             if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
             else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
-            dtOutput(responseText, type);
+            var data = window.data;
+            dtOutput(responseText, type, route);
             return request;
         }
         else if (request.status == 408) {
-            document.querySelector("#videosContainer").innerHTML = "<h1>" + request.status + "<br> Response TimeOut</h1>"
+            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "<br> Response TimeOut</h2>"
         }
         else if (request.status == 500) {
-            document.querySelector("#videosContainer").innerHTML = "<h1>" + request.status + "<br> Server Error</h1>"
+            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "<br> Server Error</h2>"
+        }
+        else if (request.status == 403) {
+            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>"
         }
     }
 }
 ///////////////////////////////Processing Data - processing//////////////////////////////////////////////////
-function dtOutput(data, type) {
-    if (type == "json") {
+function dtOutput(data, type, route) {
+    if (type == "json" && route == "mainroute") {
         window.youtubeDt = new Object;
         youtubeDt.thumbnail = [];
         youtubeDt.videoID = [];
@@ -186,6 +191,7 @@ function dtOutput(data, type) {
         youtubeDt.date = [];
         youtubeDt.time = [];
         youtubeDt.playListID = [];
+        youtubeDt.duration = [];
         for (var i = 0; i < 5; i++) {
             youtubeDt.fill = "done";
             youtubeDt.videoID[i] = data.items[i].id.videoId;
@@ -204,33 +210,81 @@ function dtOutput(data, type) {
             youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
         }
-        getdata("html/search.html", "html");
+        getdata("html/search.html", "html", "mainroute");
     }
-    else if (type == "html") {
+    else if (type == "html" && route == "mainroute") {
         window.html = new Object;
         html.dt = data;
         builder();
+    }
+    else if (type == "json" && route == "second") {
+
+        if (data.items[0].contentDetails.duration != undefined) {
+            youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
+            if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
+            else {
+                processDuration("both");
+            }
+        }
+
+    }
+}
+function processDuration(isitbuild) {
+    if (isitbuild == "build" || isitbuild == "both") {
+        for (let i in youtubeDt.duration) {
+            var something = youtubeDt.duration[i];
+            something = something.replace("PT", "");
+            something = something.replace("H", ":");
+            something = something.replace("M", ":");
+            something = something.replace("S", "");
+            youtubeDt.duration[i] = something;
+        }
+    }
+    if (isitbuild == "show" || isitbuild == "both") {
+        for (var i in atGlobal.vArr) {
+            var ii = parseInt(i) + 1;
+            let vDuration = document.querySelector(".v" + atGlobal.vArr[i]);
+            vDuration.textContent = youtubeDt.duration[ii];
+            if (vDuration != null) {
+                vDuration = vDuration.style;
+                vDuration.display = "block";
+                vDuration.position = "absolute";
+                vDuration.right = "0px";
+                vDuration.bottom = "22px";
+                vDuration.fontSize = "0.9vw";
+                vDuration.zIndex = "12";
+                vDuration.backgroundColor = "black";
+                vDuration.opacity = "70%"
+                vDuration.height = "max-content";
+                vDuration.width = "max-content";
+                vDuration.padding = "1%";
+                vDuration.borderRadius = " 0.5vw";
+            }
+        }
     }
 }
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
 function builder() {
     if (window.lock) {
-        listindex = 0;
+        var listindex = 0;
         var totalHtml = "";
         var htmlitself = html.dt;
         for (var i = 0; i < 5; i++) {
             var holder = htmlitself;
             holder = holder.replace(new RegExp("{{videoTitle}}", "g"), youtubeDt.videoTitle[i]);
-            if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined)//video
+            if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined)//channel
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "channel"');
             else if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] != undefined) {//playlist
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class="videoIcon"');
                 atGlobal.list[listindex] = i
                 listindex++;
             }
-            else {//channel and any thing else
-                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "videoIcon"');
+            else {//Video and any thing else
+                atGlobal.vArr[atGlobal.vIndex] = i;
+                atGlobal.vIndex++;
+                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "videoIcon v"' + atGlobal.vIndex);
             }
+            holder = holder.replace(new RegExp("{{vindex}}", 'g'), i);
             holder = holder.replace(new RegExp("{{index}}", 'g'), i);
             holder = holder.replace(new RegExp("{{date}}", "g"), youtubeDt.date[i]);
             holder = holder.replace(new RegExp("{{channel}}", "g"), youtubeDt.channelTitle[i]);
@@ -241,7 +295,7 @@ function builder() {
         window.totalHtml = totalHtml;
         document.querySelector("#videosContainer").innerHTML = totalHtml;
         for (var i in atGlobal.list) {
-            let listsign = document.querySelector(".listsign" + atGlobal.list[i])
+            let listsign = document.querySelector(".listsign" + atGlobal.list[i]);
             if (listsign != null) {
                 listsignst = listsign.style;
                 listsignst.display = "block";
@@ -250,7 +304,7 @@ function builder() {
                 listsignst.top = "0px";
                 listsignst.fontSize = "2vw";
                 listsignst.zIndex = "12";
-                listsignst.backgroundColor ="black";
+                listsignst.backgroundColor = "black";
                 listsignst.opacity = "50%"
                 listsignst.height = "20%";
                 listsignst.width = "15%";
@@ -258,8 +312,14 @@ function builder() {
                 listsignst.borderRadius = " 0 0 1vw 0";
             }
         }
+        getDuration();
         window.lock = false;
     }
+}
+function getDuration() {
+    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyDx7oiZ8o_IcUgCROckiJ7B4_XvNx0Z9ws';
+    atGlobal.index2++;
+    getdata(youtubeAPI2, "json", "second");
 }
 ///////////////////////////////Open Iframe - inhtml//////////////////////////////////////////////////
 function openiframe(i, vCode) {
@@ -274,7 +334,7 @@ function openiframe(i, vCode) {
             redirect.remove();
             mksure(2, i);
         }
-        else if(youtubeDt.playListID[i]!=undefined){
+        else if (youtubeDt.playListID[i] != undefined) {
             var channel = "https://www.youtube.com/watch?v=0&list=" + youtubeDt.playListID[i];
             var a = document.createElement('a');
             a.style.display = "none"
@@ -300,24 +360,7 @@ function openiframe(i, vCode) {
         iframe = '<iframe id="waiting" style="display:block;" src="https://www.youtube.com/embed/' + vCode + '"?rel="0" frameborder="0" allowfullscreen></iframe>';
         document.querySelector("#videosContainer").innerHTML = iframe + "<hr>";
     }
-    for (var i in atGlobal.list) {
-        let listsign = document.querySelector(".listsign" + atGlobal.list[i])
-        if (listsign != null) {
-            listsignst = listsign.style;
-            listsignst.display = "block";
-            listsignst.position = "absolute";
-            listsignst.left = "0px";
-            listsignst.top = "0px";
-            listsignst.fontSize = "2vw";
-            listsignst.zIndex = "12";
-            listsignst.backgroundColor ="black";
-            listsignst.opacity = "50%"
-            listsignst.height = "20%";
-            listsignst.width = "15%";
-            listsignst.padding = "1%";
-            listsignst.borderRadius = " 0 0 1vw 0";
-        }
-    }
+    processDuration("show");
 }
 ///////////////////////////////Make Sure Server Connected//////////////////////////////////////////////////
 function mksure(i, ii) {
@@ -355,7 +398,6 @@ function showbtnDown2(ii) {
     btnDownload = document.querySelectorAll('.down');
     btnDownload[1].setAttribute('onclick', "downloadbutton2(" + ii + ")");
     btnDownload[1].setAttribute('style', 'opacity:100%;cursor:pointer;display:block;');
-
 }
 ///////////////////////////////Download - processing//////////////////////////////////////////////////
 function download(url, i) {
@@ -424,7 +466,10 @@ var main = (function (event) {
         connect: false,
         onOROffDark: false,
         showul: true,
-        list:[]
+        list: [],
+        vIndex: 0,
+        vArr: [],
+        index2: 0
     }
     window.outPut = new Object;
     window.outPut = false;
@@ -460,7 +505,7 @@ var main = (function (event) {
                     document.querySelector("h1").setAttribute("class", "collapsed");
                 }
                 var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyDx7oiZ8o_IcUgCROckiJ7B4_XvNx0Z9ws&part=id,snippet";
-                getdata(youtubeAPI, "json");
+                getdata(youtubeAPI, "json", "mainroute");
             }
         }
     }

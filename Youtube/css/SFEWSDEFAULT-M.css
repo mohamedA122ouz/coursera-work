@@ -59,6 +59,7 @@ span:nth-child(7) {
     transition: 500ms;
 
 }
+
 #obt {
     background-color: #3582c0;
     font-size: 1.5vw;
@@ -459,18 +460,16 @@ ul>span {
     top: 1%;
 }
 
-#settings>svg {
+#settings > svg {
     position: relative;
     z-index: 6;
     color: #3582c0;
     width: 3vw;
 }
-
-.liststyle {
-    width: 100%;
-    top: 0px;
+.liststyle{
+    width:100%;
+    top:0px;
 }
-
 /*///////////Small screens////*************************************************/
 @media (max-width:960px) {
 
@@ -702,7 +701,7 @@ ul>span {
         font-size: 200%;
     }
 
-    #settings>svg {
+    #settings > svg {
         position: relative;
         z-index: 6;
         color: #3582c0;
@@ -712,11 +711,9 @@ ul>span {
     footer {
         font-size: 2vw;
     }
-
-    .liststyle {
-        width: 100%;
-        top: 0px;
+    .liststyle{
+        width:100%;
+        top:0px;
     }
-
     /*///////////////////////////////////////////////*/
 }
