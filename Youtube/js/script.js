@@ -504,7 +504,7 @@ var main = (function (event) {
                     h1.top = "0px";
                     document.querySelector("h1").setAttribute("class", "collapsed");
                 }
-                var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyDx7oiZ8o_IcUgCROckiJ7B4_XvNx0Z9ws&part=id,snippet";
+                var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4&part=id,snippet";
                 getdata(youtubeAPI, "json", "mainroute");
             }
         }
