@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+    font-size: 20px;
+}
+body{
+    height: 98vh;
+}
+button {
+    margin-left: auto;
+    margin-right: auto;
+    height: 7vh;
+    border-radius: 1.5vh;
+    font-size: 70%;
+    padding: 0;
+}
+
+.addmargin {
+    margin-top: 50px;
+}
+
+.help {
+    height: 100%;
+}
+
+table {
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+th {
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+td {
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+input[type="text"] {
+    width: 100%;
+}
+
+button.add {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+button.bt {
+    width: 45%;
+    height: 50%;
+    margin-bottom: 10px;
+}
+.copy{
+    position: fixed;
+    font-size: .9rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 0px;
+}
