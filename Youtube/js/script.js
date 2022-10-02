@@ -317,7 +317,7 @@ function builder() {
     }
 }
 function getDuration() {
-    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyDx7oiZ8o_IcUgCROckiJ7B4_XvNx0Z9ws';
+    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyCbzG1LFPCu4yabkfEMqaxKh_Rx-qIHSOk';
     atGlobal.index2++;
     getdata(youtubeAPI2, "json", "second");
 }
