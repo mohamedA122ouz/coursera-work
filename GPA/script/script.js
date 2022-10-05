@@ -16,7 +16,7 @@ function replace() {
 }
 function addatcum() {
     allresponse.index++;
-    var newtable = '<div class="row col-md-5 col-sm-12 col-xs-12"><table><tr><th>GPA #' + allresponse.index + '</th><th>total Hours For GPA #'+ allresponse.index +'</th></tr><tr><td><input type="text" placeholder="0" pattern="^[0-9]$"id="g' + allresponse.index + '"></td><td><input type="text" placeholder="0" id="h' + allresponse.index + '"></td></tr></table></div>';
+    var newtable = '<div class="row col-md-5 col-sm-12 col-xs-12"><table><tr><th>GPA #' + allresponse.index + '</th><th>total Hours For GPA #' + allresponse.index + '</th></tr><tr><td><input type="text" placeholder="0" pattern="^[0-9]$"id="g' + allresponse.index + '"></td><td><input type="text" placeholder="0" id="h' + allresponse.index + '"></td></tr></table></div>';
     newtable.replace(RegExp('{{num}}', 'g'), allresponse.index.toString());
     var hours = [];
     var gpa = [];
@@ -39,8 +39,8 @@ function calc() {
     for (var i = 0; i < allresponse.index; i++) {
         hours[i] = document.querySelector('#h' + (i + 1)).value;
         gpa[i] = document.querySelector('#g' + (i + 1)).value;
-        if(hours[i]=="")
-        hours[i] = 0;
+        if (hours[i] == "")
+            hours[i] = 0;
         tHr += parseInt(hours[i]);
         top += gpa[i] * hours[i];
     }
@@ -54,7 +54,7 @@ function calc() {
 function getcur() {
     ajax("html/cur.html");
 }
-function addatcur(){
+function addatcur() {
     allresponse.index++;
     var newrow = '<tr><td><input type="text" placeholder="0" pattern="^[0-9]$"id="g' + allresponse.index + '"></td><td><input type="text" placeholder="0" id="h' + allresponse.index + '"></td></tr>';
     newrow.replace(RegExp('{{num}}', 'g'), allresponse.index.toString());
@@ -69,12 +69,12 @@ function addatcur(){
     for (var i = 0; i < (allresponse.index - 1); i++) {
         document.querySelector('#h' + (i + 1)).value = hours[i];
         document.querySelector('#g' + (i + 1)).value = gpa[i];
-    } 
+    }
 }
 ///back home///////////////////////////////////////////////////////////
-function home(){
+function home() {
     allresponse.index = 1;
-    document.querySelector('.content').innerHTML =  mainArea1;
+    document.querySelector('.content').innerHTML = mainArea1;
 }
 // request/////////////////////////////////////////////////////////////
 function ajax(place) {
