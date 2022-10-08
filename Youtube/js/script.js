@@ -134,7 +134,7 @@ function openfunc() {
     }
 }
 function downloadbutton() {
-    var URLButtonText = document.querySelector('#URLText').value;
+    var URLButtonText = "download?URL="+document.querySelector('#URLText').value;
     if (URLButtonText != "") {
         var i = "index";
         download(URLButtonText, i);
@@ -142,7 +142,7 @@ function downloadbutton() {
 
 }
 function downloadbutton2(i) {
-    var URLButtonText = 'https://www.youtube.com/watch?v=' + youtubeDt.videoID[i];
+    var URLButtonText = 'download?URL=https://www.youtube.com/watch?v=' + youtubeDt.videoID[i];
     var i = "index";
     download(URLButtonText, i);
 }
