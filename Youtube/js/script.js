@@ -4,8 +4,6 @@ function processInput(input) {
     var letterz = "ي".charCodeAt(0);
     var search = input;
     var processed = "";
-    // console.log("YouTube: ");
-    // console.log(search);
     for (var i = 0; i < search.length; i++) {
         if (search[i] == ' ')
             processed += search[i] = '+';
@@ -25,7 +23,6 @@ function tohexa(symbols) {
     var ans = [];
     ans.length = 30;
     var i = 0;
-    // console.log(symbols);
     do {
         remains = number / 16;
         deleter = Math.floor(number / 16);
@@ -39,33 +36,26 @@ function tohexa(symbols) {
     for (i; i >= 0; i--) {
         if (ans[i] < 10)
             hexasym += ans[i];
-
         else if (ans[i] === 10)
             hexasym += "A";
-
         else if (ans[i] === 11)
             hexasym += "B";
-
         else if (ans[i] === 12)
             hexasym += "C";
-
         else if (ans[i] === 13)
             hexasym += "D";
-
         else if (ans[i] === 14)
             hexasym += "E";
-
         else if (ans[i] === 15)
             hexasym += "F";
         else {
-            console.log("some thing went wrong while convert to hexadecimal");
+            console.error("some thing went wrong while convert to hexadecimal");
             return "+";
         }
     }
     return hexasym;
 }
 ///////////////////////////////Open Section - inhtml//////////////////////////////////////////////////
-
 function showURLText(type) {
     if (window.lastType == type) {
         atGlobal.sameBt = true;
@@ -81,7 +71,6 @@ function showURLText(type) {
         atGlobal.dbt = false;
         atGlobal.obt = true;
     }
-
     var urlText = document.querySelector("#URLText");
     if (atGlobal.URLBoxShownAlready && atGlobal.sameBt) {
         urlText.style.display = "none";
@@ -140,17 +129,13 @@ function openfunc() {
 }
 function downloadbutton() {
     var URLButtonText = "download?URL=" + document.querySelector('#URLText').value;
-    // console.log(URLButtonText)
-    // console.log(URLButtonText);
     if (URLButtonText != "") {
         var i = "index";
         download(URLButtonText, i);
     }
-
 }
 function downloadbutton2(i) {
     var URLButtonText = 'download?URL=https://www.youtube.com/watch?v=' + youtubeDt.videoID[i];
-    // console.log(URLButtonText)
     var i = "index";
     download(URLButtonText, i);
 }
@@ -161,7 +146,6 @@ function showloading() {
 }
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
 function getdata(dataSource, type, route) {
-    console.log(route);
     var request = new XMLHttpRequest;
     request.open("GET", dataSource, true);
     request.send(null);
@@ -176,10 +160,8 @@ function getResponse(request, type, route) {
             if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
             else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
             else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
-            console.log(responseText);
             var data = window.data;
             dtOutput(responseText, type, route);
-            console.log(request);
             return request;
         }
         if(route == "mainroute"){
@@ -230,9 +212,7 @@ function dtOutput(data, type, route) {
             youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
             youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
-            // console.log(youtubeDt.videoTitle[i]);
         }
-        console.log(route);
         getdata("html/search.html", "html", "mainroute");
     }
     else if (type == "html" && route == "mainroute") {
@@ -241,16 +221,13 @@ function dtOutput(data, type, route) {
         builder();
     }
     else if (type == "json" && route == "second") {
-
         if (data.items[0].contentDetails.duration != undefined) {
             youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
             if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
             else {
                 processDuration("both");
             }
-            console.log(youtubeDt.duration);
         }
-
     }
 }
 function processDuration(isitbuild) {
@@ -269,49 +246,13 @@ function processDuration(isitbuild) {
             if(parseInt(k[2])<10)
             k[2] = "0" + k[2];
             youtubeDt.duration[i] = k[0]+":"+k[1]+":"+k[2];
-            console.log(something);
         }
     }
-
-
-
-    // if (isitbuild == "build" || isitbuild == "both") {
-    //     for (let i in youtubeDt.duration) {
-    //         var something = youtubeDt.duration[i];
-    //         something = something.replace("PT", "");
-    //         something = something.replace("H", ":");
-    //         something = something.replace("M", ":");
-    //         something = something.replace("S", ":");
-    //         let k = something.split(':');
-    //         if(parseInt(k[0])<10)
-    //         k[0] = "0" + k[0];
-    //         if(parseInt(k[1])<10)
-    //         k[1] = "0" + k[1];
-    //         if(parseInt(k[2])<10)
-    //         k[2] = "0" + k[2];
-    //         let fulltime = "";
-    //         for(let i in k){
-    //             if(k[i]!="" && k[i]!=undefined){
-    //             fulltime += k[i]
-    //             if(i!=2)
-    //             fulltime +=':';
-    //             }
-    //         }
-            
-    //         youtubeDt.duration[i] = fulltime;
-    //         console.log(something);
-    //         console.log(fulltime);
-    //     }
-    // }
-
-
     
     if (isitbuild == "show" || isitbuild == "both") {
         for (var i in atGlobal.vArr) {
             var ii = parseInt(i) + 1;
             let vDuration = document.querySelector(".v" + atGlobal.vArr[i]);
-            console.log(atGlobal.vArr[i]);
-            console.log(i);
             vDuration.textContent = youtubeDt.duration[ii];
             if (vDuration != null) {
                 vDuration = vDuration.style;
@@ -330,7 +271,6 @@ function processDuration(isitbuild) {
             }
         }
     }
-    console.log(youtubeDt.duration);
 }
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
 function builder() {
@@ -358,7 +298,6 @@ function builder() {
             holder = holder.replace(new RegExp("{{date}}", "g"), youtubeDt.date[i]);
             holder = holder.replace(new RegExp("{{channel}}", "g"), youtubeDt.channelTitle[i]);
             holder = holder.replace(new RegExp("{{downloadLink}}", "g"), "");
-            // console.log(window.youtubeDt.videoTitle[i]);
             totalHtml += holder;
         }
         window.totalHtml = new Object;
@@ -383,7 +322,6 @@ function builder() {
             }
         }
         getDuration();
-        // console.log(totalHtml);
         window.lock = false;
     }
 }
@@ -391,7 +329,6 @@ function getDuration() {
     youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4';
     atGlobal.index2++;
     getdata(youtubeAPI2, "json", "second");
-
 }
 ///////////////////////////////Open Iframe - inhtml//////////////////////////////////////////////////
 function openiframe(i, vCode) {
@@ -436,8 +373,6 @@ function openiframe(i, vCode) {
 }
 ///////////////////////////////Make Sure Server Connected//////////////////////////////////////////////////
 function mksure(i, ii) {
-    // window.outPut = false;
-    // console.log(ii);
     let waiting = fetch(atGlobal.IP());
     waiting.then(res => {
         if (res.status == 404) {
@@ -452,7 +387,6 @@ function mksure(i, ii) {
     });
 }
 function showbtnDown1() {
-    // console.log(atGlobal.connect);
     if (atGlobal.dbt && !atGlobal.obt && !atGlobal.connect) {
         btnDownload = document.querySelectorAll('.down');
         btnDownload[0].setAttribute('onclick', "downloadbutton()");
@@ -473,24 +407,18 @@ function showbtnDown2(ii) {
     btnDownload = document.querySelectorAll('.down');
     btnDownload[1].setAttribute('onclick', "downloadbutton2(" + ii + ")");
     btnDownload[1].setAttribute('style', 'opacity:100%;cursor:pointer;display:block;');
-
 }
 ///////////////////////////////Download - processing//////////////////////////////////////////////////
 function download(url, i) {
-    // console.log(mksure(url));
-    // window.location.href = 'http://192.168.1.2:4000/download?URL=' + url;
     let a = document.createElement('a');
-    console.log(atGlobal.IP() + url);
     a.href = atGlobal.IP() + url;
     a.target = '_blanck';
     a.click();
     a.remove();
 }
 ///////////////////////////////////////////Dark Mode Switch//////////////////////////////////////////////////
-
 //DarkMode Control System
 function DMCS(where) {
-    console.log(localStorage.D);
     if (localStorage.D == undefined)
         localStorage.setItem("D", false);
     if (where == 0) {
@@ -500,13 +428,11 @@ function DMCS(where) {
         else
         atGlobal.onOROffDark = true;
     }
-
     let dmode = document.querySelector('#dmode1');
     if (atGlobal.onOROffDark) {//this is on don't care with the name dmodeoff i badly named them 
         ball = document.querySelector('#ball');
         button = document.querySelector('#darkmode');
         ball.setAttribute('class', "dmodeBallOff");
-        // console.log(atGlobal.onOROffDark);
         button.setAttribute('class', "dmodeOff");
         dmode.setAttribute('href', 'css/CFEWSFC-D.css');
         localStorage.setItem("D", false);
@@ -516,13 +442,11 @@ function DMCS(where) {
         ball = document.querySelector('#ball');
         button = document.querySelector('#darkmode');
         ball.setAttribute('class', "dmodeBallOn");
-        // console.log(atGlobal.onOROffDark);
         button.setAttribute('class', "dmodeOn");
         dmode.setAttribute('href', 'css/CFEWSFC-L.css');
         localStorage.setItem("D", true);
         atGlobal.onOROffDark = true;
     }
-
 }
 ////////////////////////////////Settings Icon - inhtml/////////////////////////////
 let ul = document.querySelector('ul');
@@ -541,7 +465,6 @@ function showul() {
         atGlobal.showul = true;
     }
 }
-
 function hideul() {
     let ul = document.querySelector('ul');
     ul.setAttribute('style', 'opacity:0%');
@@ -577,7 +500,6 @@ var main = (function (event) {
         vArr: [],
         index2: 0,
         visitCount: 0,
-
     }
     DMCS(0);
     console.log("This Site uses %cYoutube %cAPI!", "color:red;", "color:auto background:f2dd00;");
@@ -588,13 +510,11 @@ var main = (function (event) {
     window.lastType = new Object;
     window.lastType = "none";
     youtubeDt = new Object;
-
     document.querySelector("#youtubeSearchBox").addEventListener("input",
         (event) => {
             if (document.querySelector("#youtubeSearchBox").value[0]) {
                 let a = "أ".charCodeAt(0);
                 let z = "ي".charCodeAt(0);
-
                 let char = document.querySelector("#youtubeSearchBox").value[0];
                 let searchBox = document.querySelector("#youtubeSearchBox").style;
                 if (char.charCodeAt(0) >= a && char.charCodeAt(0) <= z) {
@@ -611,25 +531,20 @@ var main = (function (event) {
             h1_1.animation = "800ms ease-out hideIcon forwards";
             h1_1.removeAttribute("class");
         }
-
         if (document.querySelector("#youtubeSearchBox").value != "") {
             window.lock = new Object;
             youtubeDt.fill = "null"
-            // console.log(youtubeDt);
             lock = true;
             if (event.key == 'Enter') {
                 var getSearchBox;
                 var link = "https://www.youtube.com/results?search_query=";
-                // console.log("YouTube: ");
                 getSearchBox = document.querySelector('#youtubeSearchBox').value;
-                // console.log(search);
                 var processedSearch = processInput(getSearchBox);
                 var a = document.querySelector("#openplace > a");
                 var h1 = document.querySelector(".lable").style;
                 var searchBox = document.querySelector("#youtubeSearchBox").style;
                 a.setAttribute("href", link + processedSearch);
                 a.setAttribute("target", "_blank");
-                // console.log(search);
                 if (getSearchBox) {
                     searchBox.position = "relative";
                     h1.animation = "800ms ease-out hideIcon forwards";
@@ -637,12 +552,9 @@ var main = (function (event) {
                     h1.top = "0px";
                     document.querySelector("h1").setAttribute("class", "collapsed");
                 }
-                // console.log(processedSearch);
                 var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4&part=id,snippet";
                 var tryy = "data/data2.json";
                 getdata(youtubeAPI, "json", "mainroute");
-                // getdata(tryy, "json", "mainroute");
-                // console.log(link);
             }
         }
     }
