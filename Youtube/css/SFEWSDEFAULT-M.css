@@ -225,7 +225,7 @@ h2 {
     border-radius: 2vw;
     position: relative;
     display: none;
-
+    box-shadow: 0 0 15px -6px black;
 }
 
 div.thumbnail {
