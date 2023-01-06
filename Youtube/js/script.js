@@ -4,6 +4,8 @@ function processInput(input) {
     var letterz = "ي".charCodeAt(0);
     var search = input;
     var processed = "";
+    // console.log("YouTube: ");
+    // console.log(search);
     for (var i = 0; i < search.length; i++) {
         if (search[i] == ' ')
             processed += search[i] = '+';
@@ -23,6 +25,7 @@ function tohexa(symbols) {
     var ans = [];
     ans.length = 30;
     var i = 0;
+    // console.log(symbols);
     do {
         remains = number / 16;
         deleter = Math.floor(number / 16);
@@ -62,6 +65,7 @@ function tohexa(symbols) {
     return hexasym;
 }
 ///////////////////////////////Open Section - inhtml//////////////////////////////////////////////////
+
 function showURLText(type) {
     if (window.lastType == type) {
         atGlobal.sameBt = true;
@@ -77,6 +81,7 @@ function showURLText(type) {
         atGlobal.dbt = false;
         atGlobal.obt = true;
     }
+
     var urlText = document.querySelector("#URLText");
     if (atGlobal.URLBoxShownAlready && atGlobal.sameBt) {
         urlText.style.display = "none";
@@ -134,7 +139,9 @@ function openfunc() {
     }
 }
 function downloadbutton() {
-    var URLButtonText = "download?URL="+document.querySelector('#URLText').value;
+    var URLButtonText = "download?URL=" + document.querySelector('#URLText').value;
+    // console.log(URLButtonText)
+    // console.log(URLButtonText);
     if (URLButtonText != "") {
         var i = "index";
         download(URLButtonText, i);
@@ -143,6 +150,7 @@ function downloadbutton() {
 }
 function downloadbutton2(i) {
     var URLButtonText = 'download?URL=https://www.youtube.com/watch?v=' + youtubeDt.videoID[i];
+    // console.log(URLButtonText)
     var i = "index";
     download(URLButtonText, i);
 }
@@ -153,30 +161,43 @@ function showloading() {
 }
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
 function getdata(dataSource, type, route) {
+    console.log(route);
     var request = new XMLHttpRequest;
-    request.open("GET", dataSource);
+    request.open("GET", dataSource, true);
     request.send(null);
     if (route == "mainroute")
         showloading();
+
     getResponse(request, type, route);
-} 
+}
 function getResponse(request, type, route) {
     request.onreadystatechange = function () {
         if (request.status == 200 && request.readyState == 4) {
             if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
+            else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
             else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
+            console.log(responseText);
             var data = window.data;
             dtOutput(responseText, type, route);
+            console.log(request);
             return request;
         }
-        else if (request.status == 408) {
-            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "<br> Response TimeOut</h2>"
-        }
-        else if (request.status == 500) {
-            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "<br> Server Error</h2>"
-        }
-        else if (request.status == 403) {
-            document.querySelector("#videosContainer").innerHTML = "<h2>" + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>"
+        if(route == "mainroute"){
+            if (request.status == 408) {
+                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Response TimeOut</h2>";
+            }
+            else if (request.status == 500) {
+                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Server Error</h2>";
+            }
+            else if (request.status == 403) {
+                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
+            }
+            else{
+                if(request.status != 0)
+                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Some thing Went Wrong "+"</h2>";
+                else
+                document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected -</h2>";
+            }
         }
     }
 }
@@ -209,7 +230,9 @@ function dtOutput(data, type, route) {
             youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
             youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
+            // console.log(youtubeDt.videoTitle[i]);
         }
+        console.log(route);
         getdata("html/search.html", "html", "mainroute");
     }
     else if (type == "html" && route == "mainroute") {
@@ -225,6 +248,7 @@ function dtOutput(data, type, route) {
             else {
                 processDuration("both");
             }
+            console.log(youtubeDt.duration);
         }
 
     }
@@ -236,14 +260,58 @@ function processDuration(isitbuild) {
             something = something.replace("PT", "");
             something = something.replace("H", ":");
             something = something.replace("M", ":");
-            something = something.replace("S", "");
-            youtubeDt.duration[i] = something;
+            something = something.replace("S", ":");
+            let k = something.split(':');
+            if(parseInt(k[0])<10)
+            k[0] = "0" + k[0];
+            if(parseInt(k[1])<10)
+            k[1] = "0" + k[1];
+            if(parseInt(k[2])<10)
+            k[2] = "0" + k[2];
+            youtubeDt.duration[i] = k[0]+":"+k[1]+":"+k[2];
+            console.log(something);
         }
     }
+
+
+
+    // if (isitbuild == "build" || isitbuild == "both") {
+    //     for (let i in youtubeDt.duration) {
+    //         var something = youtubeDt.duration[i];
+    //         something = something.replace("PT", "");
+    //         something = something.replace("H", ":");
+    //         something = something.replace("M", ":");
+    //         something = something.replace("S", ":");
+    //         let k = something.split(':');
+    //         if(parseInt(k[0])<10)
+    //         k[0] = "0" + k[0];
+    //         if(parseInt(k[1])<10)
+    //         k[1] = "0" + k[1];
+    //         if(parseInt(k[2])<10)
+    //         k[2] = "0" + k[2];
+    //         let fulltime = "";
+    //         for(let i in k){
+    //             if(k[i]!="" && k[i]!=undefined){
+    //             fulltime += k[i]
+    //             if(i!=2)
+    //             fulltime +=':';
+    //             }
+    //         }
+            
+    //         youtubeDt.duration[i] = fulltime;
+    //         console.log(something);
+    //         console.log(fulltime);
+    //     }
+    // }
+
+
+    
     if (isitbuild == "show" || isitbuild == "both") {
         for (var i in atGlobal.vArr) {
             var ii = parseInt(i) + 1;
             let vDuration = document.querySelector(".v" + atGlobal.vArr[i]);
+            console.log(atGlobal.vArr[i]);
+            console.log(i);
             vDuration.textContent = youtubeDt.duration[ii];
             if (vDuration != null) {
                 vDuration = vDuration.style;
@@ -262,6 +330,7 @@ function processDuration(isitbuild) {
             }
         }
     }
+    console.log(youtubeDt.duration);
 }
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
 function builder() {
@@ -279,16 +348,17 @@ function builder() {
                 atGlobal.list[listindex] = i
                 listindex++;
             }
-            else {//Video and any thing else
+            else {//Videos and any thing else
                 atGlobal.vArr[atGlobal.vIndex] = i;
                 atGlobal.vIndex++;
-                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "videoIcon v"' + atGlobal.vIndex);
+                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "videoIcon Duration v"' + atGlobal.vIndex);
             }
             holder = holder.replace(new RegExp("{{vindex}}", 'g'), i);
             holder = holder.replace(new RegExp("{{index}}", 'g'), i);
             holder = holder.replace(new RegExp("{{date}}", "g"), youtubeDt.date[i]);
             holder = holder.replace(new RegExp("{{channel}}", "g"), youtubeDt.channelTitle[i]);
             holder = holder.replace(new RegExp("{{downloadLink}}", "g"), "");
+            // console.log(window.youtubeDt.videoTitle[i]);
             totalHtml += holder;
         }
         window.totalHtml = new Object;
@@ -313,13 +383,15 @@ function builder() {
             }
         }
         getDuration();
+        // console.log(totalHtml);
         window.lock = false;
     }
 }
 function getDuration() {
-    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyCbzG1LFPCu4yabkfEMqaxKh_Rx-qIHSOk';
+    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4';
     atGlobal.index2++;
     getdata(youtubeAPI2, "json", "second");
+
 }
 ///////////////////////////////Open Iframe - inhtml//////////////////////////////////////////////////
 function openiframe(i, vCode) {
@@ -364,9 +436,11 @@ function openiframe(i, vCode) {
 }
 ///////////////////////////////Make Sure Server Connected//////////////////////////////////////////////////
 function mksure(i, ii) {
-    let waiting = fetch(atGlobal.IP + 'https://www.youtube.com/watch?v=06h470AiBZ4');
+    // window.outPut = false;
+    // console.log(ii);
+    let waiting = fetch(atGlobal.IP());
     waiting.then(res => {
-        if (res.status == 200) {
+        if (res.status == 404) {
             window.outPut = true;
             if (i == 1) {
                 showbtnDown1();
@@ -378,6 +452,7 @@ function mksure(i, ii) {
     });
 }
 function showbtnDown1() {
+    // console.log(atGlobal.connect);
     if (atGlobal.dbt && !atGlobal.obt && !atGlobal.connect) {
         btnDownload = document.querySelectorAll('.down');
         btnDownload[0].setAttribute('onclick', "downloadbutton()");
@@ -398,60 +473,82 @@ function showbtnDown2(ii) {
     btnDownload = document.querySelectorAll('.down');
     btnDownload[1].setAttribute('onclick', "downloadbutton2(" + ii + ")");
     btnDownload[1].setAttribute('style', 'opacity:100%;cursor:pointer;display:block;');
+
 }
 ///////////////////////////////Download - processing//////////////////////////////////////////////////
 function download(url, i) {
+    // console.log(mksure(url));
+    // window.location.href = 'http://192.168.1.2:4000/download?URL=' + url;
     let a = document.createElement('a');
-    a.href = atGlobal.IP + url;
+    console.log(atGlobal.IP() + url);
+    a.href = atGlobal.IP() + url;
     a.target = '_blanck';
     a.click();
     a.remove();
 }
 ///////////////////////////////////////////Dark Mode Switch//////////////////////////////////////////////////
-function dmodeSwitch() {
+
+//DarkMode Control System
+function DMCS(where) {
+    console.log(localStorage.D);
+    if (localStorage.D == undefined)
+        localStorage.setItem("D", false);
+    if (where == 0) {
+        let k = localStorage.getItem("D");
+        if(k=='true')
+        atGlobal.onOROffDark = false;
+        else
+        atGlobal.onOROffDark = true;
+    }
+
     let dmode = document.querySelector('#dmode1');
-    if (atGlobal.onOROffDark) {//this on don't care with dmodeoff i badly named them 
+    if (atGlobal.onOROffDark) {//this is on don't care with the name dmodeoff i badly named them 
         ball = document.querySelector('#ball');
         button = document.querySelector('#darkmode');
         ball.setAttribute('class', "dmodeBallOff");
-        atGlobal.onOROffDark = false;
+        // console.log(atGlobal.onOROffDark);
         button.setAttribute('class', "dmodeOff");
         dmode.setAttribute('href', 'css/CFEWSFC-D.css');
+        localStorage.setItem("D", false);
+        atGlobal.onOROffDark = false;
     }
     else {//off
         ball = document.querySelector('#ball');
         button = document.querySelector('#darkmode');
         ball.setAttribute('class', "dmodeBallOn");
-        atGlobal.onOROffDark = true;
+        // console.log(atGlobal.onOROffDark);
         button.setAttribute('class', "dmodeOn");
         dmode.setAttribute('href', 'css/CFEWSFC-L.css');
+        localStorage.setItem("D", true);
+        atGlobal.onOROffDark = true;
     }
+
 }
 ////////////////////////////////Settings Icon - inhtml/////////////////////////////
+let ul = document.querySelector('ul');
 function showul() {
-    let ul = document.querySelector('ul');
+    ul.focus();
     let el = document.querySelector('svg');
     el.style.transition = "250ms ease-out";
     if (atGlobal.showul) {
-        ul.setAttribute('style', 'display:block');
+        ul.setAttribute('style', 'opacity:100%');
         atGlobal.showul = false;
         el.style.transform = "rotate(90deg)";
     }
     else {
         el.style.transform = "rotate(0deg)";
-        ul.setAttribute('style', 'display:none');
+        ul.setAttribute('style', 'opacity:0%');
         atGlobal.showul = true;
     }
 }
+
 function hideul() {
     let ul = document.querySelector('ul');
-    ul.setAttribute('style', 'display:none');
+    ul.setAttribute('style', 'opacity:0%');
     atGlobal.showul = true;
 }
 ///////////////////////////////////////////MAIN FUNCTION//////////////////////////////////////////////////
 var main = (function (event) {
-    console.log("this site purpose not to browse channels or to browse YouTube if you wanna just open YouTube it's make for those want to focus and don't want to be distract by YouTube ads and YouTube suggestion also I made it to try what I learned in javascript and hope it works well , this site doesn't open channel or playlist but it does open YouTube videos also searchs on YouTube , Download YouTube video for offline watching and it's liter than Youtube in data usage while searching.Note:while watching videos it uses as much as the video on YouTube uses in data");
-    console.log("This Site Will Never Replace YouTube!")
     window.atGlobal = {
         Data: "Do You want to show these elements below ?",
         obt: true,
@@ -461,7 +558,16 @@ var main = (function (event) {
         //////////////////////////////
         URLBoxShownAlready: false,
         /////////server-IP///////////
-        IP: 'http://192.168.1.9:4000/download?URL=',
+        IP: () => {
+            let address = null;
+            let add = window.origin;
+            if (add.includes(":")) {
+                address = add.replace(":5500", ":4000") + "/";
+            }
+            else
+                console.error("No Download Server Found!");
+            return address;
+        },
         index: 0,
         connect: false,
         onOROffDark: false,
@@ -469,13 +575,35 @@ var main = (function (event) {
         list: [],
         vIndex: 0,
         vArr: [],
-        index2: 0
+        index2: 0,
+        visitCount: 0,
+
     }
+    DMCS(0);
+    console.log("This Site uses %cYoutube %cAPI!", "color:red;", "color:auto background:f2dd00;");
+    document.querySelector("#youtubeSearchBox").focus();
+    ul.addEventListener("blur", (event) => { if (atGlobal.showul) { atGlobal.showul = false; showul(); } });
     window.outPut = new Object;
     window.outPut = false;
     window.lastType = new Object;
     window.lastType = "none";
     youtubeDt = new Object;
+
+    document.querySelector("#youtubeSearchBox").addEventListener("input",
+        (event) => {
+            if (document.querySelector("#youtubeSearchBox").value[0]) {
+                let a = "أ".charCodeAt(0);
+                let z = "ي".charCodeAt(0);
+
+                let char = document.querySelector("#youtubeSearchBox").value[0];
+                let searchBox = document.querySelector("#youtubeSearchBox").style;
+                if (char.charCodeAt(0) >= a && char.charCodeAt(0) <= z) {
+                    searchBox.direction = "rtl";
+                }
+                else
+                    searchBox.direction = "ltr";
+            }
+        });
     document.querySelector('#youtubeSearchBox').addEventListener("keypress", getSearchcontent);
     function getSearchcontent(event) {
         var h1_1 = document.querySelector(".collapsed");
@@ -483,20 +611,25 @@ var main = (function (event) {
             h1_1.animation = "800ms ease-out hideIcon forwards";
             h1_1.removeAttribute("class");
         }
+
         if (document.querySelector("#youtubeSearchBox").value != "") {
             window.lock = new Object;
             youtubeDt.fill = "null"
+            // console.log(youtubeDt);
             lock = true;
             if (event.key == 'Enter') {
                 var getSearchBox;
                 var link = "https://www.youtube.com/results?search_query=";
+                // console.log("YouTube: ");
                 getSearchBox = document.querySelector('#youtubeSearchBox').value;
+                // console.log(search);
                 var processedSearch = processInput(getSearchBox);
                 var a = document.querySelector("#openplace > a");
-                var h1 = document.querySelector("h1").style;
+                var h1 = document.querySelector(".lable").style;
                 var searchBox = document.querySelector("#youtubeSearchBox").style;
                 a.setAttribute("href", link + processedSearch);
                 a.setAttribute("target", "_blank");
+                // console.log(search);
                 if (getSearchBox) {
                     searchBox.position = "relative";
                     h1.animation = "800ms ease-out hideIcon forwards";
@@ -504,8 +637,12 @@ var main = (function (event) {
                     h1.top = "0px";
                     document.querySelector("h1").setAttribute("class", "collapsed");
                 }
-                var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyCbzG1LFPCu4yabkfEMqaxKh_Rx-qIHSOk&part=id,snippet";
+                // console.log(processedSearch);
+                var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4&part=id,snippet";
+                var tryy = "data/data2.json";
                 getdata(youtubeAPI, "json", "mainroute");
+                // getdata(tryy, "json", "mainroute");
+                // console.log(link);
             }
         }
     }

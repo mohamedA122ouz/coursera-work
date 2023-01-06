@@ -1,5 +1,5 @@
 body {
-    background-color: #ebe9e9;
+    background-color: white;
 }
 
 #videosContainer {
@@ -33,4 +33,10 @@ footer {
 #youtubeSearchBox {
     background-color: white;
     color: black;
+}
+#youtubeSearchBox:hover {
+    box-shadow: -2px 2px 4px 0px #dddddd;
+}
+.duration{
+    color:white;
 }

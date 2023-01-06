@@ -1,0 +1,182 @@
+{
+    "kind": "youtube#searchListResponse",
+    "etag": "eXF6O6wapxohgAX4jzflltXwWBQ",
+    "nextPageToken": "CAUQAA",
+    "regionCode": "EG",
+    "pageInfo": {
+        "totalResults": 1000000,
+        "resultsPerPage": 5
+    },
+    "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "bYD3yWesCr0vd1XEIXUvhR4dWUg",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "TE66McLMMEw"
+            },
+            "snippet": {
+                "publishedAt": "2020-05-01T19:32:24Z",
+                "channelId": "UCvjXo25nY-WMCTEXZZb0xsw",
+                "title": "YouTube Data API v3 Tutorial",
+                "description": "MY RESOURCES: Support the Channel: https://streamlabs.com/ansondevacademy/tip Buy Me a Ko-fi: http://ko-fi.com/anson ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/TE66McLMMEw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/TE66McLMMEw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/TE66McLMMEw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Anson the Developer",
+                "liveBroadcastContent": "none",
+                "publishTime": "2020-05-01T19:32:24Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "PvlVL0dIcQVkaoJUZmUiVopb7So",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "40wBGMu62H8"
+            },
+            "snippet": {
+                "publishedAt": "2020-04-22T16:15:51Z",
+                "channelId": "UCVYcFbsnaV-9lBEb6RMlWYg",
+                "title": "طريقة الحصول علي api key youtube data v3",
+                "description": "معرفة طريقة الحصول علي api key youtube data v3 بهدف عمل تطبيقات اليوتيوب.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/40wBGMu62H8/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/40wBGMu62H8/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/40wBGMu62H8/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "mohamed ezz",
+                "liveBroadcastContent": "none",
+                "publishTime": "2020-04-22T16:15:51Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "S1VGex2PKDb9PJWijtP6CNrkuKU",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "idYUy3hf3D0"
+            },
+            "snippet": {
+                "publishedAt": "2021-09-19T18:46:11Z",
+                "channelId": "UCabBd1g8nBWWCx2YT4yeXOA",
+                "title": "Show YouTube videos on your own website! | YouTube API Tutorial",
+                "description": "Just putting a link to the youtube channel is boring, this video shows you how you can work with the YouTube API to show your ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/idYUy3hf3D0/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/idYUy3hf3D0/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/idYUy3hf3D0/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Tony Zhang",
+                "liveBroadcastContent": "none",
+                "publishTime": "2021-09-19T18:46:11Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "MXELbDpjE-_UhTHor-7O8PMn8Y0",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "th5_9woFJmk"
+            },
+            "snippet": {
+                "publishedAt": "2020-05-29T16:17:07Z",
+                "channelId": "UCCezIgC97PvUuR4_gbFUs5g",
+                "title": "Python YouTube API Tutorial: Getting Started - Creating an API Key and Querying the API",
+                "description": "In this Python Programming Tutorial, we'll be learning how to use the YouTube API. We will learn how to create an API Key and ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/th5_9woFJmk/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/th5_9woFJmk/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/th5_9woFJmk/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Corey Schafer",
+                "liveBroadcastContent": "none",
+                "publishTime": "2020-05-29T16:17:07Z"
+            }
+        },
+        {
+            "kind": "youtube#searchResult",
+            "etag": "ayImG13s1r3VJUBxGjHFwQifz88",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "r-yxNNO1EI8"
+            },
+            "snippet": {
+                "publishedAt": "2018-07-12T19:51:05Z",
+                "channelId": "UC29ju8bIPH5as8OGnQzwJyA",
+                "title": "YouTube API Project With Authentication",
+                "description": "In this JavaScript project we will use the YouTube API v3 to fetch channel data and videos. We will create a search form to change ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/r-yxNNO1EI8/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/r-yxNNO1EI8/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/r-yxNNO1EI8/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Traversy Media",
+                "liveBroadcastContent": "none",
+                "publishTime": "2018-07-12T19:51:05Z"
+            }
+        }
+    ]
+}

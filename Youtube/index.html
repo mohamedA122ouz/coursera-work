@@ -12,8 +12,8 @@
     <script src="/js/Server/index.js"></script>
     <title>Youtube</title>
 </head>
-
 <body>
+    <h1 style="display:none;">Youtube Search By Mo122ouz</h1>
     <div id="settings">
         <svg onclick="showul()" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-gear"
             viewBox="0 0 16 16">
@@ -27,13 +27,13 @@
                 <span style=" float: left;">DarkMode:</span>
             </li>
             <li>
-                <div id="darkmode" onclick="dmodeSwitch()">
+                <div id="darkmode" onclick="DMCS(1)">
                     <div id="ball"></div>
                 </div>
             </li>
         </ul>
     </div>
-    <h1>
+    <h1 class="lable">
         <span>Y</span>
         <span>O</span>
         <span>U</span>
@@ -44,14 +44,15 @@
         <span>E</span>
     </h1>
     <script src="js/changeLettersStyle.js"></script>
-    <input type="text" id="youtubeSearchBox" placeholder="Search Youtube">
+    <input type="text" id="youtubeSearchBox" title="Enter any Text here To search Youtube with it"
+        placeholder="Search Youtube">
     <div id="openplace">
         <a href="#">Search&nbsp;On&nbsp;Youtube</a>
         <a href="#" onclick="showURLText('Download')" style="margin-left: 10px;">Download&nbsp;Manager</a>
         <a href="#" onclick="showURLText('Open')" style="margin-left: 10px;">open&nbsp;Video&nbsp;Location</a>
         <br>
         <form>
-            <input type="text" id="URLText" placeholder="Enter Url" style="margin-top: 20px;display: none;" required>
+            <input type="text" id="URLText" title="Enter Youtube Video URL" placeholder="Enter Url"style="margin-top: 20px;display: none;" required>
             <button class="down dbt"><span id="download">Download From Link</span></button>
             <button onclick="openfunc()" id="obt"><span id="open">open</span>
             </button>

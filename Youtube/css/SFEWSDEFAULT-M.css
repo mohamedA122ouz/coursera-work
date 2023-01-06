@@ -131,6 +131,7 @@ h1 {
     border-radius: 6vh;
     font-size: 2vh;
     padding-left: 2.8vh;
+    padding-right: 2.8vh;
     box-sizing: border-box;
     position: relative;
     font-weight: 100;
@@ -180,7 +181,6 @@ hr {
     }
 
     to {
-        display: none;
         font-size: 1.5vw;
         letter-spacing: .4vw;
     }
@@ -387,7 +387,7 @@ footer {
 }
 
 #ball {
-    border: 0.5vw solid white;
+    border: 0.2vw solid white;
     height: 1.7vw;
     width: 1.7vw;
     border-radius: 1vw;
@@ -432,8 +432,8 @@ footer {
 /*///////////////////settings button/////////////*/
 ul {
     position: relative;
-    display: none;
     padding: 1vw;
+    opacity:0%;
     user-select: none;
     list-style: none;
     z-index: 5;
@@ -684,7 +684,6 @@ ul>span {
 
     ul {
         position: relative;
-        display: none;
         padding: 1vw;
         user-select: none;
         list-style: none;
@@ -714,6 +713,9 @@ ul>span {
     .liststyle{
         width:100%;
         top:0px;
+    }
+    .duration {
+        font-size:2rem;
     }
     /*///////////////////////////////////////////////*/
 }
