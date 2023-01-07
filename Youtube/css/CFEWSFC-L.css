@@ -37,6 +37,11 @@ footer {
 #youtubeSearchBox:hover {
     box-shadow: -2px 2px 4px 0px #dddddd;
 }
+.details:hover{
+    filter:brightness(89%);
+    background-color:#fffefe ;
+    border-radius: 15px;
+}
 .duration{
     color:white;
 }

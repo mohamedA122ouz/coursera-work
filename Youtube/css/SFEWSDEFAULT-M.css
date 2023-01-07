@@ -169,7 +169,20 @@ iframe {
     min-height: 177px;
     height: 35vw;
 }
-
+.duration {
+    display : block;
+    position : absolute;
+    right : 0px;
+    bottom : 22px;
+    font-size : 1vw;
+    z-index : 12;
+    background-color : black;
+    opacity : 70%;
+    height: max-content;
+    width : max-content;
+    padding : 1%;
+    border-radius:  0.5vw;
+}
 hr {
     margin: 4vh 1vw 4vh 1vw;
 }
@@ -213,6 +226,7 @@ h2 {
 
 /*///////////////////////Styling YouTube Place/////////////////////*/
 #videosContainer {
+    box-shadow: 0 0 15px -7px black;
     box-sizing: border-box;
     width: max-content;
     max-width: 90vw;
@@ -225,12 +239,12 @@ h2 {
     border-radius: 2vw;
     position: relative;
     display: none;
-    box-shadow: 0 0 15px -6px black;
-}
 
+}
+/* 155px height and 275px width in youtube with a ratio 31/55*/
 div.thumbnail {
-    width: 320px;
-    height: 200px;
+    width: 330px;
+    height: 186px;
     position: relative;
     display: inline-block;
     vertical-align: top;
@@ -279,15 +293,17 @@ div.thumbnail {
     position: relative;
     border-radius: 50%;
     left: 12%;
-    width: 200px;
-    height: 200px;
+    width: 186px;
+    height: 186px;
     vertical-align: top;
 }
+
 
 .videoIcon {
     position: relative;
     left: 0;
     width: 100%;
+    border-radius: 15px;
     vertical-align: top;
 }
 
@@ -458,6 +474,12 @@ ul>span {
     position: absolute;
     left: 89vw;
     top: 1%;
+
+}
+#settings > svg:hover{
+    filter: brightness(140%);
+    transition:300ms;
+    cursor:pointer;
 }
 
 #settings > svg {
@@ -465,6 +487,7 @@ ul>span {
     z-index: 6;
     color: #3582c0;
     width: 3vw;
+    transition:300ms;
 }
 .liststyle{
     width:100%;
@@ -701,10 +724,7 @@ ul>span {
     }
 
     #settings > svg {
-        position: relative;
-        z-index: 6;
-        color: #3582c0;
-        width: 7vw;
+        width: 6vw;
     }
 
     footer {
@@ -715,7 +735,8 @@ ul>span {
         top:0px;
     }
     .duration {
-        font-size:2rem;
+        bottom : 1px;
+        font-size : 2.5vw;
     }
     /*///////////////////////////////////////////////*/
 }

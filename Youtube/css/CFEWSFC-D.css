@@ -37,7 +37,11 @@ footer {
 #youtubeSearchBox:hover{
     background-color:#303134;
 }
-
+.details:hover{
+    filter:brightness(111%);
+    background-color:#303134;
+    border-radius: 15px;
+}
 /* Change the white to any color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
