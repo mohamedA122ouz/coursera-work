@@ -386,7 +386,7 @@ function openiframe(i, vCode) {
             mksure(2, i);
         }
         else if (youtubeDt.playListID[i] != undefined) {
-            var channel = "https://www.youtube.com/watch?v=0&list=" + youtubeDt.playListID[i];
+            var channel = "https://www.youtube.com/playlist?list=" + youtubeDt.playListID[i];
             var a = document.createElement('a');
             a.style.display = "none"
             a.href = channel;
@@ -469,6 +469,7 @@ function download(url, i) {
 
 //DarkMode Control System
 function DMCS(where) {
+    //check the last session darkmode if on or of
     console.log(localStorage.D);
     if (localStorage.D == undefined)
         localStorage.setItem("D", false);
@@ -479,9 +480,9 @@ function DMCS(where) {
         else
         atGlobal.onOROffDark = true;
     }
-
+//turning on or off the darkmode
     let dmode = document.querySelector('#dmode1');
-    if (atGlobal.onOROffDark) {//this is on don't care with the name dmodeoff i badly named them 
+    if (atGlobal.onOROffDark) {//this is (on) don't care with the name dmodeoff i badly named them 
         ball = document.querySelector('#ball');
         button = document.querySelector('#darkmode');
         ball.setAttribute('class', "dmodeBallOff");
@@ -541,7 +542,7 @@ var main = (function (event) {
         showURLBoxNow: true,
         //////////////////////////////
         URLBoxShownAlready: false,
-        /////////server-IP///////////
+        /////////server-address///////////
         IP: () => {
             let address = null;
             let add = window.origin;
