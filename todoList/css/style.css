@@ -1,0 +1,63 @@
+*{
+    box-sizing: border-box;
+    font-size: 16pt;
+}
+.checked{
+    text-decoration: line-through;
+}
+body{
+    width: 99%;
+}
+input[type="checkbox"]{
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    float: right;
+}
+li{
+    margin: 1rem 0;
+    height: 2rem;
+}
+textarea{
+width: 98%;
+height: 30vh;
+box-shadow: 0px 0px 50px -20px black;
+border-radius: 10px;
+resize:vertical;
+}
+button{
+    margin: 10px 10px;
+    height: max-content;
+    cursor: pointer;
+    border:0pc transparent solid;
+    box-shadow: 0 0px 6px -2px black;
+    width: max-content;
+}
+button:hover{
+    box-shadow: 0 0px 6px 0px black;
+}
+#save{
+    background-color: #8ea9e9;
+}
+h1:hover{
+    text-shadow: 1px 1px 20px black;
+    cursor: pointer;
+}
+h1{
+    font-size:1.5rem;
+}
+#container{
+    justify-content: center;
+    margin: 0 auto;
+    height: max-content;
+    width: 500px;
+}
+a{
+    text-decoration: underline;
+    color:blue;
+    cursor: pointer;
+    user-select: none;
+}
+a:focus{
+    color:purple;
+}
