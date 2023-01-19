@@ -29,8 +29,8 @@ function dirct(test, root) {
     }
     root === 0 ? 0 : textarea.style.direction = direction;
 }
-
 //hide edit list panel
+
 function hideMessage() {
     let div = document.querySelector("#textReady");
     div.innerHTML = ``;
@@ -118,7 +118,7 @@ function additem(root) {
 function saveinstorage() {
     if (!list) { return 0; }
     let listPro = list.split('\n') || list;
-    localStorage.setItem("list", listPro);
+    localStorage.setItem("list", listPro.filter(ele => ele));
     savecheck(-1);
 }
 //save whether checkbox checked or not in localstorage
@@ -153,24 +153,24 @@ function restoreChecks() {
     }
 }
 //you can restore you old work
-(function notifyme(){
-    if(Notification.permission =="granted"&&localStorage.getItem("notification")!="false"){
-        setTimeout(()=>{
-            localStorage.setItem("notification","false");
+(function notifyme() {
+    if (Notification.permission == "granted" && localStorage.getItem("notification") != "false") {
+        setTimeout(() => {
+            localStorage.setItem("notification", "false");
             let noti = new Notification("TO-List",
-            {
-                body:"site uses cookies to restore old session!",
-                icon:"icon/todo.jpg"
-            }
-            
+                {
+                    body: "site uses cookies to restore old session!",
+                    icon: "icon/todo.jpg"
+                }
+
             )
-        },1000)
+        }, 1000)
     }
-    else if(Notification.permission == "denied"){
+    else if (Notification.permission == "denied") {
         return 0;
     }
-    else{
-        Notification.requestPermission().then(()=>{
+    else {
+        Notification.requestPermission().then(() => {
             console.log(Notification.permission);
         })
     }
