@@ -378,6 +378,8 @@ let settings = {
         storage.GSave("fontSize",size);
     }
     ,restoreAndApply:()=>{
+        let sizeEl = document.querySelector("#fontsize").value;
+        let fontEl = document.querySelector("#font");
         let html = document.querySelector("html").style;
         let font = storage.GGet("font")[0];
         if(font){
@@ -385,6 +387,8 @@ let settings = {
         }
         let size = storage.GGet("fontSize")[0];
         html.fontSize = size;
+        sizeEl.value = size;
+        fontEl.value = font;
     }
 };
 
