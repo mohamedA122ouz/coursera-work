@@ -1,7 +1,15 @@
 * {
     box-sizing: border-box;
     font-size: 16pt;
+}
 
+::-webkit-scrollbar{
+    background-color: transparent;
+    width: 0.5vw;
+}
+::-webkit-scrollbar-thumb{
+    background-color: gray;
+    border-radius: 20px;
 }
 
 .checked {
@@ -20,13 +28,15 @@ body {
 input[type="checkbox"] {
     width: 2rem;
     height: 2rem;
+    min-width: 2rem;
     position: relative;
     margin: auto 0 auto 10px;
 }
 
 .delete {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
     position: relative;
     margin: auto 0 auto auto;
     background-color: rgb(197, 5, 5);
@@ -34,8 +44,26 @@ input[type="checkbox"] {
     opacity: 0%;
     transition: 100ms;
 }
-
+.edit{
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    position: relative;
+    margin: auto 0 auto 10px;
+    background-color: #42b26a;
+    color: white;
+    opacity: 0%;
+    transition: 100ms;
+}
+.olLi{
+    font-size: 1rem;
+    max-width: 85%;
+    overflow-y: auto;
+    max-height: 450px;
+    overflow-x: auto;
+}
 .exist {
+    cursor:pointer;
     color: red;
     font-weight: bolder;
     font-size: 22pt;
@@ -46,6 +74,7 @@ input[type="checkbox"] {
 }
 
 li {
+    font-size: 1rem;
     display: flex;
     margin: 1rem 0;
     height: max-content;
@@ -62,7 +91,7 @@ li:hover {
     transition: 100ms;
 }
 
-li:hover>.delete {
+li:hover>.delete,li:hover>.edit{
     opacity: 100%;
     transition: 100ms;
 }
@@ -80,6 +109,7 @@ ol {
     padding: 10px;
     border: 1px solid black;
     background-color: white;
+    overflow-y: auto;
 }
 
 button {
@@ -87,6 +117,7 @@ button {
     margin: 10px 10px;
     height: max-content;
     cursor: pointer;
+    padding: 4px;
     border: 0pc transparent solid;
     box-shadow: 0 0px 6px -2px black;
     width: max-content;
@@ -107,7 +138,7 @@ button:hover {
 }
 
 #clear {
-    background-color: rgb(197, 5, 5);
+    background-color: #c50505;
     color: white;
 }
 
@@ -181,9 +212,13 @@ header {
 #start {
     width: max-content;
     color: white;
-    background-color: #42b26a;
+    background-color: #c50505;
 }
-
+#a{
+    background-color: #42b26a;
+    color:white;
+    font-weight: bolder;
+}
 #buttons {
     display: flex;
     justify-content: center;
@@ -248,12 +283,12 @@ header {
     border: 1px solid black;
     border-radius: 10px;
     padding: 20px;
-    position: absolute;
+    position: fixed;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
     z-index: 10;
-    display: none;
+    display: block;
     background-color: white;
 }
 
@@ -285,4 +320,9 @@ header {
     #warning {
         display: flex;
     }
+}
+#copyRight{
+    position: absolute;
+    bottom:30px;
+    margin: 10px;
 }

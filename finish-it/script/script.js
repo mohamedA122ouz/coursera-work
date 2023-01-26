@@ -1,106 +1,26 @@
 let h1 = document.querySelector("h1");
-
 document.body.style.backgroundSize = `${window.screen.width < window.screen.height ? window.screen.width : window.screen.height}px`;
 document.querySelector("#container").setAttribute("style", `width:${window.screen.width}px`);
 document.querySelector("header").setAttribute("style", `max-width:${window.screen.width}px`);
 let list = null;
 let start = true;
 let direction = 'ltr';
-
-let panel = {
-    //show edit list panel
-    hidden: false,
-    container: {},
-    saveType: "update",//value is either update or add
-    container2: (query) => { return document.querySelector(`${query}`) },
-    structure: `<div contenteditable = "true" tabindex="-1" id="textc"oninput="panel.dirct(this.innerHTML[0])"></div><br>
-    <button id="clear" onclick="panel.clear()">clear</button>
-    <button id="save" onclick="panel.save()">save</button>
-    <button id="hide" onclick="panel.hide()">Hide</button>
-`,
-    //determine the direction for list direction and the edit panel
-    dirct: (test, root) => {
-        if (test) {
-            let a = "أ".charCodeAt(0);
-            let z = "ي".charCodeAt(0);
-            if (test.charCodeAt(0) >= a && test.charCodeAt(0) <= z)
-                direction = "rtl";
-            else
-                direction = "ltr";
-        }
-        root === 0 ? 0 : panel.self.style.direction = direction;
-    },
-    getself: () => { return document.querySelector("#textc"); },
-    self: {},
-    show: () => {
-        panel.container = panel.container2("#textReady");
-        panel.self = panel.getself();
-        panel.container.style.display = "block";
-        panel.hidden = false;
-        panel.self.focus();
-    }
-    ,
-    build: () => {
-        if (!panel.hidden) {
-            panel.container = panel.container2("#textReady");
-            start = false;
-            panel.container.innerHTML = panel.structure;
-            panel.self = panel.getself();
-            panel.self.focus();
-        }
-        else
-            panel.show();
-    },
-    //hide edit list panel
-    hide: () => {
-        panel.hidden = true;
-        panel.container.style.display = "none";
-    },
-    del: () => {
-        panel.container.innerHTML = "";
-    },
-    //save and clear buttons functionalities
-    saveOnAdd: () => {
-        control.isitadd = false;
-        panel.del();
-        control.processForAdd(panel.self.innerHTML);
-        return panel.self.innerHTML;
-    },
-    clear: () => {
-        panel.self.innerHTML = null;
-    },
-    save: () => {
-        if (!control.isitadd) {
-            list = panel.self.innerHTML;
-            panel.del();
-            control.additem('new items');
-            start = true;
-            return panel.self.innerHTML;
-        }
-        else {
-            panel.saveOnAdd();
-        }
-
-    }
-};
-// let description = {
-//     set: () => {
-//         control.selectAll("li").forEach((ele,i)=>{
-//             ele.onclick = ()=>{
-//                 (-1);
-//             }
-//         });
-//     },
-// }
 let storage = {
-    GSave:(itemname,value)=>{
-        localStorage.setItem(itemname,value);
+    IndexSave: (index, value) => {
+        let arr = storage.GGet("list");
+        console.log(arr[index]);
+        arr[index] = value;
+        console.log(arr);
+        storage.GSave("list", arr);
+    },
+    GSave: (itemname, value) => {
+        localStorage.setItem(itemname, value);
         return `the ${itemname} is stored successfully`;
     },
-    GGet:(itemname)=>{
-        if(localStorage.getItem(itemname)){
+    GGet: (itemname) => {
+        if (localStorage.getItem(itemname)) {
             let value = localStorage.getItem(itemname).split(',');
-            return value.map(ele=>ele);
+            return value;
         }
     }
     ,
@@ -113,8 +33,8 @@ let storage = {
     saveForAdd: (arr) => {
         let data = localStorage.getItem("list").split(',').concat(arr);
         let data2 = localStorage.getItem("checkState").split(',').concat([0]);
-        localStorage.setItem("list", data);
-        localStorage.setItem("checkState", data2);
+        localStorage.setItem("list", data.filter(el=>el));
+        localStorage.setItem("checkState", data2.filter(el=>el));
         control.additem("restore");
         return "addition saved";
     },
@@ -129,7 +49,6 @@ let storage = {
         localStorage.setItem("checkState", data2);
         control.additem("restore");
         return "item deleted";
-
     }
     ,
     //save whether checkbox checked or not in localstorage
@@ -164,16 +83,106 @@ let storage = {
         }
     }
 };
+let panel = {
+    //show edit list panel
+    hidden: false,
+    container: {},
+    saveType: "update",//value is either update or add
+    container2: (query) => { return document.querySelector(`${query}`) },
+    structure: `<div contenteditable = "true" tabindex="-1" id="textc" oninput="panel.text = this.innerHTML,panel.dirct(this.innerHTML[0])"></div><br>
+    <button id="clear" onclick="panel.clear()">clear</button>
+    <button id="save" onclick="panel.save()">save</button>
+    <button id="hide" onclick="panel.hide()">Hide</button>
+`,
+    //determine the direction for list direction and the edit panel
+    dirct: (test, root) => {
+        if (test) {
+            let a = "أ".charCodeAt(0);
+            let z = "ي".charCodeAt(0);
+            if (test.charCodeAt(0) >= a && test.charCodeAt(0) <= z)
+                direction = "rtl";
+            else
+                direction = "ltr";
+        }
+        root === 0 ? 0 : panel.self.style.direction = direction;
+    },
+    getself: () => { return document.querySelector("#textc"); },
+    self: {},
+    text: null,
+    show: () => {
+        panel.container = panel.container2("#textReady");
+        panel.self = panel.getself();
+        panel.container.style.display = "block";
+        panel.hidden = false;
+        panel.self.focus();
+    }
+    ,
+    build: () => {
+        text = null;
+        if (!panel.hidden) {
+            panel.container = panel.container2("#textReady");
+            start = false;
+            panel.container.innerHTML = panel.structure;
+            panel.self = panel.getself();
+            panel.self.focus();
+        }
+        else
+            panel.show();
+    },
+    //hide edit list panel
+    hide: () => {
+        panel.hidden = true;
+        panel.container.style.display = "none";
+    },
+    del: () => {
+        panel.container.innerHTML = "";
+    },
+    //save and clear buttons functionalities
+    saveOnAdd: () => {
+        control.isitadd = false;
+        panel.del();
+        control.processForAdd(panel.self.innerHTML);
+        return panel.self.innerHTML;
+    },
+    clear: () => {
+        panel.self.innerHTML = null;
+    },
+    save: (i) => {
+        if (control.editedItem.text) {
+            panel.del();
+            storage.IndexSave(control.editedItem.index, panel.text);
+            control.editedItem.text = null;
+            control.editedItem.index = -1;
+            control.additem("restore");
+        }
+        else if (!control.isitadd) {
+            list = panel.self.innerHTML;
+            control.additem('new items');
+            start = true;
+            panel.del();
+            return panel.self.innerHTML;
+        }
+        else {
+            panel.saveOnAdd();
+        }
+    }
+};
+
 let control = {
     listPro: "",
     isitadd: false,
+    hideOl: () => {
+        control.select("ol").innerHTML = null;
+    },
     addbutton: () => {
         control.isitadd = true;
         panel.build();
     },
     savebutton: () => {
         control.isitadd = false;
+        control.hideOl();
         panel.build();
+        control.hideAlert();
     }
     ,
     select: (item) => document.querySelector(`${item}`)//select item form document
@@ -218,11 +227,17 @@ let control = {
                     <div style= "display:inline;" class = "olLi" id="s${i}">
                     ${listPro[i] || "item not specified"}
                     </div>
-                    <button class="delete" onclick="control.showAlert(${i})">
+                    <button class="delete" onclick="control.showAlert('Are you sure you want to delete item number ${i + 1} ?',${i},'control.delItem()','Yes','No')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                         </svg>
                     </button>
+                    <button class="edit" onclick="control.edit(${i})" title="Add new list and delete old one if exist"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+                </svg></button>
                     <input type="checkbox" id="c${i}" onclick="control.checkItem(${i})">
                     </li>`;
                 letgo = false;
@@ -283,13 +298,38 @@ let control = {
     },
     hideAlert: () => {
         control.unblurElseWhere();
-        document.querySelector("#alert").style.display = "none";
+        document.querySelector("#addAlert").innerHTML = null;
         control.deleteItemIndex = null;
     },
     deleteItemIndex: null
     ,
-    showAlert(i) {
-        document.querySelector("#alert").style.display = "block";
+    editedItem: { text: null, index: -1 }
+    ,
+    edit: (i) => {
+        control.editedItem.text = storage.GGet("list")[i];
+        control.editedItem.index = i;
+        console.log(i);
+        control.isitadd = true;
+        panel.build();
+        panel.getself().innerHTML = control.editedItem.text;
+    }
+    ,
+    showAlert(alertContent, i /*index if exist*/, wantedFunction = 'control.hideAlert()', buttonTrueName, buttonFalseName) {
+        let alert = ` <div id="alert">
+        <div id="warning">
+            <div id="alert-i"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+                    class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg></div>
+            <p>${alertContent}</p>
+        </div>
+        <hr>
+        <button onclick='${wantedFunction}'>${buttonTrueName || "yes"}</button>
+        <button onclick='control.hideAlert()'>${buttonFalseName || "no"}</button>
+    </div>`;
+        alertprop = document.querySelector("#addAlert");
+        alertprop.innerHTML = alert;
         control.blurElseWhere();
         control.deleteItemIndex = i;
     }
@@ -297,6 +337,7 @@ let control = {
         storage.del(control.deleteItemIndex);
         control.unblurElseWhere();
         control.hideAlert();
+        control.deleteItemIndex = null;
     }
     ,
     blurElseWhere: () => {
@@ -325,7 +366,7 @@ let control = {
     //     };
     // }
 };
-
+control.additem("restore");
 let settings = {
     focus: () => {
         settings.settingsOpened = false;
@@ -357,37 +398,37 @@ let settings = {
             control.unblurElseWhere();
         }
     },
-    getFont:()=>{
+    getFont: () => {
         let font = document.querySelector("#font");
-        return font.value ==="browser default"?false:font.value;
+        return font.value === "browser default" ? false : font.value;
     },
-    fontSize:()=>{
+    fontSize: () => {
         let size = document.querySelector("#fontsize").value;
-        return  `${size}pt`;
+        return `${size}pt`;
     }
-    ,apply:()=>{
+    , apply: () => {
         let font = settings.getFont();
         let size = settings.fontSize()
         let html = document.querySelector("html").style;
-        if(font){
+        if (font) {
             html.fontFamily = font;
         }
         html.fontSize = size;
         settings.hide();
-        storage.GSave("font",font);
-        storage.GSave("fontSize",size);
+        storage.GSave("font", font);
+        storage.GSave("fontSize", size);
     }
-    ,restoreAndApply:()=>{
-        let sizeEl = document.querySelector("#fontsize").value;
+    , restoreAndApply: () => {
+        let sizeEl = document.querySelector("#fontsize");
         let fontEl = document.querySelector("#font");
         let html = document.querySelector("html").style;
         let font = storage.GGet("font")[0];
-        if(font){
+        if (font) {
             html.fontFamily = font;
         }
         let size = storage.GGet("fontSize")[0];
         html.fontSize = size;
-        sizeEl.value = size;
+        sizeEl.value = size.replace("pt","");
         fontEl.value = font;
     }
 };
