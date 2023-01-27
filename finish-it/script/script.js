@@ -3,7 +3,6 @@ document.body.style.backgroundSize = `${window.screen.width < window.screen.heig
 document.querySelector("#container").setAttribute("style", `width:${window.screen.width}px`);
 document.querySelector("header").setAttribute("style", `max-width:${window.screen.width}px`);
 let list = null;
-let start = true;
 let direction = 'ltr';
 let storage = {
     IndexSave: (index, value) => {
@@ -33,8 +32,8 @@ let storage = {
     saveForAdd: (arr) => {
         let data = localStorage.getItem("list").split(',').concat(arr);
         let data2 = localStorage.getItem("checkState").split(',').concat([0]);
-        localStorage.setItem("list", data.filter(el=>el));
-        localStorage.setItem("checkState", data2.filter(el=>el));
+        localStorage.setItem("list", data.filter(el => el));
+        localStorage.setItem("checkState", data2.filter(el => el));
         control.additem("restore");
         return "addition saved";
     },
@@ -89,7 +88,11 @@ let panel = {
     container: {},
     saveType: "update",//value is either update or add
     container2: (query) => { return document.querySelector(`${query}`) },
-    structure: `<div contenteditable = "true" tabindex="-1" id="textc" oninput="panel.text = this.innerHTML,panel.dirct(this.innerHTML[0])"></div><br>
+    structure: `
+    <button class="deactivate" onclick="panel.controls.literalClick(this)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+    </svg></button>
+    <div contenteditable = "true" tabindex="-1" id="textc" oninput="panel.text = this.innerHTML,panel.dirct(this.innerHTML[0])"></div><br>
     <button id="clear" onclick="panel.clear()">clear</button>
     <button id="save" onclick="panel.save()">save</button>
     <button id="hide" onclick="panel.hide()">Hide</button>
@@ -106,6 +109,19 @@ let panel = {
         }
         root === 0 ? 0 : panel.self.style.direction = direction;
     },
+    controls: {
+        litralList: false,
+        literalClick:(obj)=>{
+            if(panel.controls.litralList){
+                obj.setAttribute("class","deactivate");
+                panel.controls.litralList = false;
+            }else{
+                panel.controls.litralList = true;
+                obj.setAttribute("class","activate");
+            }
+        },
+    }
+    ,
     getself: () => { return document.querySelector("#textc"); },
     self: {},
     text: null,
@@ -121,7 +137,6 @@ let panel = {
         text = null;
         if (!panel.hidden) {
             panel.container = panel.container2("#textReady");
-            start = false;
             panel.container.innerHTML = panel.structure;
             panel.self = panel.getself();
             panel.self.focus();
@@ -141,13 +156,17 @@ let panel = {
     saveOnAdd: () => {
         control.isitadd = false;
         panel.del();
-        control.processForAdd(panel.self.innerHTML);
-        return panel.self.innerHTML;
+        control.processForAdd(panel.text);
+        return panel.text;
     },
     clear: () => {
         panel.self.innerHTML = null;
     },
     save: (i) => {
+        if(panel.controls.litralList)
+        panel.text = panel.text.replace(new RegExp('<div>','g'),'\\n');
+        // panel.text = panel.text.replace(new RegExp('</div>','g'),'');
+        panel.text = panel.text.replace(new RegExp(',', 'g'), "&!comma;");
         if (control.editedItem.text) {
             panel.del();
             storage.IndexSave(control.editedItem.index, panel.text);
@@ -156,11 +175,10 @@ let panel = {
             control.additem("restore");
         }
         else if (!control.isitadd) {
-            list = panel.self.innerHTML;
+            list = panel.text;
             control.additem('new items');
-            start = true;
             panel.del();
-            return panel.self.innerHTML;
+            return panel.text;
         }
         else {
             panel.saveOnAdd();
@@ -175,6 +193,7 @@ let control = {
         control.select("ol").innerHTML = null;
     },
     addbutton: () => {
+        control.editedItem = { text: null, index: -1 };
         control.isitadd = true;
         panel.build();
     },
@@ -217,15 +236,16 @@ let control = {
         //root -1 means new items
         control.listPro = control.processData(root);
         console.log(listPro);
+
         let ol = control.select("#listIt");
         let item = "";
         let letgo = true;
         for (let i = 0; i < listPro.length; i++) {
             if (control.listPro[i]) {
                 item +=
-                    `<li class="vertical">${i + 1}.
-                    <div style= "display:inline;" class = "olLi" id="s${i}">
-                    ${listPro[i] || "item not specified"}
+                    `<li class="vertical">${i + 1}-&nbsp;
+                    <div class = "olLi" id="s${i}">
+                    ${listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
                     </div>
                     <button class="delete" onclick="control.showAlert('Are you sure you want to delete item number ${i + 1} ?',${i},'control.delItem()','Yes','No')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -238,48 +258,21 @@ let control = {
                     <path
                         d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                 </svg></button>
-                    <input type="checkbox" id="c${i}" onclick="control.checkItem(${i})">
+                    <input type="checkbox" id="c${i}" class="checkbox" onclick="control.checkItem(${i})">
                     </li>`;
                 letgo = false;
             }
             else if (control.listPro.length - 1 === i && letgo) {
                 //this just for try 
-                item = `<span>${"No items Written! "}</span>`;
+                item = `<span>${"Empty List"}</span>`;
+                ol.innerHTML = item;
                 setTimeout(() => {
-                    setTimeout(() => {
-                        setTimeout(() => {
-                            setTimeout(() => {
-                                ol.innerHTML = "";
-                                panel.build(start);
-                            }, 1000);
-                            ol.innerHTML = "";
-                            if (start) {
-                                item = `<span>${"No items Written! 1"}</span>`;
-                                ol.innerHTML = item;
-                            }
-                        }, 1000);
-                        ol.innerHTML = "";
-                        if (start) {
-                            item = `<span>${"No items Written! 2"}</span>`;
-                            ol.innerHTML = item;
-                        }
-                    }, 1000);
+                    panel.build();
                     ol.innerHTML = "";
-                    if (start) {
-                        item = `<span>${"No items Written! 3"}</span>`;
-                        ol.innerHTML = item;
-                    }
                 }, 1000);
             }
         }
         ol.innerHTML = item;
-
-        //version 0.2 of writing
-        // document.querySelectorAll(`.olLi`).forEach((ele, i) => {
-        //     console.log("work");
-        //     ele.textContent = `${listPro[i]}` || "item not specified";
-        // })
-        //description.set();
         root === "restore" ? panel.dirct(listPro[0][0], 0) : 0;
         ol.style.direction = direction;
         root === "restore" ? storage.restoreChecks() : 0;
@@ -293,7 +286,7 @@ let control = {
         if (check.checked)
             span.setAttribute("class", `checked`);
         else
-            span.removeAttribute("class", `checked`);
+            span.setAttribute("class", `olLi`);
         storage.savecheck(i);
     },
     hideAlert: () => {
@@ -349,24 +342,11 @@ let control = {
         container.style.filter = "blur(4px)";
     }
 
-    // wallpaper: () => {
-    //     let request = new XMLHttpRequest;
-    //     request.open("GET","file:///E:/myDesktop/programming/JS/todoList/icon/todo.png",true);
-    //     request.send(null);
-    //     request.onload = ()=>{
-
-    //         let file = new FileReader();
-    //         file.readAsDataURL(document.forms[0].pic);
-    //         file.onload = ()=>{
-    //             let url = file.result;
-    //             document.body.style.backgroundImage = `url(${url|| '/icon/todo.png'})`;
-    //             document.body.style.backgroundRepeat = "no-repeat";
-    //             document.body.style.backgroundPosition = "center -10%";
-    //         }
-    //     };
-    // }
+    // wallpaper
 };
+
 control.additem("restore");
+
 let settings = {
     focus: () => {
         settings.settingsOpened = false;
@@ -428,11 +408,10 @@ let settings = {
         }
         let size = storage.GGet("fontSize")[0];
         html.fontSize = size;
-        sizeEl.value = size.replace("pt","");
+        sizeEl.value = size.replace("pt", "");
         fontEl.value = font;
     }
 };
-
 
 //you can restore you old work
 (function notifyme() {

@@ -11,8 +11,11 @@
     background-color: gray;
     border-radius: 20px;
 }
-
+span{
+    background-color: transparent !important;
+}
 .checked {
+    display:inline;
     text-decoration: line-through;
     font-size: 1rem;
     max-width: 85%;
@@ -20,7 +23,15 @@
     max-height: 450px;
     overflow-x: auto;
 }
-
+.activate{
+    background-color: #3e74bc;
+    color:white;
+    padding:1px  5px;
+}
+.deactivate{
+    background-color: white;
+    padding:1px  5px;
+}
 body {
     display: flex;
     width: 100vw;
@@ -30,15 +41,16 @@ body {
 
 }
 
-input[type="checkbox"] {
+.checkbox {
     width: 2rem;
     height: 2rem;
     min-width: 2rem;
     position: relative;
-    margin: auto 0 auto 10px;
+    margin: auto 0 auto auto;
 }
 
 .delete {
+    display: none;
     width: 1.5rem;
     height: 1.5rem;
     min-width: 1.5rem;
@@ -50,6 +62,7 @@ input[type="checkbox"] {
     transition: 100ms;
 }
 .edit{
+    display: none;
     width: 1.5rem;
     height: 1.5rem;
     min-width: 1.5rem;
@@ -61,14 +74,17 @@ input[type="checkbox"] {
     transition: 100ms;
 }
 .olLi{
+    display:inline;
     font-size: 1rem;
     max-width: 85%;
     overflow-y: auto;
     max-height: 450px;
     overflow-x: auto;
+    transition: 400ms;
 }
 .exist {
     cursor:pointer;
+    transition: 400ms;
     color: red;
     font-weight: bolder;
     font-size: 22pt;
@@ -98,7 +114,11 @@ li:hover {
 
 li:hover>.delete,li:hover>.edit{
     opacity: 100%;
+    display: block;
     transition: 100ms;
+}
+li:hover>.checkbox{
+    margin: auto 0 auto 10px;
 }
 
 ol {
@@ -149,9 +169,14 @@ button:hover {
 
 h1 {
     width: max-content;
-    font-size: 1.5rem;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    display: inline;
 }
-
+.info{
+    margin: auto 0 auto auto;
+    color:white;
+}
 h1:hover {
     text-shadow: 1px 1px 20px black;
     cursor: pointer;
@@ -230,7 +255,7 @@ header {
 }
 
 #bar {
-    margin: auto;
+    margin: auto 0 auto 10px;
     margin-right: 10px;
     color: white;
 }
