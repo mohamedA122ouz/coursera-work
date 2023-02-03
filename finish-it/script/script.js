@@ -7,9 +7,9 @@ let direction = 'ltr';
 let storage = {
     IndexSave: (index, value) => {
         let arr = storage.GGet("list");
-        console.log(arr[index]);
+        ////console.log(arr[index]);
         arr[index] = value;
-        console.log(arr);
+        //console.log(arr);
         storage.GSave("list", arr);
     },
     GSave: (itemname, value) => {
@@ -111,13 +111,13 @@ let panel = {
     },
     controls: {
         litralList: false,
-        literalClick:(obj)=>{
-            if(panel.controls.litralList){
-                obj.setAttribute("class","deactivate");
+        literalClick: (obj) => {
+            if (panel.controls.litralList) {
+                obj.setAttribute("class", "deactivate");
                 panel.controls.litralList = false;
-            }else{
+            } else {
                 panel.controls.litralList = true;
-                obj.setAttribute("class","activate");
+                obj.setAttribute("class", "activate");
             }
         },
     }
@@ -163,8 +163,8 @@ let panel = {
         panel.self.innerHTML = null;
     },
     save: (i) => {
-        if(panel.controls.litralList)
-        panel.text = panel.text.replace(new RegExp('<div>','g'),'\\n');
+        if (panel.controls.litralList)
+            panel.text = panel.text.replace(new RegExp('<div>', 'g'), '\\n');
         // panel.text = panel.text.replace(new RegExp('</div>','g'),'');
         panel.text = panel.text.replace(new RegExp(',', 'g'), "&!comma;");
         if (control.editedItem.text) {
@@ -235,7 +235,7 @@ let control = {
         // root 0 means restore
         //root -1 means new items
         control.listPro = control.processData(root);
-        console.log(listPro);
+        //console.log(listPro);
 
         let ol = control.select("#listIt");
         let item = "";
@@ -243,7 +243,7 @@ let control = {
         for (let i = 0; i < listPro.length; i++) {
             if (control.listPro[i]) {
                 item +=
-                    `<li class="vertical">${i + 1}-&nbsp;
+                    `<li class="vertical" onmousedown ="control.swapHandler(this,${i})" >${i + 1}-&nbsp;
                     <div class = "olLi" id="s${i}">
                     ${listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
                     </div>
@@ -302,7 +302,7 @@ let control = {
     edit: (i) => {
         control.editedItem.text = storage.GGet("list")[i];
         control.editedItem.index = i;
-        console.log(i);
+        //console.log(i);
         control.isitadd = true;
         panel.build();
         panel.getself().innerHTML = control.editedItem.text;
@@ -341,9 +341,59 @@ let control = {
         header.style.filter = "blur(4px)";
         container.style.filter = "brightness(25%)";
         container.style.filter = "blur(4px)";
+    },
+    swapCounter: 0,
+    lastel: null,
+    target:null,
+    targetnum:null,
+    swapHandler: (el,num) => {
+        //console.log(control.swapCounter)
+        if (control.lastel === null)
+            control.lastel = el;
+        else if (control.lastel !== el) {
+            control.lastel.removeAttribute("style");
+            if(control.target){
+                control.swapitems(num);
+            }
+            control.swapCounter = 1;
+            control.lastel = null;
+        }
+        else {
+            if (control.lastel === el)
+                control.swapCounter++;
+            if (control.swapCounter === 2) {
+                //console.log("worked");
+                el.style.backgroundColor = "#5ebd68";
+                control.target = el;//target elemrnt is the element which became dark gray
+                control.targetnum = num;
+            }
+            if(control.swapCounter === 3){
+                ////console.log("here");
+                control.swapCounter = 0;
+                control.lastel.removeAttribute("style");
+                control.target = null;
+                control.targetnum = null;
+            }
+        }
+    }
+    ,
+    swapitems: (num) => {
+        let list = storage.GGet("list");
+        let check = storage.GGet("checkState");
+        let temp = list[num];
+        list[num] = list[control.targetnum];
+        list[control.targetnum] = temp;
+        temp = check[num];
+        check[num] = list[control.target.num];
+        check[control.targetnum] = temp;
+        ////console.log(list);
+        storage.GSave("list",list);
+        storage.GSave("checkState",check);
+        control.targetnum = null;
+        control.target = null;
+        control.additem("restore");
     }
 
-    // wallpaper
 };
 
 control.additem("restore");
@@ -368,7 +418,7 @@ let settings = {
     }
     ,
     hide: () => {
-        console.log("hide in process!");
+        ////console.log("hide in process!");
         if (settings.settingsOpened) {
             let setting = document.querySelector("#settings");
             setting.removeAttribute("class");
@@ -411,7 +461,8 @@ let settings = {
         html.fontSize = size;
         sizeEl.value = size.replace("pt", "");
         fontEl.value = font;
-    }
+    },
+
 };
 
 //you can restore you old work
@@ -432,7 +483,7 @@ let settings = {
     }
     else {
         Notification.requestPermission().then(() => {
-            console.log(Notification.permission);
+            ////console.log(Notification.permission);
         })
     }
 })();
