@@ -1,7 +1,14 @@
+"use strict";
 let h1 = document.querySelector("h1");
-document.body.style.backgroundSize = `${window.screen.width < window.screen.height ? window.screen.width : window.screen.height}px`;
-document.querySelector("#container").setAttribute("style", `width:${window.screen.width}px`);
-document.querySelector("header").setAttribute("style", `max-width:${window.screen.width}px`);
+document.body.style.backgroundSize = `${window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight}px`;
+document.querySelector("#container").setAttribute("style", `width:${window.innerWidth}px`);
+document.querySelector("header").setAttribute("style", `max-width:${window.innerWidth}px`);
+// window.addEventListener("resize", () => {
+//     document.body.style.backgroundSize = `${window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight}px`;
+//     document.querySelector("#container").setAttribute("style", `width:${window.innerWidth}px`);
+//     document.querySelector("header").setAttribute("style", `max-width:${window.innerWidth}px`);
+// });
+
 let list = null;
 let direction = 'ltr';
 let storage = {
@@ -53,7 +60,7 @@ let storage = {
     //save whether checkbox checked or not in localstorage
     savecheck: (root) => {
         if (root === -1) {
-            let listPro = list.split('\\n') || list;
+            let listPro = storage.GGet("list");
             let checkState = [];
             for (let i = 0; i < listPro.length; i++) {
                 if (!listPro[i]) { continue; }
@@ -71,13 +78,16 @@ let storage = {
     },
     //restore checked item
     restoreChecks: () => {
-        let items = localStorage.getItem("checkState").split(',');
+        let items = [""];
+        if (localStorage.getItem("checkState")) {
+            items = localStorage.getItem("checkState").split(',');
+        }
         for (let i = 0; i < items.length; i++) {
             let span = control.select(`#s${i}`);
             let check = control.select(`#c${i}`);
             if (items[i] === "true") {
                 check.checked = true;
-                span.setAttribute("class", `checked`);
+                span.classList.add("checked");
             }
         }
     }
@@ -112,12 +122,17 @@ let panel = {
     controls: {
         litralList: false,
         literalClick: (obj) => {
-            if (panel.controls.litralList) {
-                obj.setAttribute("class", "deactivate");
-                panel.controls.litralList = false;
-            } else {
-                panel.controls.litralList = true;
-                obj.setAttribute("class", "activate");
+            if(control.editedItem.index === -1){
+                if (panel.controls.litralList) {
+                    obj.setAttribute("class", "deactivate");
+                    panel.controls.litralList = false;
+                } else {
+                    panel.controls.litralList = true;
+                    obj.setAttribute("class", "activate");
+                }
+            }
+            else{
+                control.showAlert("sorry can not use this property while editing an item!",null,"control.hideAlert()","OK"," ")
             }
         },
     }
@@ -134,8 +149,9 @@ let panel = {
     }
     ,
     build: () => {
-        text = null;
+        panel.text = null;
         if (!panel.hidden) {
+            panel.text = null;
             panel.container = panel.container2("#textReady");
             panel.container.innerHTML = panel.structure;
             panel.self = panel.getself();
@@ -161,27 +177,29 @@ let panel = {
     },
     clear: () => {
         panel.self.innerHTML = null;
-    },
+    }
+    ,
     save: (i) => {
         if (panel.controls.litralList)
             panel.text = panel.text.replace(new RegExp('<div>', 'g'), '\\n');
-        // panel.text = panel.text.replace(new RegExp('</div>','g'),'');
-        panel.text = panel.text.replace(new RegExp(',', 'g'), "&!comma;");
-        if (control.editedItem.text) {
-            panel.del();
-            storage.IndexSave(control.editedItem.index, panel.text);
-            control.editedItem.text = null;
-            control.editedItem.index = -1;
-            control.additem("restore");
-        }
-        else if (!control.isitadd) {
-            list = panel.text;
-            control.additem('new items');
-            panel.del();
-            return panel.text;
-        }
-        else {
-            panel.saveOnAdd();
+        if (panel.text) {
+            panel.text = panel.text.replace(new RegExp(',', 'g'), "&!comma;");
+            if (control.editedItem.text) {
+                panel.del();
+                storage.IndexSave(control.editedItem.index, panel.text);
+                control.editedItem.text = null;
+                control.editedItem.index = -1;
+                control.additem("restore");
+            }
+            else if (!control.isitadd) {
+                list = panel.text;
+                control.additem('new items');
+                panel.del();
+                return panel.text;
+            }
+            else {
+                panel.saveOnAdd();
+            }
         }
     }
 };
@@ -193,9 +211,14 @@ let control = {
         control.select("ol").innerHTML = null;
     },
     addbutton: () => {
-        control.editedItem = { text: null, index: -1 };
-        control.isitadd = true;
-        panel.build();
+        if (storage.GGet("list")) {
+            control.editedItem = { text: null, index: -1 };
+            control.isitadd = true;
+            panel.build();
+        }
+        else {
+            control.showAlert('There is no existed list to Add on it!', false, 'control.start()', 'Add New list', 'Cancel');
+        }
     },
     savebutton: () => {
         control.isitadd = false;
@@ -209,10 +232,16 @@ let control = {
     selectAll: (items) => document.querySelector(`${items}`),
     //process input
     processData: (root) => {
+        let listPro = [""];
         if (root === "new items")
             listPro = list.split('\\n') || list;
-        else
-            listPro = localStorage.getItem("list").split(',');
+        else {
+            if (localStorage.getItem("list"))
+                listPro = localStorage.getItem("list").split(',');
+            else {
+                control.showAlert('Do you want to add new list?', false, 'control.start()', 'Add', 'Cancel');
+            }
+        }
         return listPro;
     },
     processForAdd: (value) => {
@@ -232,20 +261,17 @@ let control = {
     ,
     //adding all items from edit list panel if root = -1 else it gets the element from localstorage
     additem: (root) => {
-        // root 0 means restore
-        //root -1 means new items
         control.listPro = control.processData(root);
         //console.log(listPro);
-
         let ol = control.select("#listIt");
         let item = "";
         let letgo = true;
-        for (let i = 0; i < listPro.length; i++) {
+        for (let i = 0; i < control.listPro.length; i++) {
             if (control.listPro[i]) {
                 item +=
-                    `<li class="vertical" onmousedown ="control.swapHandler(this,${i})" >${i + 1}-&nbsp;
-                    <div class = "olLi" id="s${i}">
-                    ${listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
+                    `<li class="vertical">${i + 1}-&nbsp;
+                    <div class = "olLi" id="s${i}" onmousedown ="control.swapHandler(this.parentElement,${i})" >
+                    ${control.listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
                     </div>
                     <div class="alignment"></div>
                     <button class="delete" onclick="control.showAlert('Are you sure you want to delete item number ${i + 1} ?',${i},'control.delItem()','Yes','No')">
@@ -274,10 +300,10 @@ let control = {
             }
         }
         ol.innerHTML = item;
-        root === "restore" ? panel.dirct(listPro[0][0], 0) : 0;
+        root === "restore" ? panel.dirct(control.listPro[0][0], 0) : 0;
         ol.style.direction = direction;
         root === "restore" ? storage.restoreChecks() : 0;
-        root === "new items" ? storage.save(listPro) : 0;
+        root === "new items" ? storage.save(control.listPro) : 0;
     },
     //check if the checkbox for an item is checked if checked it gives the item class checked and by css it shows the throw line 
     //else which means that the chcekbox became unchecked the else will remove the class and the item get back to it's default font style
@@ -285,9 +311,9 @@ let control = {
         let span = document.querySelector(`#s${i}`);
         let check = document.getElementById(`c${i}`);
         if (check.checked)
-            span.setAttribute("class", `checked`);
+            span.classList.add("checked");
         else
-            span.setAttribute("class", `olLi`);
+            span.classList.remove("checked");
         storage.savecheck(i);
     },
     hideAlert: () => {
@@ -308,7 +334,7 @@ let control = {
         panel.getself().innerHTML = control.editedItem.text;
     }
     ,
-    showAlert(alertContent, i /*index if exist*/, wantedFunction = 'control.hideAlert()', buttonTrueName, buttonFalseName) {
+    showAlert(alertContent, i = null /*index if exist*/, wantedFunction = 'control.hideAlert()', buttonTrueName, buttonFalseName) {
         let alert = ` <div id="alert">
         <div id="warning">
             <div id="alert-i"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
@@ -322,16 +348,22 @@ let control = {
         <button onclick='${wantedFunction}'>${buttonTrueName || "yes"}</button>
         <button onclick='control.hideAlert()'>${buttonFalseName || "no"}</button>
     </div>`;
-        alertprop = document.querySelector("#addAlert");
+        let alertprop = document.querySelector("#addAlert");
         alertprop.innerHTML = alert;
         control.blurElseWhere();
         control.deleteItemIndex = i;
     }
     , delItem: () => {
-        storage.del(control.deleteItemIndex);
-        control.unblurElseWhere();
-        control.hideAlert();
-        control.deleteItemIndex = null;
+        if(control.targetnum === null){
+            storage.del(control.deleteItemIndex);
+            console.log(localStorage.getItem("list"));
+            control.unblurElseWhere();
+            control.hideAlert();
+            control.deleteItemIndex = null;
+        }
+        else{
+            control.showAlert("sorry cannot delete target as it is in swap process!",null,"control.hideAlert()","OK"," ");
+        }
     }
     ,
     blurElseWhere: () => {
@@ -344,38 +376,46 @@ let control = {
     },
     swapCounter: 0,
     lastel: null,
-    target:null,
-    targetnum:null,
-    swapHandler: (el,num) => {
-        //console.log(control.swapCounter)
-        if (control.lastel === null)
+    target: null,
+    targetnum: null,
+    swapHandler: (el, num) => {
+        if(control.enableTriple){
+            if (control.lastel === null)
             control.lastel = el;
-        else if (control.lastel !== el) {
-            control.lastel.removeAttribute("style");
-            if(control.target){
-                control.swapitems(num);
-            }
-            control.swapCounter = 1;
-            control.lastel = null;
-        }
-        else {
-            if (control.lastel === el)
-                control.swapCounter++;
-            if (control.swapCounter === 2) {
-                //console.log("worked");
-                el.style.backgroundColor = "#5ebd68";
-                control.target = el;//target elemrnt is the element which became dark gray
-                control.targetnum = num;
-            }
-            if(control.swapCounter === 3){
-                ////console.log("here");
-                control.swapCounter = 0;
+            else if (control.lastel !== el) {
                 control.lastel.removeAttribute("style");
-                control.target = null;
-                control.targetnum = null;
+                if (control.target) {
+                    control.swapitems(num);
+                }
+                control.swapCounter = 0;
+                control.lastel = null;
             }
+            else {
+                if (control.lastel === el)
+                control.swapCounter++;
+                if (control.swapCounter === 2) {
+                    //console.log("worked");
+                    el.style.backgroundColor = "#5ebd68";
+                    control.target = el;//target elemrnt is the element which became dark gray
+                    control.targetnum = num;
+                }
+                if (control.swapCounter === 3) {
+                    ////console.log("here");
+                    control.swapCounter = 0;
+                    control.lastel.removeAttribute("style");
+                    control.target = null;
+                    control.targetnum = null;
+                }
+            }
+        }
+        else if(control.lastel){
+            if(control.lastel.getAttribute("style"))
+            control.lastel.removeAttribute("style");
+            control.targetnum = null;
         }
     }
+    ,
+    enableTriple:false
     ,
     swapitems: (num) => {
         let list = storage.GGet("list");
@@ -384,20 +424,23 @@ let control = {
         list[num] = list[control.targetnum];
         list[control.targetnum] = temp;
         temp = check[num];
-        check[num] = list[control.target.num];
+        check[num] = check[control.targetnum];
         check[control.targetnum] = temp;
         ////console.log(list);
-        storage.GSave("list",list);
-        storage.GSave("checkState",check);
+        storage.GSave("list", list);
+        storage.GSave("checkState", check);
         control.targetnum = null;
         control.target = null;
         control.additem("restore");
-    }
-
+    },
+    start: (alert) => {
+        if (storage.GGet("list")) {
+            control.showAlert('You are about replacing all items in the list !', false, 'control.savebutton()', 'Ok', 'Cancel');
+        }
+        else
+        control.savebutton();
+    },
 };
-
-control.additem("restore");
-
 let settings = {
     focus: () => {
         settings.settingsOpened = false;
@@ -446,25 +489,45 @@ let settings = {
         }
         html.fontSize = size;
         settings.hide();
+        storage.GSave("swap",control.enableTriple);
         storage.GSave("font", font);
         storage.GSave("fontSize", size);
     }
     , restoreAndApply: () => {
         let sizeEl = document.querySelector("#fontsize");
         let fontEl = document.querySelector("#font");
+        let swap = document.querySelector("#enableSwap");
         let html = document.querySelector("html").style;
-        let font = storage.GGet("font")[0];
-        if (font) {
-            html.fontFamily = font;
+        if (!storage.GGet("font")) {
+            settings.apply();
         }
-        let size = storage.GGet("fontSize")[0];
-        html.fontSize = size;
-        sizeEl.value = size.replace("pt", "");
-        fontEl.value = font;
-    },
+        else {
+            let font = storage.GGet("font")[0];
+            if (font) {
+                html.fontFamily = font;
+            }
+            let size = storage.GGet("fontSize")[0];
+            html.fontSize = size;
+            sizeEl.value = size.replace("pt", "");
+            fontEl.value = font;
+            control.enableTriple = storage.GGet("swap").join('')=="true"?true:false;
+            swap.checked = control.enableTriple;
+        }
+    }
 
 };
-
+function showinfo(){
+    let info = document.querySelector(".info");
+    info.click();
+}
+let notFirstOpen = localStorage.getItem("firstOpen");
+if(notFirstOpen)
+    control.additem("restore");
+else
+    {
+        control.showAlert("Welcon to finish it website!",null,"showinfo()","Show Info","don't show info");
+        localStorage.setItem("firstOpen","true");
+    }
 //you can restore you old work
 (function notifyme() {
     if (Notification.permission == "granted" && localStorage.getItem("notification") != "false") {

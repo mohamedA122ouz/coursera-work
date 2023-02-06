@@ -15,13 +15,7 @@ span{
     background-color: transparent !important;
 }
 .checked {
-    display:inline;
     text-decoration: line-through;
-    font-size: 1rem;
-    max-width: 85%;
-    overflow-y: auto;
-    max-height: 450px;
-    overflow-x: auto;
 }
 .activate{
     background-color: #3e74bc;
@@ -74,6 +68,7 @@ body {
     transition: 100ms;
 }
 .olLi{
+    width: 80%;
     display:inline;
     font-size: 1rem;
     max-width: 85%;
@@ -190,6 +185,7 @@ h1 {
 .info{
     margin: auto 0 auto auto;
     color:white;
+    cursor: pointer;
 }
 h1:hover {
     text-shadow: 1px 1px 20px black;
@@ -272,6 +268,7 @@ header {
     margin: auto 0 auto 10px;
     margin-right: 10px;
     color: white;
+    cursor: pointer;
 }
 
 #font {

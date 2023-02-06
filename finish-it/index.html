@@ -16,7 +16,7 @@
             <p id="brand-name">finish-it</p>
         </div>
         <span class="info"
-            onclick="control.showAlert('This is a to do list website ,On control panel you have the red button to delete old list and create a new list<br>the green add button is to add to an item to an exist list<br>the white button is a refresh button<br>on hover list element you can find delete option to delete the hovered item and and the edit is to edite the specific item that you are hover.<div>!!NEW triple click any item in your list and choose which item to swap with!!</div>  ',-1,`control.hideAlert()`,'OK',' ');"><svg
+            onclick="control.showAlert('This is a to do list website ,On control panel you have the red button to delete old list and create a new list<br>the green add button is to add to an item to an exist list<br>the white button is a refresh button<br>on hover list element you can find delete option to delete the hovered item and and the edit is to edite the specific item that you are hover.<div>!!NEW triple click any item in your list and choose which item to swap with to enable it open settings from settings button next to info button the check checkbox to enable it!!</div>  ',-1,`control.hideAlert()`,'OK',' ');"><svg
                 xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                 class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path
@@ -55,16 +55,21 @@
             <option value="30">30pt</option>
             <option value="32">32pt</option>
         </select>
+        <div>
+            <span>enable swap</span>
+            <input type="checkbox" style="display:inline;max-width: max-content;"name="triple" id="enableSwap" onclick="control.enableTriple = this.checked">
+        </div>
         <button onclick="settings.apply()">apply</button>
-        <p id="copyRight">mohamed Ahmed Azouz&copy;2023<br>V0.2.8&nbsp;(beta)</p>
+        <p id="copyRight">mohamed Ahmed Azouz&copy;2023<br>V0.3.0&nbsp;(beta)</p>
     </div>
     <div id="container">
         <h1>control panel:</h1>
         <div id="buttons">
             <button id="start"
-                onclick="control.showAlert('You are about replacing all items in the list !',false,'control.savebutton()','Ok','Cancel')"
-                title="Add new list and delete old one if exist"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                    height="20" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+            onclick="control.start()"
+            title="Add new list and delete old one if exist"><svg xmlns="http://www.w3.org/2000/svg" width="20"
+            height="20" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+            <!-- start new list -->
                     <path
                         d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
                     <path
