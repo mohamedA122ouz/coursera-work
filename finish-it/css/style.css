@@ -181,6 +181,7 @@ h1 {
     font-size: 0.8rem;
     text-decoration: underline;
     display: inline;
+    user-select: none;
 }
 .info{
     margin: auto 0 auto auto;
