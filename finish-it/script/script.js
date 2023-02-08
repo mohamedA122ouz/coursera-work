@@ -417,6 +417,14 @@ let control = {
     ,
     enableTriple:false
     ,
+    enableSelect:{select:false,
+        set:(el)=>{
+            control.enableSelect.select = el.checked;
+            document.querySelector(".vertical").style.userSelect = el.checked?"text":"none";
+            storage.GSave("textSelect",`${el.checked}`);
+        }
+    }
+    ,
     swapitems: (num) => {
         let list = storage.GGet("list");
         let check = storage.GGet("checkState");
@@ -497,6 +505,7 @@ let settings = {
         let sizeEl = document.querySelector("#fontsize");
         let fontEl = document.querySelector("#font");
         let swap = document.querySelector("#enableSwap");
+        let selectText = document.querySelector("#selectText");
         let html = document.querySelector("html").style;
         if (!storage.GGet("font")) {
             settings.apply();
@@ -512,6 +521,9 @@ let settings = {
             fontEl.value = font;
             control.enableTriple = storage.GGet("swap").join('')=="true"?true:false;
             swap.checked = control.enableTriple;
+            selectText.checked = storage.GGet("textSelect").join('')=="true"?true:false;;
+            control.enableSelect.set(selectText);
+            
         }
     }
 
