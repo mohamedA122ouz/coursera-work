@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     font-size: 16pt;
+    user-select: none;
 }
 
 ::-webkit-scrollbar{
@@ -34,7 +35,12 @@ body {
     overflow-x: hidden;
 
 }
-
+.select{
+    user-select: text;
+}
+.noselect{
+    user-select: none;
+}
 .checkbox {
     width: 2rem;
     height: 2rem;

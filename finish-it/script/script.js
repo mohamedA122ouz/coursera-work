@@ -122,7 +122,7 @@ let panel = {
     controls: {
         litralList: false,
         literalClick: (obj) => {
-            if(control.editedItem.index === -1){
+            if (control.editedItem.index === -1) {
                 if (panel.controls.litralList) {
                     obj.setAttribute("class", "deactivate");
                     panel.controls.litralList = false;
@@ -131,8 +131,8 @@ let panel = {
                     obj.setAttribute("class", "activate");
                 }
             }
-            else{
-                control.showAlert("sorry can not use this property while editing an item!",null,"control.hideAlert()","OK"," ")
+            else {
+                control.showAlert("sorry can not use this property while editing an item!", null, "control.hideAlert()", "OK", " ")
             }
         },
     }
@@ -162,6 +162,9 @@ let panel = {
     },
     //hide edit list panel
     hide: () => {
+        control.editedItem.index = -1;
+        control.editedItem.text = null;
+        control.isitadd = false;
         panel.hidden = true;
         panel.container.style.display = "none";
     },
@@ -270,7 +273,7 @@ let control = {
             if (control.listPro[i]) {
                 item +=
                     `<li class="vertical">${i + 1}-&nbsp;
-                    <div class = "olLi" id="s${i}" onmousedown ="control.swapHandler(this.parentElement,${i})" >
+                    <div class = "olLi ${control.enableSelect.select?"select":"noselect"}" id="s${i}" onmousedown ="control.swapHandler(this.parentElement,${i})" >
                     ${control.listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
                     </div>
                     <div class="alignment"></div>
@@ -354,15 +357,18 @@ let control = {
         control.deleteItemIndex = i;
     }
     , delItem: () => {
-        if(control.targetnum === null){
+        if (control.targetnum === null) {
             storage.del(control.deleteItemIndex);
             console.log(localStorage.getItem("list"));
             control.unblurElseWhere();
             control.hideAlert();
             control.deleteItemIndex = null;
+            control.editedItem.index = -1
+            control.editedItem.text = null;
+
         }
-        else{
-            control.showAlert("sorry cannot delete target as it is in swap process!",null,"control.hideAlert()","OK"," ");
+        else {
+            control.showAlert("sorry cannot delete target as it is in swap process!", null, "control.hideAlert()", "OK", " ");
         }
     }
     ,
@@ -379,9 +385,9 @@ let control = {
     target: null,
     targetnum: null,
     swapHandler: (el, num) => {
-        if(control.enableTriple){
+        if (control.enableTriple) {
             if (control.lastel === null)
-            control.lastel = el;
+                control.lastel = el;
             else if (control.lastel !== el) {
                 control.lastel.removeAttribute("style");
                 if (control.target) {
@@ -392,7 +398,7 @@ let control = {
             }
             else {
                 if (control.lastel === el)
-                control.swapCounter++;
+                    control.swapCounter++;
                 if (control.swapCounter === 2) {
                     //console.log("worked");
                     el.style.backgroundColor = "#5ebd68";
@@ -408,22 +414,27 @@ let control = {
                 }
             }
         }
-        else if(control.lastel){
-            if(control.lastel.getAttribute("style"))
-            control.lastel.removeAttribute("style");
+        else if (control.lastel) {
+            if (control.lastel.getAttribute("style"))
+                control.lastel.removeAttribute("style");
             control.targetnum = null;
         }
     }
     ,
-    enableTriple:false
+    enableTriple: false
     ,
-    enableSelect:{select:false,
-        set:(el)=>{
+    enableSelect: {
+        select: false,
+        set: (el) => {
             control.enableSelect.select = el.checked;
-            document.querySelectorAll("ol").forEach(ve=>{
-                ve.style.userSelect = el.checked?"text":"none"; 
-            });
-            storage.GSave("textSelect",`${el.checked}`);
+            document.querySelectorAll(".olLi").forEach(
+                (ve)=>{
+                    let check = el.checked ? "select" : "noselect";
+                    let check2 = el.checked ? "noselect" : "select";
+                    ve.classList.replace(check2,check);
+                }
+            );
+            storage.GSave("textSelect", `${el.checked}`);
         }
     }
     ,
@@ -445,10 +456,11 @@ let control = {
     },
     start: (alert) => {
         if (storage.GGet("list")) {
+            control.isitadd = false;
             control.showAlert('You are about replacing all items in the list !', false, 'control.savebutton()', 'Ok', 'Cancel');
         }
         else
-        control.savebutton();
+            control.savebutton();
     },
 };
 let settings = {
@@ -499,7 +511,7 @@ let settings = {
         }
         html.fontSize = size;
         settings.hide();
-        storage.GSave("swap",control.enableTriple);
+        storage.GSave("swap", control.enableTriple);
         storage.GSave("font", font);
         storage.GSave("fontSize", size);
     }
@@ -521,27 +533,26 @@ let settings = {
             html.fontSize = size;
             sizeEl.value = size.replace("pt", "");
             fontEl.value = font;
-            control.enableTriple = storage.GGet("swap").join('')=="true"?true:false;
+            control.enableTriple = storage.GGet("swap").join('') == "true" ? true : false;
             swap.checked = control.enableTriple;
-            selectText.checked = storage.GGet("textSelect").join('')=="true"?true:false;;
+            selectText.checked = storage.GGet("textSelect").join('') == "true" ? true : false;;
             control.enableSelect.set(selectText);
-            
+
         }
     }
 
 };
-function showinfo(){
+function showinfo() {
     let info = document.querySelector(".info");
     info.click();
 }
 let notFirstOpen = localStorage.getItem("firstOpen");
-if(notFirstOpen)
+if (notFirstOpen)
     control.additem("restore");
-else
-    {
-        control.showAlert("Welcon to finish it website!",null,"showinfo()","Show Info","don't show info");
-        localStorage.setItem("firstOpen","true");
-    }
+else {
+    control.showAlert("Welcon to finish it website!", null, "showinfo()", "Show Info", "don't show info");
+    localStorage.setItem("firstOpen", "true");
+}
 //you can restore you old work
 (function notifyme() {
     if (Notification.permission == "granted" && localStorage.getItem("notification") != "false") {
