@@ -420,7 +420,9 @@ let control = {
     enableSelect:{select:false,
         set:(el)=>{
             control.enableSelect.select = el.checked;
-            document.querySelector(".vertical").style.userSelect = el.checked?"text":"none";
+            document.querySelectorAll("ol").forEach(ve=>{
+                ve.style.userSelect = el.checked?"text":"none"; 
+            });
             storage.GSave("textSelect",`${el.checked}`);
         }
     }
