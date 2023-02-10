@@ -2,44 +2,55 @@
 var allresponse = { index: 1 };
 var mainArea = document.querySelector('.content');
 var mainArea1 = document.querySelector('.content').innerHTML;
-const defaultValues = [4, 3.67, 3.33, 3, 2.67, 2.33, 2];
-let [A, Am, Bp, B, Cp, C, D] = [];
-if(!localStorage.gValues)
-[A, Am, Bp, B, Bm, Cp, C, D] = defaultValues
-function restoreValues(){
-    if(localStorage.getItem("lastGPA")){
+const defaultValues = [4, 3.67, 3.33, 3, 2.67, 2.33, 2, 0, 0];
+let [A, Am, Bp, B, Cp, C, D, K, OK] = [];
+if (!localStorage.gValues)
+    [A, Am, Bp, B, Cp, C, D, K, OK] = defaultValues;
+document.addEventListener("keydown",
+    event => {
+        if (event.key == "Enter"){
+            document.querySelector(".calc").click()
+            window.scrollTo({
+                top:0,
+                scrollBehavior:"smooth",
+            })
+        }
+    }
+)
+function restoreValues() {
+    if (localStorage.getItem("lastGPA")) {
         document.querySelector('.ans').textContent = localStorage.getItem("lastGPA");
     }
     let gradesFiled = document.querySelectorAll(".grade");
-    if(localStorage.getItem("gValues")){
+    if (localStorage.getItem("gValues")) {
         let oldValues = localStorage.getItem("gValues").split(',');
         gradesFiled.forEach(
-            (el,i)=>{
+            (el, i) => {
                 el.value = parseFloat(oldValues[i]);
             }
         );
-        let oldV = localStorage.getItem("gValues").split(',').map(el=>{
+        let oldV = localStorage.getItem("gValues").split(',').map(el => {
             return parseFloat(el);
         });
-        [A, Am, Bp, B, Cp, C, D] = oldV;
+        [A, Am, Bp, B, Cp, C, D, K, OK] = oldV;
     }
-    else{
+    else {
         gradesFiled.forEach(
-            (el,i)=>{
+            (el, i) => {
                 el.value = defaultValues[i];
             }
         );
     }
 };
-function clearOldValuesAndRestoreDefault(){
+function clearOldValuesAndRestoreDefault() {
     localStorage.removeItem("gValues");
     resetDefaultValues();
     restoreValues();
     calc();
 }
 // console.log(mainArea);
-function resetDefaultValues(){
-    [A, Am, Bp, B, Bm, Cp, C, D] = defaultValues;
+function resetDefaultValues() {
+    [A, Am, Bp, B, Cp, C, D, K, OK] = defaultValues;
 }
 // get cum GPA info and edite it
 function getcum() {
@@ -54,20 +65,20 @@ function replace() {
     restoreValues();
 }
 //set grades
-function setGrades(){
+function setGrades() {
     let newValues = [];
     let gradesFiled = document.querySelectorAll(".grade");
     gradesFiled.forEach(
-        (el,i)=>{
-            if(!isNaN(parseInt(el.value)))
-            newValues.push(parseFloat(el.value));
-            else{
+        (el, i) => {
+            if (!isNaN(parseInt(el.value)))
+                newValues.push(parseFloat(el.value));
+            else {
                 newValues.push(defaultValues[i]);
             }
         }
     );
-    localStorage.setItem("gValues",newValues);
-    [A, Am, Bp, B, Bm, Cp, C, D]  = newValues;
+    localStorage.setItem("gValues", newValues);
+    [A, Am, Bp, B, Cp, C, D, K, OK] = newValues;
     calc();
 }
 function addatcum() {
@@ -90,9 +101,9 @@ function addatcum() {
 }
 function ifString(value) {
     if (isNaN(parseInt(value))) {
-        // A,Am,Bp,B,Bm,Cp,C,D
+        // A,Am,Bp,B,Cp,C,D
         value = value.toUpperCase();
-        return value === "A" ? A : value === "A-" ? Am : value === "B+" ? Bp : value === "B" ? B : value === "C+" ? Cp : value === "C" ? C : value === "D" ? D : 0;
+        return value === "A" ? A : value === "A-" ? Am : value === "B+" ? Bp : value === "B" ? B : value === "C+" ? Cp : value === "C" ? C : value === "D" ? D : value === "K" ? K : value === "OK" ? OK : 0;
     }
     else {
         return value;
@@ -114,8 +125,8 @@ function calc() {
     if (tHr == 0)
         tHr = 1;
     // console.log(top / tHr);
-    document.querySelector('.ans').textContent = (top / tHr);
-    localStorage.setItem("lastGPA",(top/tHr));
+    document.querySelector('.ans').textContent = (top / tHr).toFixed(4);
+    localStorage.setItem("lastGPA", (top / tHr).toFixed(4));
 }
 ///back home///////////////////////////////////////////////////////////
 function home() {
@@ -138,9 +149,9 @@ function ajax(place) {
     }
 }
 ////scrolltoBottom
-function scrollToBottom(){
+function scrollToBottom() {
     let rootEl = document.querySelector(".root");
     rootEl.style.scrollBehavior = "smooth";
     rootEl.scrollTop = rootEl.scrollHeight;
-    
+
 }

@@ -550,7 +550,7 @@ let notFirstOpen = localStorage.getItem("firstOpen");
 if (notFirstOpen)
     control.additem("restore");
 else {
-    control.showAlert("Welcon to finish it website!", null, "showinfo()", "Show Info", "don't show info");
+    control.showAlert("Welcome to finish it website! <br>Notice Select content is disaple by default and you can enable it from the settings!", null, "showinfo()", "Show Info", "don't show info");
     localStorage.setItem("firstOpen", "true");
 }
 //you can restore you old work
