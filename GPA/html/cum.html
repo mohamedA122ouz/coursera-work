@@ -1,29 +1,93 @@
 <!-- info -->
 <div class="row">
     <h2 style="text-decoration: underline; " class="col-6 addmargin">Cumulative GPA:</h2>
-    <div style="border: 2px solid black; padding: auto; text-align: center;"class="col-6 addmargin ans">0</div>
+    <div style="border: 2px solid black; padding: auto; text-align: center;" class="col-6 addmargin ans">0</div>
 </div>
 <div class="row">
     <button class="col-1 addmargin col-md-1 col-ms-6 col-xs-6 bt" onclick="calc()">calc</button>
 </div>
 <!-- table -->
-<div class="row col-md-5 col-sm-12 col-xs-12">
+<div class="root scroll">
+    <div class="row col-md-5 col-sm-12 col-xs-12">
+        <table>
+            <tr>
+                <th>GPA #{{num}}</th>
+                <th>total Hours For GPA #{{num}}</th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="g1" placeholder="0">
+                </td>
+                <td>
+                    <input type="text" id="h1" placeholder="0">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row settings">
+    <button class="add col-1 justify-content-end" onclick="addatcum()">+</button>
+</div>
+<div class="fixed">
     <table>
         <tr>
-            <th>GPA #{{num}}</th>
-            <th>total Hours For GPA #{{num}}</th>
+            <td>
+                &nbsp;A&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
+            </td>
         </tr>
         <tr>
             <td>
-                <input type="text" pattern="^[0-9]$"id="g1" placeholder="0">
+                &nbsp;A-&nbsp;
             </td>
             <td>
-                <input type="text" id="h1" placeholder="0">
+                <input type="text" class="grade" placeholder="0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;B+&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;B&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;C+&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;C&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;D&nbsp;
+            </td>
+            <td>
+                <input type="text" class="grade" placeholder="0">
             </td>
         </tr>
     </table>
-</div>
-<div class="root"></div>
-<div class="row">
-    <button class="add col-1 justify-content-end" onclick="addatcum()">+</button>
+    <button class="changeGrades" onclick="setGrades()">apply</button>
+    <button class="changeGrades" onclick="clearOldValuesAndRestoreDefault()">reset default</button>
+    <div class="applyMargin"></div>
 </div>
