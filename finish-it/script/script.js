@@ -332,6 +332,7 @@ let control = {
         control.editedItem.text = storage.GGet("list")[i];
         control.editedItem.index = i;
         //console.log(i);
+        panel.controls.litralList = false;
         control.isitadd = true;
         panel.build();
         panel.getself().innerHTML = control.editedItem.text;
