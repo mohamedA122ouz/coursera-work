@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar">
+    <head>
+        <style>/*will be deleted soon*/
+            div{border: 0.125px solid blue;}
+            /*******************************/
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Changa:wght@500&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500&family=Fredoka+One&family=Saira+Condensed:wght@100&display=swap');
+            /*head properties and buttons*/
+            #tools
+            {
+                margin: 0px;
+                padding:0px;
+                display:flex;
+                flex-wrap: wrap;
+                width: auto;
+                height: 50px;
+                border:1px solid white;
+                
+            }
+            
+            .head
+            {
+                padding: 0px;
+                margin: 0px;
+                border: .5px solid blue;
+                background-color: rgb(42,42,42);
+                width: 100%;
+                min-width: 700px;
+            }
+            .stick
+            {
+                position:sticky;
+                top: 0px;
+                padding: 0px;
+                margin: 0px;
+                grid-area:stick;
+                height: 100px;
+                width: 100%;
+                background-color: rgb(28,28,28);
+                min-width: 700px;
+                z-index: 2;
+            }
+            .search
+            {
+                float:right;
+                padding:0px;
+                margin: 25px;
+                height: 40px;
+                width: 150px;
+                border-radius: 20px;
+                background-color: rgb(42,42,42);
+                border:solid rgb(42,42,42);
+            }
+            
+            
+            /*working for one case in head*/
+            .white
+            {
+                margin-top: 18px;
+                font-size: 9px;
+                font-family: 'Open Sans','Mada',Georgia, 'Times New Roman', Times, serif;
+                color: rgb(255,255,255);
+                text-align: center;
+                padding: 0px;
+            }
+            #bt1h
+            {
+                flex-wrap: wrap;
+                margin: 0px;
+                padding: 0px;
+                height: 40%;
+                width: 128px;
+                float: right;
+                border-radius:0px;
+                border:0px;
+                background-color:rgb(0,120,242) ;
+                word-spacing: 2px;
+                
+            }
+            .icon
+            {
+                height: 40px;
+                width: 31px;
+                margin: 7px;
+                opacity: 87%;
+                margin-left: 10px;
+            }
+            #s_p
+            {
+             float:right;
+             
+            }
+            #searchicon
+            {
+                float:right;
+                height: 58%;
+                width: 15%;
+                margin: 5px;
+            }
+            #space
+            {
+                width: 100%;
+                height:auto;
+                float:right;
+            }
+            /************/
+            
+            /*buying area settings and properties*/
+            .buyarea
+            {
+                display: flex;
+                position: sticky;
+                flex-wrap: wrap;
+                float:right;
+                width: 300px;
+                height: 600px;
+                justify-content: center;
+                float: left;
+                top: 100px;
+                margin-left: 50px;
+            }
+            #gtaicon
+            {
+                width: 150px;
+                height:150px;
+                margin: 10px;
+            }
+            
+            /*details area settings and properties*/
+            .details
+            {
+             float:right;
+             width: 74%;
+            }
+            #leftspace
+            {
+                width: 25%;
+            }
+            #gtaphotos
+            {
+                width: 600px;
+                height:500px;
+                
+            }
+            
+            /*general properties and container settings*/
+            body
+            {
+                height: 100%;
+                padding: 0px;
+                margin: 0px;
+                background-color: rgba(28, 28, 28);
+            }
+            p
+            {
+                margin-top: 12px;
+                font-size: 10px;
+                font-family: 'Open Sans','Mada',Georgia, 'Times New Roman', Times, serif;
+                color: rgb(163,163,163);
+                text-align: center;
+                padding: 0px;
+                font-size: 1em;
+                letter-spacing: .7px;
+            }
+            .bt
+            {
+                padding:4px;
+                margin: 2px;
+                width: 150px;
+                height: 50px;
+                border-radius: 7px;
+                border:solid white;
+            }
+            
+            .container
+            { 
+                display: grid;
+                height: 5000px;
+                grid-template-rows:151px 100%;
+                grid-gap:0px;
+                grid-row-gap: 20px ;
+                border:solid orange;
+                margin: 0;
+                
+                
+            }
+            #container2
+            {
+                margin:0px;
+                padding:0px;
+                display: flex;
+                border:2px solid yellowgreen;
+                width:100%;
+                height: 100%;
+                justify-content: center;
+            }
+            #movehelper
+            {
+                margin:0px;
+                padding:0px;
+                border:1px solid yellow;
+                width: 99.9%;
+                position: relative;
+                height: 1500px;
+            }
+            
+            </style>
+        <link rel="stylesheet" href="style.css">
+        <title>Grand Theft Auto V: Premium Edition</title>
+        <link rel="icon" href="data:image/png;base64,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">
+    </head>
+    <body> 
+        <div class="container">
+            <div class="head">
+               <a href="https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi?trackingId=e3ffcc2a867a49febcfa6dc41eec27a9" alt="download launcher"><div class="bt"id="bt1h"><p class="white">EPIC GAMES احصل علي </p></div></a>
+               <div id="tools">
+                <a href="https://www.epicgames.com/store/en-US/p/grand-theft-auto-v" target=_blank><img src="icon.png" alt="icon" class="icon"></a>
+                   <div class="bt"><p>UNREAL ENGINE</p></div>
+                   <div class="bt"></div>
+                   <div class="bt"></div>
+                   <div class="bt"></div>
+                </div>
+                <div id="movehelper">   
+                    <div class="stick">
+                        <div id ="space"></div>
+                        <div class="search"><img src="search.png" alt="search place" id="searchicon"><p id="s_p">بحث</p></div>
+                        
+                    </div>
+                    <div class="buyarea">
+                        <img src="https://cdn2.unrealengine.com/Diesel%2Fproductv2%2Fgrand-theft-auto-v%2Fhome%2FGTAV_EGS_Artwork_400x400_GameLogo-1000x1000-f6c47a98454049a5e63959f7b6f898c4fc22829c.png?h=270&resize=1&w=480"alt="gta icon" id="gtaicon">
+                        <div class="bt"></div>
+                        <div class="bt"></div>
+                        <div class="bt"></div>
+                    </div> 
+                </div>
+            </div>
+            <div id="container2">
+               <div id="leftspace"></div>
+                <div class="details">
+                    <p>Grand Theft Auto V
+                    </p>
+                   <img src="https://cdn2.unrealengine.com/Diesel%2Fproductv2%2Fgrand-theft-auto-v%2Fhome%2FGTAV_EGS_Artwork_1920x1080_Hero-Carousel_V06-1920x1080-1503e4b1320d5652dd4f57466c8bcb79424b3fc0.jpg" alt="gta icon photos" id="gtaphotos">
+                </div>
+
+            </div>
+            
+           
+
+          
+        </div>
+    </body>
+    </html>

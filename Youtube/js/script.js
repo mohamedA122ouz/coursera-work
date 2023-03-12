@@ -161,7 +161,7 @@ function showloading() {
 }
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
 function getdata(dataSource, type, route) {
-    console.log(route);
+    // console.log(route);
     var request = new XMLHttpRequest;
     request.open("GET", dataSource, true);
     request.send(null);
@@ -176,10 +176,10 @@ function getResponse(request, type, route) {
             if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
             else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
             else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
-            console.log(responseText);
+            //console.log(responseText);
             var data = window.data;
             dtOutput(responseText, type, route);
-            console.log(request);
+            //console.log(request);
             return request;
         }
         if(route == "mainroute"){
@@ -195,6 +195,10 @@ function getResponse(request, type, route) {
             else{
                 if(request.status != 0)
                 document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Some thing Went Wrong "+"</h2>";
+                else if(request.status == 200)
+                {
+                    document.querySelector("#videosContainer").innerHTML = "<h2>NO Error on connection site May be broken refresh please!</h2>";
+                }
                 else
                 document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected -</h2>";
             }
@@ -232,7 +236,7 @@ function dtOutput(data, type, route) {
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
             // console.log(youtubeDt.videoTitle[i]);
         }
-        console.log(route);
+        //console.log(route);
         getdata("html/search.html", "html", "mainroute");
     }
     else if (type == "html" && route == "mainroute") {
@@ -248,7 +252,7 @@ function dtOutput(data, type, route) {
             else {
                 processDuration("both");
             }
-            console.log(youtubeDt.duration);
+            //console.log(youtubeDt.duration);
         }
 
     }
@@ -258,58 +262,31 @@ function processDuration(isitbuild) {
         for (let i in youtubeDt.duration) {
             var something = youtubeDt.duration[i];
             something = something.replace("PT", "");
-            something = something.replace("H", ":");
-            something = something.replace("M", ":");
-            something = something.replace("S", ":");
-            let k = something.split(':');
-            if(parseInt(k[0])<10)
-            k[0] = "0" + k[0];
-            if(parseInt(k[1])<10)
-            k[1] = "0" + k[1];
-            if(parseInt(k[2])<10)
-            k[2] = "0" + k[2];
-            youtubeDt.duration[i] = k[0]+":"+k[1]+":"+k[2];
-            console.log(something);
+            something = something.replace("H", "_");
+            something = something.replace("M", "_");
+            something = something.replace("S", "_");
+            let time = something;
+            time = time.split('_');
+            time = time.filter(el=>el);
+            time = time.map(el => {
+                return (+el<10?`0${el}`:el);
+            });
+            time = time.join(':');
+            youtubeDt.duration[i] = time;
+            //console.log(time);
         }
     }
-    // if (isitbuild == "build" || isitbuild == "both") {
-    //     for (let i in youtubeDt.duration) {
-    //         var something = youtubeDt.duration[i];
-    //         something = something.replace("PT", "");
-    //         something = something.replace("H", ":");
-    //         something = something.replace("M", ":");
-    //         something = something.replace("S", ":");
-    //         let k = something.split(':');
-    //         if(parseInt(k[0])<10)
-    //         k[0] = "0" + k[0];
-    //         if(parseInt(k[1])<10)
-    //         k[1] = "0" + k[1];
-    //         if(parseInt(k[2])<10)
-    //         k[2] = "0" + k[2];
-    //         let fulltime = "";
-    //         for(let i in k){
-    //             if(k[i]!="" && k[i]!=undefined){
-    //             fulltime += k[i]
-    //             if(i!=2)
-    //             fulltime +=':';
-    //             }
-    //         }     
-    //         youtubeDt.duration[i] = fulltime;
-    //         console.log(something);
-    //         console.log(fulltime);
-    //     }
-    // }
     if (isitbuild == "show" || isitbuild == "both") {
         for (var i in atGlobal.vArr) {
             var ii = parseInt(i) + 1;
             let vDuration = document.querySelector(".v" + atGlobal.vArr[i]);
-            console.log(atGlobal.vArr[i]);
-            console.log(i);
+            //console.log(atGlobal.vArr[i]);
+            //console.log(i);
             vDuration.textContent = youtubeDt.duration[ii];
             
         }
     }
-    console.log(youtubeDt.duration);
+    //console.log(youtubeDt.duration);
 }
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
 function builder() {
@@ -317,11 +294,11 @@ function builder() {
         var listindex = 0;
         var totalHtml = "";
         var htmlitself = html.dt;
-        for (var i = 0; i < 5; i++) {
+        for (let i in youtubeDt.videoTitle) {
             var holder = htmlitself;
             holder = holder.replace(new RegExp("{{videoTitle}}", "g"), youtubeDt.videoTitle[i]);
             if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined)//channel
-                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "channel"');
+                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i]+ '" class = "channel"');
             else if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] != undefined) {//playlist
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class="videoIcon"');
                 atGlobal.list[listindex] = i
@@ -459,7 +436,7 @@ function download(url, i) {
     // console.log(mksure(url));
     // window.location.href = 'http://192.168.1.2:4000/download?URL=' + url;
     let a = document.createElement('a');
-    console.log(atGlobal.IP() + url);
+    //console.log(atGlobal.IP() + url);
     a.href = atGlobal.IP() + url;
     a.target = '_blanck';
     a.click();
@@ -470,7 +447,7 @@ function download(url, i) {
 //DarkMode Control System
 function DMCS(where) {
     //check the last session darkmode if on or of
-    console.log(localStorage.D);
+    //console.log(localStorage.D);
     if (localStorage.D == undefined)
         localStorage.setItem("D", false);
     if (where == 0) {

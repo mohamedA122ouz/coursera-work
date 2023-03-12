@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="icon.png">
+        <style>
+            body
+{
+    background-image: url("background.jpg");
+    background-size: auto;
+}
+.sheet
+{
+    position:absolute;
+    border-radius: 40px;
+    height:550px;
+    width:700px;
+    left:50%;
+    top:53%;
+    background-color: rgb(32,32,32);
+    transform: translate(-50%,-50%);
+}
+.profile
+{
+    position: relative;
+    border-radius: 50%;
+    background-color: rgb(64,64,64);
+    height: 150px;
+    width:150px;
+    left:50%;
+    transform:translate(-50%,-50%);
+    top:20%;
+}
+#manhead
+{
+    position: relative;
+    border-radius: 50%;
+    background-color: rgb(84,84,84);
+    height: 40px;
+    width:40px;
+    left:50%;
+    transform:translate(-50%,-50%);
+    top:40%;
+}
+#manbody
+{
+    position: relative;
+    border-radius: 50%;
+    background-color: transparent;
+    height: 70px;
+    width:70px;
+    left:50%;
+    transform:translate(-50%,-50%);
+    top:60%;
+    box-shadow: 0 -8px 0 0 rgb(84,84,84);
+}
+#manbody2
+{
+    position: relative;
+    background-color: rgb(64,64,64);
+    height: 10px;
+    width:75px;
+    left:50%;
+    transform:translate(-50%,-50%);
+    top:8%;
+}
+.username
+{
+    
+    border:3px solid rgb(157,66,17);
+    position:relative;
+    background-color: transparent;
+    color:gainsboro;
+    width:525px;
+    top:20%;
+    left:50%;
+    border-left:8px solid transparent;
+    border-top:8px solid transparent;
+    border-right:8px solid transparent;
+    transform:translate(-50%,-50%);
+    height:50px;
+    outline: none;
+    font-size: large;
+    transition: 200ms;
+}
+.username:focus
+{
+    border:3px solid  rgb(20, 117, 196);
+    position:relative;
+    background-color: transparent;
+    color:gainsboro;
+    width:525px;
+    top:20%;
+    left:50%;
+    border-left:8px solid transparent;
+    border-top:8px solid transparent;
+    border-right:8px solid transparent;
+    transform:translate(-50%,-50%);
+    height:50px;
+    outline: none;
+    transition: 200ms;
+    font-size: large;
+}
+#textuser
+{
+    position: relative;
+    color:gainsboro;
+    font-size: large;
+    letter-spacing: 1.5px;
+    left:63%;
+    transform: translate(-50%,-50%);
+    cursor: default;
+}
+.userpassword
+{
+    
+    border:3px solid rgb(157,66,17);
+    position:relative;
+    background-color: transparent;
+    color:gainsboro;
+    width:525px;
+    top:20%;
+    left:50%;
+    border-left:8px solid transparent;
+    border-top:8px solid transparent;
+    border-right:8px solid transparent;
+    transform:translate(-50%,-50%);
+    height:50px;
+    outline: none;
+    font-size: large;
+    transition: 200ms;
+}
+.userpassword:focus
+{
+    border:3px solid  rgb(20, 117, 196);
+    position:relative;
+    background-color: transparent;
+    color:gainsboro;
+    width:525px;
+    top:20%;
+    left:50%;
+    border-left:8px solid transparent;
+    border-top:8px solid transparent;
+    border-right:8px solid transparent;
+    transform:translate(-50%,-50%);
+    height:50px;
+    outline: none;
+    transition: 200ms;
+    font-size: large;
+}
+#textpassword
+{
+    position: relative;
+    color:gainsboro;
+    font-size: large;
+    letter-spacing: 1.5px;
+    left:63%;
+    transform: translate(-50%,-50%);
+    cursor: default;
+}
+.button
+{
+    position: relative;
+    border-radius: 50px;
+    width:250px;
+    height: 70px;
+    left:50%;
+    top:20%;
+    transform: translate(-50%,-50%);
+    color: gainsboro;
+    outline: none;
+    background-color: rgb(32,32,32);
+    font-size: large;
+    letter-spacing: 1.5px;
+    border:5px solid rgb(157,66,17);
+    transition: .2s;
+}
+.button:focus
+{
+    position: relative;
+    border-radius: 50px;
+    width:250px;
+    height: 70px;
+    left:50%;
+    top:20%;
+    transform: translate(-50%,-50%);
+    color: gainsboro;
+    outline: none;
+    background-color: rgb(32,32,32);
+    font-size: large;
+    letter-spacing: 1.5px;
+    border:5px solid rgb(23, 145, 12);
+    transition: .2s;
+}
+        </style>
+
+        <title>sign-in</title>
+    </head>
+    <body>
+        <div class="sheet">
+            <div class="profile">
+                <div id="manhead"></div>
+                <div id="manbody"></div>
+                <div id="manbody2"></div>
+            </div>
+            <input type="text" class="username"><p id="textuser">username</p>
+            <input type="password" class="userpassword"><p id="textpassword">password</p>
+            <input type="submit" value="login" class="button"></button>
+        </div>
+    </body>       
