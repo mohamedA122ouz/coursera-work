@@ -292,8 +292,8 @@ h2 {
     width: 30%;
     height: max-content;
     margin: auto;
-    border-radius:20px;
-    padding:20px;
+    border-radius: 20px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -405,20 +405,22 @@ li {
         display: block;
         margin-left: -10px;
     }
+
     #projects>div {
         width: 100%;
         height: max-content;
         display: flex;
         flex-direction: column;
     }
+
     .infoCard {
-        width: 70%;
+        width: 100%;
         height: max-content;
         margin: auto;
         margin-top: 20px;
-        border-radius:20px;
-        padding:20px;
+        border-radius: 20px;
+        padding: 20px;
         background-color: rgba(255, 255, 255, 0.1);
     }
-    
+
 }
