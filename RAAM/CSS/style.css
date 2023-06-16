@@ -1,0 +1,424 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+.app {
+    width: 100%;
+    height: max-content
+}
+
+#load {
+    height: 5px;
+    width: 100%;
+    background-color: rgb(8, 135, 194);
+}
+
+body {
+    min-width: 280px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    height: 150%;
+    font-size: 16pt;
+    background-image: url("../photos/wallpaperflare.com_wallpaper\ \(7\).jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+    /* overflow-y: hidden; */
+}
+
+#container {
+    margin: auto;
+    /* height: 40000px; */
+    max-width: 1600px;
+    /* overflow-y: scroll; */
+    /* scroll-snap-type: y mandatory; */
+}
+
+header {
+    width: 100%;
+    height: max-content;
+    position: sticky;
+    background-color: black;
+    top: 0px;
+    z-index: 10;
+}
+
+.nav>ul {
+    list-style: none;
+    display: flex;
+}
+
+.nav {
+    display: flex;
+    color: white;
+    flex-direction: row;
+}
+
+.align>div {
+    width: max-content;
+    padding-top: 15px;
+}
+
+.nav>ul>li>a,
+.align>div>a {
+    color: white;
+    padding: 10px;
+    transition: 250ms;
+}
+
+.align {
+    display: flex;
+    flex-direction: row;
+}
+
+.inneralign {
+    display: none;
+}
+
+.nav>span {
+    margin-top: 15px;
+}
+
+.nav>ul>li,
+.nav>span>a {
+    padding: 15px;
+    transition: 250ms;
+}
+
+.nav>ul>li:hover {
+    background-color: rgba(48, 47, 47, 0.877);
+    transition: 250ms;
+}
+
+#me {
+    width: 250px;
+    height: 250px;
+    margin: auto;
+    margin-top: 25%;
+    transform: translateY(-50%);
+}
+
+#me>img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin: auto;
+    user-select: none;
+}
+
+#info {
+    width: 80%;
+    padding: 50px;
+    border-radius: 50px;
+}
+
+.info {
+    box-shadow: 0 0 70px -20px black;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card {
+    width: 40%;
+    height: max-content;
+}
+
+#me+div {
+    width: max-content;
+    margin: auto;
+    margin-top: 5px;
+    padding: 15px;
+    font-size: 1.5rem;
+    transform: translateY(-50%);
+}
+
+#toggel {
+    display: none;
+}
+
+.button {
+    border: black 2px solid;
+    width: max-content;
+    background-image: linear-gradient(45deg, rgb(255, 122, 155) 25%, rgb(8, 135, 194)80%);
+    color: white;
+    border-radius: 40px;
+    padding: 10px;
+    margin: auto;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 50px -12px rgb(5, 226, 255);
+}
+
+section:nth-child(1) {
+    height: 150vh;
+    width: 100%;
+}
+
+section {
+    scroll-snap-align: start;
+}
+
+section>* {
+    position: sticky;
+    top: 0;
+    height: 90vh;
+}
+
+#info>div>p {
+    position: relative;
+    left: -1660px;
+}
+
+.welcome>div {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.welcome>div>p {
+    font-size: small;
+}
+
+.welcome>div>p,
+.welcome>div>h1 {
+    width: max-content;
+    margin: auto;
+}
+
+.welcome {
+    /* height: 100%; */
+    width: 100%;
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 2rem;
+}
+
+.animation {
+    animation: move 500ms ease-in forwards;
+}
+
+
+footer {
+    width: 100%;
+    height: 500px;
+    background-color: black;
+    display: flex;
+    vertical-align: middle;
+    flex-direction: column;
+}
+
+footer>div {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+footer>span {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+h2 {
+    font-size: 2rem;
+    margin: auto;
+    width: max-content;
+}
+
+.cIcon {
+    width: 50px;
+    height: 50px;
+    /* background-image: linear-gradient(45deg, rgb(255, 122, 155) 25%, rgb(8, 135, 194)80%); */
+    border-radius: 50%;
+    transition: 250ms;
+    margin: 10px;
+    border: 0.1rem solid rgb(8, 135, 194);
+}
+
+.cIcon:hover {
+    transition: 250ms;
+    border-radius: 50%;
+    box-shadow: 0 0 35px 0px rgb(8, 135, 194);
+}
+
+.twitter {
+    padding: 10px;
+}
+
+@media (prefers-reduced-motion:reduce) {
+    .animation {
+        animation: move 1ms ease-in forwards;
+    }
+}
+
+#projects {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    padding: 50px;
+    flex-direction: column;
+}
+
+#projects>div {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: row;
+}
+
+.infoCard {
+    width: 30%;
+    height: max-content;
+    margin: auto;
+    border-radius:20px;
+    padding:20px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.infoCard>.cardicon {
+    width: 100%;
+}
+
+.infoCard>.cardicon>img {
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+}
+
+li {
+    cursor: pointer;
+}
+
+@keyframes move {
+    0% {
+        left: -1600px;
+    }
+
+    100% {
+        left: 0px;
+    }
+}
+
+@media (max-width:800px) {
+    .inneralign {
+        display: none;
+    }
+
+    .nav {
+        flex-direction: column;
+    }
+
+    .nav>ul {
+        flex-direction: column;
+        transition: 250ms;
+        position: absolute;
+        margin-top: 67px;
+        background-color: black;
+    }
+
+    .nav>ul>li {
+        width: 100vw;
+        background-color: black;
+    }
+
+    .collapse {
+        position: absolute;
+        transform: translateY(-400px);
+        transition: 250ms;
+        z-index: 2;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    #me+div>p {
+        width: max-content;
+        max-width: 100%;
+        margin: auto;
+        margin-left: 0;
+        padding: 15px;
+        font-size: 1rem;
+        transform: translateY(-50%);
+    }
+
+    #info {
+        padding: 0;
+        border-radius: 20px;
+        width: 100%;
+        height: max-content;
+        padding: 10px 0 10px 0;
+    }
+
+    #info>#me+div {
+        padding: 0;
+        border-radius: 20px;
+        width: 100%;
+        height: max-content;
+        padding: 10px 0 10px 0;
+    }
+
+    #me>img {
+        width: 200px;
+        height: 200px;
+    }
+
+    #me {
+
+        width: max-content;
+        height: max-content;
+        margin-top: 0;
+        transform: translateY(5%);
+    }
+
+    #me+div>p {
+        transform: translateY(0%);
+    }
+
+    #me+div {
+        transform: translateY(0%);
+    }
+
+    #toggel {
+        display: block;
+        margin-left: -10px;
+    }
+    #projects>div {
+        width: 100%;
+        height: max-content;
+        display: flex;
+        flex-direction: column;
+    }
+    .infoCard {
+        width: 70%;
+        height: max-content;
+        margin: auto;
+        margin-top: 20px;
+        border-radius:20px;
+        padding:20px;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+}

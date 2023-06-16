@@ -1,0 +1,43 @@
+#simpleCalc{
+    width: 400px;
+    /* text-align: center; */
+    border:2px solid black;
+    padding:10px
+}
+td{
+    border:solid black 1px;
+}
+table{
+    border:solid black 1px;
+}
+td[colspan]:nth-child(odd){
+    background-color: gray;
+}
+#functionForm>h1{
+    color:blue;
+    margin: auto;
+    margin-bottom: 50px;
+}
+#calc{
+    width: 100px;
+    background-color: blue;
+    color: white;
+    margin: auto;
+    cursor:pointer;
+}
+
+#functionForm{color:blue;}
+form{
+    width:400px;
+    display: flex;
+    border:1px solid black;
+    padding: 20px;
+    flex-direction: column;
+}
+#xin{
+    width: 100px;
+    margin-left: 50px;
+}
+#funcX{
+    margin-left: 50px;
+}

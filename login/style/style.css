@@ -1,0 +1,141 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("../backgrounds/city.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+form {
+    width: 400px;
+    zoom: 140%;
+    transform: 250ms;
+    display: flex;
+    border: 1px solid white;
+    padding: 20px;
+    flex-direction: column;
+    color: white;
+    z-index: 5;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    backdrop-filter: blur(7px);
+}
+
+[type="text"],
+[type="password"] {
+    background-color: transparent;
+    border: none;
+    outline: unset;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: white solid 2px;
+    transition: 150ms;
+    color: white;
+    padding-right: 18px;
+    z-index: 5;
+}
+
+[type="text"]:focus,
+[type="password"]:focus {
+    /* border-bottom: rgb(126, 58, 3) solid 2px; */
+    border-bottom: rgb(46, 161, 255) solid 2px;
+    transition: 150ms;
+}
+
+[type="text"].false,
+[type="password"].false {
+    /* border-bottom: rgb(126, 58, 3) solid 2px; */
+    border-bottom: red solid 2px;
+    transition: 150ms;
+}
+
+[type="text"].true,
+[type="password"].true {
+    /* border-bottom: rgb(126, 58, 3) solid 2px; */
+    border-bottom: green solid 2px;
+    transition: 150ms;
+}
+
+h2 {
+    text-align: center;
+}
+
+a {
+    margin-top: 10px;
+    text-align: center;
+}
+
+button {
+    height: 30px;
+    width: 150px;
+    border-radius: 50px;
+    margin: auto;
+    outline: none;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.activeFalse {
+    transition: 250ms;
+    border: 2px solid red;
+}
+
+.activeTrue {
+    transition: 250ms;
+    border: 2px solid green;
+}
+
+label {
+    position: relative;
+    bottom: -15px;
+    transition: 250ms;
+    user-select: none;
+}
+
+label.focus {
+    bottom: 0px;
+    transition: 250ms;
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+}
+
+svg {
+    position: relative;
+    bottom: -30px;
+    left: 95%;
+}
+
+@media (max-width:800px) {
+    form {
+        zoom: 90%;
+    }
+}
+
+/* #blur{
+    width:400px;
+    height:245px;
+    filter: blur(10px) opacity(0.5) brightness(90%);
+    display: flex;
+    border:1px solid white;
+    padding: 20px;
+    flex-direction: column;
+    z-index: 5;
+    background-color: rgb(199, 196, 196);
+    position: absolute;
+    left:50%;
+    border-radius: 10px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+} */

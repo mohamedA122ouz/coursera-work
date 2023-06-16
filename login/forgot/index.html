@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sheet 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="welcome"></div>
+    <div id="simpleCalc"></div>
+    <table>
+    </table>
+    <form id="functionForm">
+        <h1>F(X)</h1>
+        <img src="functionImg/Screenshot 2023-02-25 133857.png" alt="">
+        <div>
+            <label for="xin">X</label>
+            <input type="text" name="xin" id="xin">
+        </div>
+        <div>
+            <label>F(X)</label>
+            <span id="funcX"></span>
+        </div>
+        <button id="calc" onclick="calculate()" type="button">calculate</button>
+    </form>
+
+
+
+    <form>
+        <h2>Register Form</h2>
+        <h3 style="color:green;"></h3>
+        <br>
+        <div>
+            <label>Enter Your Name:</label>
+            <input type="text" oninput="regForm.name = this.value" required>
+        </div>
+        <br>
+        <div>
+            <label>Enter Your Email:</label>
+            <input type="email" required oninput="regForm.email = this.value" >
+        </div>
+        <button type="button" style="width: 150px; margin: 10px;" onclick="regForm.checkName()">Check my name</button>
+    </form>
+    <form>
+        <h2>Orderig Form</h2>
+        <br>
+        <label>Enter Your Name:</label>
+        <input type="text" oninput="order.name = this.value" id="text"required>
+        <br>
+        <label>Enter Your password:</label>
+        <input type="password" oninput="order.password = this.value" required>
+        <br>
+        <label>Enter Your Choice:</label>
+        <div>
+            <br>
+            <input type="radio" name="1" required> Samsung S23 Ultra
+            <br>
+            <input type="radio" name="1" required> Iphone 13 Pro
+            <br>
+        </div>
+        <label>Enter Quantity:</label>
+        <input type="number" value="1">
+        <br>
+        <input type="button" onclick="order.onsubmit()" value="submit order">
+    </form>
+    <script src="script.js"></script>
+</body>
+
+</html>
