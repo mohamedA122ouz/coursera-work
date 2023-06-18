@@ -1,0 +1,35 @@
+:root {
+    --buttonColor1: red;
+    --buttonColor2: green;
+    --fontColor: white;
+    --olFontColor: rgb(0, 37, 250);
+    --backColor1: #66e9f1;
+    --backColor2: #db0492;
+    --backColor3: #66e9f1;
+    --backColor4: #db0492;
+    --checkColor: white;
+    --checkBackColor: #db0492;
+}
+
+ol {
+    color: var(--olFontColor);
+}
+
+html {
+    /*                                                   X   Y      let color d    d.realColor(%||px)                   d.shadow(%||px)  else make put the other color that is not d*/
+    background-image: radial-gradient(farthest-corner at 0% 100%, var(--backColor1) 25%, var(--backColor2) 100%);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow {
+    background-color: var(--checkBackColor);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow::after {
+
+    color: var(--checkColor);
+}
+
+
+#textc {
+    color: var(--olFontColor);
+}

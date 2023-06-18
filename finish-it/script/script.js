@@ -1,14 +1,13 @@
 "use strict";
 let h1 = document.querySelector("h1");
 document.body.style.backgroundSize = `${window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight}px`;
-document.querySelector("#container").setAttribute("style", `width:${window.innerWidth}px`);
+document.querySelector("#container").setAttribute("style", `max-width:${window.innerWidth}px`);
 document.querySelector("header").setAttribute("style", `max-width:${window.innerWidth}px`);
 // window.addEventListener("resize", () => {
 //     document.body.style.backgroundSize = `${window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight}px`;
 //     document.querySelector("#container").setAttribute("style", `width:${window.innerWidth}px`);
 //     document.querySelector("header").setAttribute("style", `max-width:${window.innerWidth}px`);
 // });
-
 let list = null;
 let direction = 'ltr';
 let storage = {
@@ -28,8 +27,7 @@ let storage = {
             let value = localStorage.getItem(itemname).split(',');
             return value;
         }
-    }
-    ,
+    },
     save: (arr) => {
         if (!list) { return 0; }
         localStorage.setItem("list", arr.filter(ele => ele));
@@ -55,8 +53,7 @@ let storage = {
         localStorage.setItem("checkState", data2);
         control.additem("restore");
         return "item deleted";
-    }
-    ,
+    },
     //save whether checkbox checked or not in localstorage
     savecheck: (root) => {
         if (root === -1) {
@@ -103,9 +100,11 @@ let panel = {
     <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
     </svg></button>
     <div contenteditable = "true" tabindex="-1" id="textc" oninput="panel.text = this.innerHTML,panel.dirct(this.innerHTML[0])"></div><br>
-    <button id="clear" onclick="panel.clear()">clear</button>
-    <button id="save" onclick="panel.save()">save</button>
-    <button id="hide" onclick="panel.hide()">Hide</button>
+    <div id="panelbuttons">
+        <button id="clear" onclick="panel.clear()"><p>clear</p></button>
+        <button id="save" onclick="panel.save()"><p>save</p></button>
+        <button id="hide" onclick="panel.hide()"><p>Hide</p></button>
+    </div>
 `,
     //determine the direction for list direction and the edit panel
     dirct: (test, root) => {
@@ -135,30 +134,29 @@ let panel = {
                 control.showAlert("sorry can not use this property while editing an item!", null, "control.hideAlert()", "OK", " ")
             }
         },
-    }
-    ,
+    },
     getself: () => { return document.querySelector("#textc"); },
     self: {},
     text: null,
-    show: () => {
-        panel.container = panel.container2("#textReady");
-        panel.self = panel.getself();
-        panel.container.style.display = "block";
-        panel.hidden = false;
-        panel.self.focus();
-    }
-    ,
-    build: () => {
-        panel.text = null;
-        if (!panel.hidden) {
-            panel.text = null;
-            panel.container = panel.container2("#textReady");
-            panel.container.innerHTML = panel.structure;
-            panel.self = panel.getself();
-            panel.self.focus();
+    show: function () {
+        this.container = this.container2("#textReady");
+        this.self = this.getself();
+        this.container.style.display = "block";
+        this.hidden = false;
+        this.self.focus();
+    },
+    build: function () {
+        this.text = null;
+        if (!this.hidden) {
+            this.text = null;
+            this.controls.litralList = false;
+            this.container = this.container2("#textReady");
+            this.container.innerHTML = this.structure;
+            this.self = this.getself();
+            this.self.focus();
         }
         else
-            panel.show();
+            this.show();
     },
     //hide edit list panel
     hide: () => {
@@ -180,8 +178,7 @@ let panel = {
     },
     clear: () => {
         panel.self.innerHTML = null;
-    }
-    ,
+    },
     save: (i) => {
         if (panel.controls.litralList)
             panel.text = panel.text.replace(new RegExp('<div>', 'g'), '\\n');
@@ -213,6 +210,23 @@ let control = {
     hideOl: () => {
         control.select("ol").innerHTML = null;
     },
+    restoreTheme:function(){
+        console.log("here work");
+        try{
+            let theme = storage.GGet("themei");
+            if(theme){
+                control.selectAll("link")[4].setAttribute("href",`css/modifier${theme}.css`);
+            }else{
+                throw warn("Not thing set yet!");
+            }
+        }catch(waringOrError){
+            storage.GSave("themei","3")
+        }
+    },setTheme: function (value){
+        control.selectAll("link")[4].setAttribute("href",`css/modifier${value}.css`);
+        storage.GSave("themei",value);
+    }
+    ,
     addbutton: () => {
         if (storage.GGet("list")) {
             control.editedItem = { text: null, index: -1 };
@@ -228,11 +242,10 @@ let control = {
         control.hideOl();
         panel.build();
         control.hideAlert();
-    }
-    ,
+    },
     select: (item) => document.querySelector(`${item}`)//select item form document
     ,
-    selectAll: (items) => document.querySelector(`${items}`),
+    selectAll: (items) => document.querySelectorAll(`${items}`),
     //process input
     processData: (root) => {
         let listPro = [""];
@@ -250,9 +263,7 @@ let control = {
     processForAdd: (value) => {
         value = value.split('\\n') || value;
         storage.saveForAdd(value);
-    }
-    ,
-
+    },
     unblurElseWhere: () => {
         let header = document.querySelector("header");
         let container = document.querySelector("#container");
@@ -260,8 +271,7 @@ let control = {
         header.style.filter = "blur(0px)";
         container.style.filter = "brightness(100%)";
         container.style.filter = "blur(0px)";
-    }
-    ,
+    },
     //adding all items from edit list panel if root = -1 else it gets the element from localstorage
     additem: (root) => {
         control.listPro = control.processData(root);
@@ -272,8 +282,8 @@ let control = {
         for (let i = 0; i < control.listPro.length; i++) {
             if (control.listPro[i]) {
                 item +=
-                    `<li class="vertical">${i + 1}-&nbsp;
-                    <div class = "olLi ${control.enableSelect.select?"select":"noselect"}" id="s${i}" onmousedown ="control.swapHandler(this.parentElement,${i})" >
+                    `<li class="vertical" onmousedown="control.swapHandler2(this,${i})" ontouchstart="control.swapHandler2(this,${i})" onmouseup ="control.clearHold()" ontouchcancel ="control.clearHold()" ontouchend ="control.clearHold()">${i + 1}-&nbsp;
+                    <div class = "olLi ${control.enableSelect.select ? "select" : "noselect"}" id="s${i}" onmousedown ="control.swapHandler(this.parentElement,${i})" >
                     ${control.listPro[i].replace(new RegExp('&!comma;', 'g'), ",") || "item not specified"}
                     </div>
                     <div class="alignment"></div>
@@ -288,7 +298,10 @@ let control = {
                     <path
                         d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                 </svg></button>
+                <div class ="check">
                     <input type="checkbox" id="c${i}" class="checkbox" onclick="control.checkItem(${i})">
+                    <div class ="checkshow"></div>
+                </div>
                     </li>`;
                 letgo = false;
             }
@@ -324,10 +337,8 @@ let control = {
         document.querySelector("#addAlert").innerHTML = null;
         control.deleteItemIndex = null;
     },
-    deleteItemIndex: null
-    ,
-    editedItem: { text: null, index: -1 }
-    ,
+    deleteItemIndex: null,
+    editedItem: { text: null, index: -1 },
     edit: (i) => {
         control.editedItem.text = storage.GGet("list")[i];
         control.editedItem.index = i;
@@ -336,8 +347,7 @@ let control = {
         control.isitadd = true;
         panel.build();
         panel.getself().innerHTML = control.editedItem.text;
-    }
-    ,
+    },
     showAlert(alertContent, i = null /*index if exist*/, wantedFunction = 'control.hideAlert()', buttonTrueName, buttonFalseName) {
         let alert = ` <div id="alert">
         <div id="warning">
@@ -349,15 +359,17 @@ let control = {
             <p>${alertContent}</p>
         </div>
         <hr>
-        <button onclick='${wantedFunction}'>${buttonTrueName || "yes"}</button>
-        <button onclick='control.hideAlert()'>${buttonFalseName || "no"}</button>
+        <div id="alertbuttons">
+            <button onclick='${wantedFunction}'><p>${buttonTrueName || "yes"}</p></button>
+            <button onclick='control.hideAlert()'><p>${buttonFalseName || "no"}</p></button>
+        </div>
     </div>`;
         let alertprop = document.querySelector("#addAlert");
         alertprop.innerHTML = alert;
         control.blurElseWhere();
         control.deleteItemIndex = i;
-    }
-    , delItem: () => {
+    },
+    delItem: () => {
         if (control.targetnum === null) {
             storage.del(control.deleteItemIndex);
             console.log(localStorage.getItem("list"));
@@ -366,13 +378,11 @@ let control = {
             control.deleteItemIndex = null;
             control.editedItem.index = -1
             control.editedItem.text = null;
-
         }
         else {
             control.showAlert("sorry cannot delete target as it is in swap process!", null, "control.hideAlert()", "OK", " ");
         }
-    }
-    ,
+    },
     blurElseWhere: () => {
         let header = document.querySelector("header");
         let container = document.querySelector("#container");
@@ -398,21 +408,7 @@ let control = {
                 control.lastel = null;
             }
             else {
-                if (control.lastel === el)
-                    control.swapCounter++;
-                if (control.swapCounter === 2) {
-                    //console.log("worked");
-                    el.style.backgroundColor = "#5ebd68";
-                    control.target = el;//target elemrnt is the element which became dark gray
-                    control.targetnum = num;
-                }
-                if (control.swapCounter === 3) {
-                    ////console.log("here");
-                    control.swapCounter = 0;
-                    control.lastel.removeAttribute("style");
-                    control.target = null;
-                    control.targetnum = null;
-                }
+                control.selectSwapItem(el, num);
             }
         }
         else if (control.lastel) {
@@ -420,26 +416,90 @@ let control = {
                 control.lastel.removeAttribute("style");
             control.targetnum = null;
         }
-    }
-    ,
-    enableTriple: false
-    ,
+    },
+    //select in memory and set styles for selected element
+    selectSwapItem: function (el, num) {
+        if (this.lastel === el)
+            this.swapCounter++;
+        if (this.swapCounter === 2) {
+            //console.log("worked");
+            el.style.backgroundColor = "#5ebd68";
+            this.target = el;//target elemrnt is the element which became dark gray
+            this.targetnum = num;
+        }
+        if (this.swapCounter === 3) {
+            ////console.log("here");
+            this.swapCounter = 0;
+            this.lastel.removeAttribute("style");
+            this.target = null;
+            this.targetnum = null;
+        }
+    },
+    IntervalID: 0,
+    holdercount: 0,
+    isItTouchScreen: false,
+    //hold function to get hold when user hold an li//for touch screens only
+    swapHandler2: function (el, num) {
+        if ("ontouchstart" in document.documentElement||this.isItTouchScreen) {
+            console.log("started");
+            this.IntervalID = setInterval(() => {
+                this.holdercount++;
+                console.log(this.holdercount);
+                if (this.holdercount == 1) {
+                    this.swapCounter = 1;
+                    this.lastel = el;
+                    this.selectSwapItem(el, num);
+                    console.log("Ready")
+                }
+                else if (this.holdercount > 2) {
+                    clearInterval(this.IntervalID);
+                    console.log("cleared");
+                }
+            }, 1000)
+        }
+    },
+    replace: function (num) {
+        let list = storage.GGet("list");
+        let check = storage.GGet("checkState");
+        let temp = list[this.targetnum];//taregtnum is selected item num,num is the new place;
+        list.splice(num, 0, temp);
+        list.splice(this.targetnum, 1);
+        ////console.log(list);
+        storage.GSave("list", list);
+        storage.GSave("checkState", check);
+        control.additem("restore");
+        let targetnum = this.targetnum;
+        control.targetnum = null;
+        control.target = null;
+        let color = "skyblue";
+        document.querySelectorAll("li")[targetnum].style.backgroundColor = color;
+        document.querySelectorAll("li")[num - 1].style.backgroundColor = color;
+        setTimeout(() => {
+            document.querySelectorAll("li")[num - 1].removeAttribute("style");
+            document.querySelectorAll("li")[targetnum].removeAttribute("style");
+        }, 800);
+    },
+    clearHold: function () {
+        clearInterval(this.IntervalID);
+        this.holdercount = 0;
+        console.log("cleared");
+    },
+    enableTriple: false,
     enableSelect: {
         select: false,
         set: (el) => {
             control.enableSelect.select = el.checked;
             document.querySelectorAll(".olLi").forEach(
-                (ve)=>{
+                (ve) => {
                     let check = el.checked ? "select" : "noselect";
                     let check2 = el.checked ? "noselect" : "select";
-                    ve.classList.replace(check2,check);
+                    ve.classList.replace(check2, check);
                 }
             );
             storage.GSave("textSelect", `${el.checked}`);
         }
-    }
-    ,
-    swapitems: (num) => {
+    },
+    swapitems: function (num) {
         let list = storage.GGet("list");
         let check = storage.GGet("checkState");
         let temp = list[num];
@@ -451,9 +511,17 @@ let control = {
         ////console.log(list);
         storage.GSave("list", list);
         storage.GSave("checkState", check);
+        control.additem("restore");
+        let targetnum = this.targetnum;
         control.targetnum = null;
         control.target = null;
-        control.additem("restore");
+        let color = "skyblue";
+        document.querySelectorAll("li")[targetnum].style.backgroundColor = color;
+        document.querySelectorAll("li")[num].style.backgroundColor = color;
+        setTimeout(() => {
+            document.querySelectorAll("li")[targetnum].removeAttribute("style");
+            document.querySelectorAll("li")[num].removeAttribute("style");
+        }, 800);
     },
     start: (alert) => {
         if (storage.GGet("list")) {
@@ -463,12 +531,25 @@ let control = {
         else
             control.savebutton();
     },
+    copyToClipboard: function (el) {
+        let github = window.location.href;
+        let copyMSG = document.querySelector(".copy");
+        navigator.clipboard.writeText(github).then(function () {
+            copyMSG.classList.add("makeblock");
+            setTimeout(() => {
+                copyMSG.classList.remove("makeblock");
+                copyMSG.classList.add("makenone");
+            }, 3000)
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
 };
 let settings = {
     focus: () => {
         settings.settingsOpened = false;
-    }
-    , settingsOpened: true,
+    },
+    settingsOpened: true,
     show: () => {
         settings.settingsOpened = true;
         let setting = document.querySelector("#settings");
@@ -481,8 +562,7 @@ let settings = {
         setTimeout(() => {
             setting.focus();
         }, 350)
-    }
-    ,
+    },
     hide: () => {
         ////console.log("hide in process!");
         if (settings.settingsOpened) {
@@ -502,8 +582,8 @@ let settings = {
     fontSize: () => {
         let size = document.querySelector("#fontsize").value;
         return `${size}pt`;
-    }
-    , apply: () => {
+    },
+    apply: () => {
         let font = settings.getFont();
         let size = settings.fontSize()
         let html = document.querySelector("html").style;
@@ -515,8 +595,9 @@ let settings = {
         storage.GSave("swap", control.enableTriple);
         storage.GSave("font", font);
         storage.GSave("fontSize", size);
-    }
-    , restoreAndApply: () => {
+    },
+    restoreAndApply: () => {
+        control.restoreTheme();
         let sizeEl = document.querySelector("#fontsize");
         let fontEl = document.querySelector("#font");
         let swap = document.querySelector("#enableSwap");
@@ -536,12 +617,11 @@ let settings = {
             fontEl.value = font;
             control.enableTriple = storage.GGet("swap").join('') == "true" ? true : false;
             swap.checked = control.enableTriple;
-            selectText.checked = storage.GGet("textSelect").join('') == "true" ? true : false;;
+            if (storage.GGet("textSelect"))
+                selectText.checked = storage.GGet("textSelect").join('') == "true" ? true : false;;
             control.enableSelect.set(selectText);
-
         }
     }
-
 };
 function showinfo() {
     let info = document.querySelector(".info");
@@ -551,28 +631,6 @@ let notFirstOpen = localStorage.getItem("firstOpen");
 if (notFirstOpen)
     control.additem("restore");
 else {
-    control.showAlert("Welcome to finish it website! <br>Notice Select content is disaple by default and you can enable it from the settings!", null, "showinfo()", "Show Info", "don't show info");
+    control.showAlert("Welcon to finish it website!", null, "showinfo()", "Show Info", "don't show info");
     localStorage.setItem("firstOpen", "true");
 }
-//you can restore you old work
-(function notifyme() {
-    if (Notification.permission == "granted" && localStorage.getItem("notification") != "false") {
-        setTimeout(() => {
-            localStorage.setItem("notification", "false");
-            let noti = new Notification("TO-List",
-                {
-                    body: "site uses cookies to restore old session!",
-                    icon: "icon/todo.png"
-                }
-            )
-        }, 1000)
-    }
-    else if (Notification.permission == "denied") {
-        return 0;
-    }
-    else {
-        Notification.requestPermission().then(() => {
-            ////console.log(Notification.permission);
-        })
-    }
-})();

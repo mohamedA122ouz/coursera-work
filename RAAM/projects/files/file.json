@@ -1,1 +1,9 @@
-[{"hello":"welcome"}]
+[
+    {
+        "name": "finish-it",
+        "descriptionEN": "It was a test for myself to apply what I learned in JS language. The page allows you to add your tasks that you want to finish and as soon as you finish, you click on the checkbox to indicate that you have completed the task. You can delete or edit the task, add many tasks instead of one big task, and switch the places of the tasks so that you arrange the tasks according to your personal vision and preference for each task over the other. You can remove the task completely and add new tasks without having to delete all the tasks one by one ,and much more.",
+        "descriptionAR": "كان اختبار لنفسي كي اطبق ما قمت بتعلمه في لغه JS الصفحه يمكنك اضافه فيها مهامك المراد الانتهاء منها و بمجرد الانتهاء تضغط علي checkbox ليتم تحديد انك انتهيت من المهمه يمكنك حذف او تعديل المهمه اضافه العديد من المهام بدل من مهمه واحده كبيره بالاضافه تبديل اماكن المهام بحيث ترتب المهام برؤيتك الشخصه وتفضيلك لكل مهمه عن الاخري يمكنك ازاله المهم تماما واضافه مهام جدبده بدون الحاجه لحذف كل  الهمات فراده واكثر.",
+        "link": "https://mohameda122ouz.github.io/finish-it/finish-it/",
+        "imagePath": "./files/imgs/(1).jpg"
+    }
+]

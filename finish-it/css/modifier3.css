@@ -1,0 +1,34 @@
+:root {
+    --buttonColor1: red;
+    --buttonColor2: green;
+    --fontColor: white;
+    --olFontColor: white;
+    --backColor1: black;
+    --backColor2: #db0492;
+    --backColor3: #66e9f1;
+    --backColor4: #db0492;
+    --checkColor: white;
+    --checkBackColor: #04cddb;
+}
+
+ol {
+    color: var(--olFontColor);
+}
+
+html {
+    background: var(--backColor1);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow {
+    background-color: var(--checkBackColor);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow::after {
+
+    color: var(--checkColor);
+}
+
+
+#textc {
+    color: var(--olFontColor);
+}

@@ -16,7 +16,7 @@ try{
 }
 rand = ((counter++) % 7) + 1;
 const body = document.body.style;
-body.backgroundImage = `url("../backgrounds/${rand}.jpg")`;
+body.backgroundImage = `url("backgrounds/${rand}.jpg")`;
 sessionStorage.setItem("i",`${counter}`);
 let regForm = {
     name: () => localStorage.getItem("userName"),

@@ -1,0 +1,20 @@
+
+ol {
+    color: var(--olFontColor);
+}
+
+html {
+    background-image: radial-gradient(farthest-corner at 0% 100%, var(--backColor1) 15%, transparent 70%), radial-gradient(farthest-corner at 100% 0%, var(--backColor3) 5%, transparent 65%), radial-gradient(farthest-corner at 0% 0%, var(--backColor2) 15%, var(--backColor4) 70%);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow {
+    background-color: var(--checkBackColor);
+}
+
+.check>input[type="checkbox"]:checked+.checkshow::after {
+    color: var(--checkColor);
+}
+
+#textc {
+    color: var(--olFontColor);
+}

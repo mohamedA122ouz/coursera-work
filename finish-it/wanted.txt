@@ -1,0 +1,20 @@
+Add place to change theme
+make simple backend handle notification system
+add timer
+fix the bug happens when i am on phone and activate desktop mode
+add system for tabs
+make long press show delete and edit buttons for mobile
+make another theme
+add way sync data using database
+fix new rearrange functionality
+support Arabic language natively
+try to make element dragable استعمل متوسط الارتفاعات ولو حصل نقص 50بكسل 
+الفكره 
+currentItemIndex;
+averageHeight;
+startMousePos;
+finalMousePos;
+movedPx = finalMousePos - startMousePos;//could be minus amount
+movedItems = parseInt(movedPx / averageHeight);
+currentItemIndex = currentItemIndex + movedItems;
+Apply Changes After makeing the moving transition
