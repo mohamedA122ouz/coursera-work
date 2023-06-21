@@ -212,10 +212,12 @@ let control = {
     },
     restoreTheme:function(){
         console.log("here work");
+        let themeEl = control.select("#theme");
         try{
             let theme = storage.GGet("themei");
             if(theme){
-                control.selectAll("link")[4].setAttribute("href",`css/modifier${theme}.css`);
+                control.select("#modifier").setAttribute("href",`css/modifier${theme}.css`);
+                themeEl.value = theme;
             }else{
                 throw warn("Not thing set yet!");
             }
@@ -223,7 +225,7 @@ let control = {
             storage.GSave("themei","3")
         }
     },setTheme: function (value){
-        control.selectAll("link")[4].setAttribute("href",`css/modifier${value}.css`);
+        control.select("#modifier").setAttribute("href",`css/modifier${value}.css`);
         storage.GSave("themei",value);
     }
     ,

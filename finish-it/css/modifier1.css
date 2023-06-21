@@ -18,3 +18,13 @@ html {
 #textc {
     color: var(--olFontColor);
 }
+
+#settings>*{
+    accent-color: wheat;
+}
+option {
+    color: black;
+    background-color: wheat;
+}
+
+/* mango */

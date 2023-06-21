@@ -20,7 +20,7 @@ html {
 }
 
 .check>input[type="checkbox"]:checked+.checkshow {
-    background-color: var(--checkBackColor);
+    background-color: gray;
 }
 
 .check>input[type="checkbox"]:checked+.checkshow::after {
@@ -28,7 +28,13 @@ html {
     color: var(--checkColor);
 }
 
-
 #textc {
     color: var(--olFontColor);
+}
+#settings>*{
+    accent-color: gray;
+}
+option {
+    color: white;
+    background-color: black;
 }

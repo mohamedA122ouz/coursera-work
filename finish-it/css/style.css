@@ -230,6 +230,13 @@ header {
     display: flex;
     margin: auto;
 }
+#app{
+    display: flex;
+    flex-direction: row;
+}
+#content{
+    width: 100%;
+}
 
 #brand {
     cursor: pointer;
@@ -295,12 +302,15 @@ header {
     width: 300px;
     background-color: white;
     height: 100vh;
-    right: -360px;
+    right: 0px;
     transition: 250ms;
+    overflow: hidden;
+    width: 0px;
 }
 
 #settings>* {
     margin: 10px;
+    overflow: hidden;
 }
 
 #settings-title {
@@ -317,12 +327,16 @@ header {
     color: white;
     font-weight: bold;
 }
-
+#settingsItems{
+    overflow-x: hidden;
+}
+.Item{
+    width: max-content;
+}
 .show-settings {
-    transition: 350ms;
+    width: 320px !important;
     z-index: 5;
     box-shadow: 0 0 10px 0 black;
-    transform: translateX(-350px);
     outline: none;
 }
 
@@ -352,19 +366,15 @@ header {
 /* //phone */
 @media(max-width:500px) {
     .show-settings {
-        transition: 350ms;
-        z-index: 5;
-        box-shadow: 0 0 10px 0 black;
-        transform: translateX(-350px);
-        outline: none;
+        width: 320px !important;
     }
-
+    
     #alert-i {
         margin: auto;
         margin-right: 10px;
         color: rgb(253, 195, 6);
     }
-
+    
     #alert {
         transform: translate(-50%, -50%) scale(0.7);
         width: 100%;

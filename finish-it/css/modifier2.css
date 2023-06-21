@@ -33,3 +33,11 @@ html {
 #textc {
     color: var(--olFontColor);
 }
+#settings>*{
+    accent-color: var(--backColor3);
+}
+option {
+    color: white;
+    background-color: var(--backColor4);
+}
+/* fitra */
