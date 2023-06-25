@@ -1,9 +1,14 @@
 let screen = innerHeight;
+let screenWidth = innerWidth;
 let totalheight = document.body.scrollHeight;
 let load = document.getElementById("load");
 document.addEventListener("touchstart", () => { animation.load(); });
 document.addEventListener("touchend", () => { animation.load(); });
 document.addEventListener("touchend", () => { animation.load(); });
+window.addEventListener("resize", ev => {
+    screenWidth = innerWidth;
+    screen = innerHeight;
+});
 let animation = {
     load: function () {
         let shown = scrollY;
@@ -23,7 +28,7 @@ let animation = {
     startAnimation: function () {
         let shown = scrollY;
         let prev = this.prev.offsetHeight;
-        console.log(prev);
+        // console.log(prev);
         if (prev < (shown + screen - (prev / 1.7)))
             this.nameAndMajor.forEach(el => {
                 el.classList.add("animation");
@@ -33,44 +38,24 @@ let animation = {
     li: document.querySelectorAll("ul>li"),
     iscollapsed: true,
     collapse: function () {
-        if (!this.iscollapsed) {
-            this.menu.classList.add("collapse");
-            this.iscollapsed = !this.iscollapsed;
-        } else {
-            this.menu.classList.remove("collapse");
-            this.iscollapsed = !this.iscollapsed;
+        if (screenWidth <= 800) {
+            if (!this.iscollapsed) {
+                // this.menu.style.height = "0px";
+                this.menu.removeAttribute("style");
+                this.iscollapsed = !this.iscollapsed;
+            } else {
+                this.menu.style.height = `${4*4.5}rem`;
+                this.iscollapsed = !this.iscollapsed;
+            }
         }
+        
     }
 }
 function selectLang(lang) {
     localStorage.setItem("preferedLang", lang);
     window.location.reload();
 }
-let projectController = {
-    GetAsAJAX: function (URL) {
-        let localurl;
-        if (!URL) {
-            localurl = window.location.href + "/projects/files/file.json";
-            localurl = localurl.replace("index.html/", "");
-        }
-        let req = new XMLHttpRequest();
-        req.open("GET", (URL || localurl));
-        req.send();
-        req.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                try {
-                    let json = JSON.parse(this.responseText);
-                    return json;
-                } catch (error) {
-                    return this.responseText;
-                }
-            }
-            else if (this.status !== 200) {
-                console.error(this.status, this.readyState)
-            }
-        }
-    }
-}
+
 function mgLocalLinks(id) {
     let aa = document.createElement("a");
     aa.setAttribute("href", `#${id}`);
@@ -96,4 +81,3 @@ function mgGlobalLinks(url = "", target = "") {
     document.body.removeChild(aa);
     animation.collapse();
 }
-

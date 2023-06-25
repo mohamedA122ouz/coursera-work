@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAAM</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <script>
         try {
             let lang = localStorage.getItem("preferedLang");
-            if (lang === "ar") {
-                window.location.href = "./projects/ar.html";
+            if (lang === "en") {
+                window.location.href = "../index.html";
             }
-            else if (lang === "en");
+            else if (lang === "ar");
             else
                 throw "no prefered Lang";
         } catch (e) {
@@ -20,15 +20,34 @@
             console.warn(e);
         }
     </script>
+    <style>
+        #container {
+            direction: rtl;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        home>svg {
+            width: 25px;
+            height: 25px;
+        }
+
+        @media (max-width:800px) {
+            ul {
+                direction: rtl;
+            }
+        }
+    </style>
 </head>
 
-<body onscroll="animation.load();animation.controlWelcome();animation.startAnimation()" onresize="">
+<body onscroll="animation.load();animation.controlWelcome();animation.startAnimation()">
     <div class="app">
         <header>
             <div class="nav">
                 <div class="align">
                     <div class="home">
-                        <a href="#w">home</a>
+                        <a href="#w">الرئيسيه</a>
                     </div>
                     <div style="margin: auto;" id="inneralign"></div>
                     <div id="toggel" onclick="animation.collapse()">
@@ -40,12 +59,13 @@
                     </div>
                 </div>
                 <ul class="collapse">
-                    <li onclick="mgLocalLinks('infoContainer')">About me</li>
-                    <li onclick="mgLocalLinks('projects')">Projects</a></li>
-                    <li onclick="mgGlobalLinks('https://drive.google.com/file/d/1f9vhkzz-0jYA5QVjEUlCbtbqZHfcORpt/view?usp=sharing')">
-                        cv</li>
-                    <li onclick="mgLocalLinks('contactMe')">contact me</li>
-                    <li onclick="selectLang('ar')">lang:العربيه</li>
+                    <li onclick="mgLocalLinks('infoContainer')">عني</li>
+                    <li onclick="mgLocalLinks('projects')">المشاريع</a></li>
+                    <li
+                        onclick="mgGlobalLinks(`https://drive.google.com/file/d/1f9vhkzz-0jYA5QVjEUlCbtbqZHfcORpt/view?usp=sharing`,'_blank')">
+                        السيره الذاتيه</li>
+                    <li onclick="mgLocalLinks('contactMe')">تواصل معي</li>
+                    <li onclick="selectLang('en')">اللغه:EN</li>
                 </ul>
             </div>
             <div id="load"></div>
@@ -54,30 +74,22 @@
             <section id="w">
                 <div class="welcome animated">
                     <div>
-                        <h1>Welcome To RAAM</h1>
-                        <p>My Offical website portfolio.</p>
+                        <h1>مرحبا في, رَامَ</h1>
+                        <p>موقع عرض الاعمال الخاصه بي.</p>
                     </div>
                 </div>
             </section>
             <section id="infoContainer">
                 <div id="info" class="info">
                     <div id="me">
-                        <img src="photos/0IMG_20230103_163930_306.jpg" alt="my photo" oncontextmenu="return false">
+                        <img src="../photos/0IMG_20230103_163930_306.jpg" alt="my photo" oncontextmenu="return false">
                     </div>
-                    <div>
-                        <p>Name: Mohamed Ahmed Azouz</p><br>
-                        <p class="centerP">About ME</p>
-                        <p>
-                            I’m a self-taught front-end developer and a computer science student in the faculty of
-                            science at Ain Shams University. I have a passion for creating beautiful and responsive
-                            websites using HTML5, CSS3, vanilla JS ES6, Bootstrap and Google Fonts. I also have an idea
-                            of how to use MySQL and have studied data structures. I have built several projects for
-                            myself that demonstrate my skills and creativity, such as a portfolio website, a YouTube API
-                            project and a to-do list app. My goal is to join a company where I can learn from
-                            experienced developers and contribute to exciting web projects.
-                        </p><br>
+                    <div id="infoText">
+                        <p>الاسم: محمد احمد عزوز</p><br>
+                        <p class="centerP">عني</p><br>
+                        <p>أنا مطور واجهة أمامية متعلم بنفسي وطالب علوم حاسب في كلية العلوم بجامعة عين شمس. لدي شغف بإنشاء مواقع ويب جميلة ومتجاوبة باستخدام HTML5 و CSS3 و vanilla JS ES6 و Bootstrap و Google Fonts. لدي أيضًا فكرة عن كيفية استخدام MySQL ودرست هياكل البيانات. لقد قمت ببناء العديد من المشاريع لنفسي التي توضح مهاراتي وإبداعي ، مثل موقع الويب الخاص بي ، ومشروع YouTube API وتطبيق قائمة المهام. هدفي هو الانضمام إلى شركة حيث يمكنني التعلم من المطورين ذوي الخبرة والمساهمة في مشاريع ويب مثيرة.</p><br>
                         <a href="#contactMe">
-                            <p class="button">contact me</p>
+                            <p class="button">تواصل معي</p>
                         </a>
                     </div>
                 </div>
@@ -86,44 +98,44 @@
                 <div>
                     <div class="infoCard">
                         <div class="cardicon">
-                            <img src="projects/files/imgs/(2).png" alt="card icon Youtube API">
+                            <img src="../projects/files/imgs/(2).png" alt="card icon Youtube API">
                         </div>
                         <div class="describe">
                             <p class="text">
-                                Motube project is a use of YouTube’s application interface to reduce distraction by the
-                                suggestions that YouTube makes while studying
+                                مشروع موتيوب هو استخدام لواجهة تطبيقات يوتيوب لتقليل التشتت بالاقتراحات التي يقوم بها يوتيوب أثناء المذاكرة
+                            </p>
+                        </div><br>
+                        <p class="button" onclick="mgGlobalLinks('https://mohameda122ouz.github.io/coursera-work/Youtube/')">زياره</p>
+                    </div>
+                    <div class="infoCard">
+                        <div class="cardicon">
+                            <img src="../photos/Screenshot 2023-06-16 184933.png" alt="Show All Projects">
+                        </div>
+                        <div class="describe">
+                            <p class="text">
+                                Coming Soon Show all Projects
                             </p>
                         </div><br>
                         <p class="button"
-                            onclick="mgGlobalLinks('https://mohameda122ouz.github.io/coursera-work/Youtube/')">visit</p>
+                            onclick="mgGlobalLinks('../projects/projects.html','_self')">Show All</p>
                     </div>
                     <div class="infoCard">
                         <div class="cardicon">
-                            <img src="photos/Screenshot 2023-06-16 184933.png" alt="Show All Projects">
+                            <img src="../photos/Screenshot 2023-06-16 182747.png" alt="CV ICON">
                         </div>
                         <div class="describe">
                             <p class="text">
-                                show all my projects
+                                
                             </p>
                         </div><br>
-                        <p class="button" onclick="mgGlobalLinks('projects/projects.html','_self')">Show All</p>
-                    </div>
-                    <div class="infoCard">
-                        <div class="cardicon">
-                            <img src="photos/Screenshot 2023-06-16 182747.png" alt="CV ICON">
-                        </div>
-                        <div class="describe">
-                            <p class="text">
-
-                            </p>
-                        </div><br>
-                        <p class="button" onclick="mgGlobalLinks('https://drive.google.com/file/d/1f9vhkzz-0jYA5QVjEUlCbtbqZHfcORpt/view?usp=sharing')">Show CV</p>
+                        <p class="button" onclick="mgGlobalLinks('https://drive.google.com/file/d/1f9vhkzz-0jYA5QVjEUlCbtbqZHfcORpt/view?usp=sharing')">عرض</p>
                     </div>
                 </div>
             </section>
         </div>
+        </div>
         <footer id="contactMe">
-            <h2>Contact Me</h2>
+            <h2>تواصل معي</h2>
             <div>
                 <a href="https://www.facebook.com/profile.php?id=100007423067739" target="_blank">
                     <svg class="cIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -134,7 +146,7 @@
                 </a>
                 <div class="cIcon twitter">
                     <a href="https://twitter.com/Mo122ouz" target="_blank">
-                        <svg  xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-twitter"
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-twitter"
                             viewBox="0 0 16 16">
                             <path
                                 d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
@@ -150,7 +162,7 @@
                         </svg>
                     </a>
                 </div>
-                <a href="mailto:studyatmohamed@gmail.com">
+                <a href="mailto:studyatmohamed@gmail.com" target="">
                     <svg class="cIcon" viewBox="0 0 134 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_1:194)">
                             <path d="M9.09091 100H30.303V48.4848L0 25.7576V90.9091C0 95.9394 4.07576 100 9.09091 100Z"
@@ -176,21 +188,18 @@
                 </a>
             </div>
             <span>
+                &nbsp;محمد احمد عزوز
                 <span id="cdate"></span>
-                &nbsp;mohamed ahmed azouz
             </span>
         </footer>
     </div>
-
-
-
 
     <script>
         let cdate = document.getElementById("cdate");
         let date = new Date();
         cdate.innerHTML = "&copy;" + date.getFullYear();
     </script>
-    <script src="JS/script.js"></script>
+    <script src="../JS/script.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,59 @@
+#info>div>p{
+    left:auto;
+}
+.infoCard {
+    margin: 10px;
+    display: flex;
+    width: 100%;
+}
+.text{
+    padding:20px;
+}
+.infoCard>.cardicon{
+    width: max-content;
+    display: flex;
+    margin: auto;
+}
+.infoCard>.cardicon>img {
+    width:400px;
+    max-height:max-content;
+}
+#info{
+    border-radius: 15px;
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    height: max-content;
+}
+section:nth-child(1){
+    height: max-content;
+}
+body{
+    height: max-content;
+}
+iframe{
+    width: 350px;
+    height: 250px;
+    outline: none;
+    border:none;
+    border-radius:10px;
+}
+.cardicon::after{
+    content: "";
+    width: 350px;
+    height: 250px;
+    z-index: 6;
+    position: absolute;
+    /* background-color: black; */
+}
+@media (max-width:800px) {
+    .infoCard {
+        margin: 0px;
+        flex-direction: column;
+    }
+    #info{
+        width: 80%;
+        width: 85%;
+        padding: 20px;
+    }
+}

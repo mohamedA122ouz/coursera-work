@@ -109,8 +109,6 @@ header {
     width: 250px;
     height: 250px;
     margin: auto;
-    margin-top: 25%;
-    transform: translateY(-50%);
 }
 
 #me>img {
@@ -126,12 +124,15 @@ header {
     width: 80%;
     padding: 50px;
     border-radius: 50px;
+    display: flex;
+    flex-direction: column;
 }
 
 .info {
     box-shadow: 0 0 70px -20px black;
     margin: auto;
     background-color: rgba(255, 255, 255, 0.1);
+    height: max-content;
 }
 
 .card {
@@ -140,12 +141,12 @@ header {
 }
 
 #me+div {
-    width: max-content;
+    width: 100%;
     margin: auto;
     margin-top: 5px;
     padding: 15px;
     font-size: 1.5rem;
-    transform: translateY(-50%);
+    /* transform: translateY(-50%); */
 }
 
 #toggel {
@@ -303,8 +304,14 @@ h2 {
 
 .infoCard>.cardicon>img {
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     border-radius: 20px;
+}
+
+.centerP {
+    margin: auto !important;
+    /* margin-left: auto !important; */
+    width: max-content;
 }
 
 li {
@@ -340,12 +347,15 @@ li {
 
     .nav>ul>li {
         width: 100vw;
+        /* width: 100%; */
         background-color: black;
     }
 
     .collapse {
         position: absolute;
-        transform: translateY(-400px);
+        /* transform: translateY(-400px); */
+        height: 0px;
+        overflow-y: hidden;
         transition: 250ms;
         z-index: 2;
     }
@@ -361,7 +371,6 @@ li {
         margin-left: 0;
         padding: 15px;
         font-size: 1rem;
-        transform: translateY(-50%);
     }
 
     #info {
@@ -403,6 +412,7 @@ li {
 
     #toggel {
         display: block;
+        cursor:pointer;
         margin-left: -10px;
     }
 
