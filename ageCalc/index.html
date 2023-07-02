@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Age calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+
+    @font-face {
+      font-family: pBold;
+      src: url("assets/fonts/Poppins-Bold.ttf");
+    }
+
+    @font-face {
+      font-family: pBoldI;
+      src: url("assets/fonts/Poppins-BoldItalic.ttf");
+    }
+
+    @font-face {
+      font-family: pExtraBoldI;
+      src: url("assets/fonts/Poppins-ExtraBoldItalic.ttf");
+    }
+
+    @font-face {
+      font-family: pExtraBold;
+      src: url("assets/fonts/Poppins-ExtraBold.ttf");
+    }
+
+    @font-face {
+      font-family: pi;
+      src: url("assets/fonts/Poppins-Italic.ttf");
+    }
+
+    @font-face {
+      font-family: pRegular;
+      src: url("assets/fonts/Poppins-Regular.ttf");
+    }
+
+    main {
+      display: flex;
+
+      height: 100%;
+    }
+
+    body {
+      font-family: pRegular;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      font-size: 16pt;
+      width: 100%;
+      height: 95vh;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #8842ff;
+      border: none;
+      border-radius: 50%;
+      width: 3.5rem;
+      height: 3.5rem;
+      background-image: url("assets/images/icon-arrow.svg");
+      background-repeat: no-repeat;
+      background-size: 29px;
+      background-position: center;
+      transition: 250ms;
+      position: relative;
+      left: 90%;
+      top: 0rem;
+    }
+
+    button:hover {
+      transition: 250ms;
+      background-color: black;
+    }
+
+    input {
+      cursor: pointer;
+      font-family: pBold;
+      caret-color: #8842ff;
+      padding: 0.7rem;
+      width: 5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      outline: none;
+      transition: 250ms;
+    }
+
+    input:focus {
+      transition: 250ms;
+      border: 1px solid #8842ff;
+    }
+
+    #container {
+      margin: auto;
+      background-color: white;
+      max-width: 40rem;
+      width: 30rem;
+      padding: 3rem;
+      border-radius: 1rem 1rem 11rem 1rem;
+    }
+
+    form>div {
+      display: flex;
+      gap: 2rem;
+    }
+
+    form>div>div {
+      font-family: pBold;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.15rem;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.5rem;
+    }
+
+    .show {
+      color: #8842ff;
+    }
+
+    .showContainer {
+      font-family: pExtraBoldI;
+      font-size: 3rem;
+    }
+
+    hr {
+      margin-top: -2rem;
+    }
+
+    .showError {
+      font-family: pi;
+      letter-spacing: normal;
+    }
+
+    .error {
+      color: rgba(255, 0, 0, 0.6);
+    }
+
+    .errorBorder {
+      border: 1px solid rgba(255, 0, 0, 0.6);
+    }
+
+    @media(max-width:800px) {
+      html {
+        font-size: 7pt;
+        min-width: min-content;
+      }
+
+      hr {
+        margin-top: 1rem;
+        margin-bottom: 4rem;
+      }
+
+      #container {
+        padding: 3rem;
+        /* height: rem; */
+        border-radius: 2rem 2rem 11rem 2rem;
+      }
+      form{
+        padding:0.5rem;
+      }
+      button {
+        height: 6rem;
+        width: 6rem;
+        left: 50%;
+        top: 00%;
+        transform: translate(-50%, 100%);
+      }
+
+      .showContainer {
+        font-family: pExtraBoldI;
+        font-size: 5rem;
+      }
+
+      input {
+        width: 7rem;
+      }
+      form>div>div {
+        font-size: 1rem;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div id="container">
+      <form action="" onsubmit="return false">
+        <div>
+          <div>
+            <label for="Day" id="dlabel">DAY</label>
+            <input type="text" name="Day" id="day" placeholder="DD">
+            <span id="dError" class="error showError"></span>
+          </div>
+          <div>
+            <label for="Month" id="mlabel">MONTH</label>
+            <input type="text" name="Month" id="month" placeholder="MM">
+            <span id="mError" class="error showError"></span>
+          </div>
+          <div>
+            <label for="Year" id="ylabel">YEAR</label>
+            <input type="text" name="Year" id="year" placeholder="YYYY">
+            <span id="yError" class="error showError"></span>
+          </div>
+        </div>
+        <button type="submit" onclick="vaildation()"></button>
+      </form>
+      <hr>
+      <div class="showContainer">
+        <span id="yshow" class="show">--</span> years
+      </div>
+      <div class="showContainer">
+        <span id="mshow" class="show">--</span> months
+      </div>
+      <div class="showContainer">
+        <span id="dshow" class="show">--</span> days
+      </div>
+    </div>
+  </main>
+  <script>
+    function get(id) {
+      return document.getElementById(id);
+    }
+    let enable = true;
+    let dayFiled = get("day");
+    let monthFiled = get("month");
+    let yearFiled = get("year");
+    let dError = get("dError");
+    let mError = get("mError");
+    let yError = get("yError");
+    let dlabel = get("dlabel");
+    let mlabel = get("mlabel");
+    let ylabel = get("ylabel");
+    function vaildation() {
+      let yearNow = new Date().getFullYear();
+      if (!(yearFiled.value && monthFiled.value && dayFiled.value)) {
+        if (!yearFiled.value) {
+          yearFiled.classList.add("errorBorder");
+          yError.textContent = "this field is required";
+          ylabel.classList.add("error");
+          console.log("year is empty");
+        }
+        if (!monthFiled.value) {
+          monthFiled.classList.add("errorBorder");
+          mError.textContent = "this field is required";
+          mlabel.classList.add("error");
+          console.log("month is empty");
+        }
+        if (!dayFiled.value) {
+          dayFiled.classList.add("errorBorder");
+          dError.textContent = "this field is required";
+          dlabel.classList.add("error");
+          console.log("day is empty");
+        }
+        enable = false;
+      }
+      else if (!(yearFiled.value < yearNow)) {
+        yError.textContent = "Must be in the past";
+        yearFiled.classList.add("errorBorder");
+        ylabel.classList.add("error");
+        console.log("year is not vaild");
+        enable = false;
+      }
+      else {
+        yError.textContent = "";
+        yearFiled.classList.remove("errorBorder");
+        ylabel.classList.remove("error");
+        enable = true;
+      }
+      if (!(monthFiled.value < 13)) {
+        monthFiled.classList.add("errorBorder");
+        mlabel.classList.add("error");
+        mError.textContent = "Must be a valid month";
+        console.log("month is not vaild");
+        enable = false;
+      } else if (monthFiled.value) {
+        monthFiled.classList.remove("errorBorder");
+        mError.textContent = "";
+        mlabel.classList.remove("error");
+      }
+      let setFullYear = `${yearFiled.value}-${monthFiled.value}-${dayFiled.value}`;
+      let date = new Date(setFullYear);
+      console.log(monthFiled.value - 1);
+      console.log(date.getMonth());
+      if (date.getMonth()) {
+        if ((((monthFiled.value - 1) != date.getMonth() && dayFiled.value))) {
+          dayFiled.classList.add("errorBorder");
+          dError.textContent = "Must be a valid day";
+          dlabel.classList.add("error");
+          console.log("day is not vaild");
+          enable = false;
+        }
+        else if (dayFiled.value) {
+          dayFiled.classList.remove("errorBorder");
+          dError.textContent = "";
+          dlabel.classList.remove("error");
+        }
+      }
+      else if(dayFiled.value > 31){
+        dayFiled.classList.add("errorBorder");
+        dError.textContent = "Must be a valid day";
+        dlabel.classList.add("error");
+      }
+      else if (dayFiled.value && dayFiled.value < 31) {
+        dayFiled.classList.remove("errorBorder");
+        dError.textContent = "";
+        dlabel.classList.remove("error");
+      }
+      if (enable)
+        show(date);
+    }
+    function resolveAfterTime() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve();
+        }, 20);
+      });
+    }
+    function show(oldDate) {
+      console.log(oldDate);
+      let dateNow = new Date();
+      dateNow.setHours(0, 0, 0, 0)
+      console.log(dateNow);
+      let yshow = get("yshow");
+      let mshow = get("mshow");
+      let dshow = get("dshow");
+      let y = dateNow.getFullYear() - oldDate.getFullYear();
+      let m = (dateNow.getMonth() - oldDate.getMonth());
+      let d = dateNow.getDate() - oldDate.getDate();
+      m = d < 0 ? --m : m;
+      y = m < 0 ? --y : y;
+      console.log(m);
+      m = m < 0 ? (12 + m) : m;
+      console.log(m);
+      d = d < 0 ? 30 + d : d;
+      let i = y > d ? y : d > m ? d : m > d ? m : d;
+      animation();
+      async function animation() {
+        for (let c = 0; c <= i; c++) {
+          if (c < 10) {
+            await resolveAfterTime();
+            yshow.textContent = `0${c >= y ? y : c}`;
+            mshow.textContent = `0${c >= m ? m : c}`;
+            dshow.textContent = `0${c >= d ? d : c}`;
+          }
+          else {
+            await resolveAfterTime();
+            yshow.textContent = c >= y ? y : c;
+            if (c <= m)
+              mshow.textContent = c >= m ? m : c;
+            if (c <= d)
+              dshow.textContent = c >= d ? d : c;
+          }
+        }
+      }
+    }
+
+  </script>
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Mohamed Ahmed Azouz</a>.
+  </div>
+</body>
+
+</html>
