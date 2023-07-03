@@ -363,6 +363,7 @@
           }
           else {
             await resolveAfterTime();
+            if (c <= y)
             yshow.textContent = c >= y ? y : c;
             if (c <= m)
               mshow.textContent = c >= m ? m : c;
