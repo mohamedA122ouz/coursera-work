@@ -12,5 +12,19 @@
         "descriptionAR": "مشروع موتوب هو استخدام واجهة تطبيق YouTube لتقليل التشتت بالاقتراحات التي يقدمها YouTube أثناء الدراسة",
         "link": "https://mohameda122ouz.github.io/coursera-work/Youtube/",
         "imagePath": "./files/imgs/(2).png"
+    },
+    {
+        "name": "Age Calculator",
+        "descriptionEN": "A frontend challenge on frontend mentor I had successfully done it",
+        "descriptionAR": "هو تحدي يتواجد علي موقع frontend mentor انتهيت منه",
+        "link": "https://mohameda122ouz.github.io/coursera-work/ageCalc",
+        "imagePath": "null"
+    },
+    {
+        "name": "login page",
+        "descriptionEN": "A login page that features a dynamic background with seven images. The images are displayed in a random order on each page load, then they cycle through in a sequence.",
+        "descriptionAR": "صفحة تسجيل دخول تتميز بخلفية ديناميكية من سبعة صور. تتم عرض صوره عشوائيه عند تحميل كل صفحة اول مره ، ثم تتناوب في تسلسل.",
+        "link": "https://mohameda122ouz.github.io/coursera-work/login/",
+        "imagePath": "null"
     }
 ]

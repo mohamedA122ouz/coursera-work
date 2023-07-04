@@ -2,6 +2,7 @@ let screen = innerHeight;
 let screenWidth = innerWidth;
 let totalheight = document.body.scrollHeight;
 let load = document.getElementById("load");
+let increaseHight = lang == "ar"?2:0;
 document.addEventListener("touchstart", () => { animation.load(); });
 document.addEventListener("touchend", () => { animation.load(); });
 document.addEventListener("touchend", () => { animation.load(); });
@@ -44,11 +45,11 @@ let animation = {
                 this.menu.removeAttribute("style");
                 this.iscollapsed = !this.iscollapsed;
             } else {
-                this.menu.style.height = `${4*4.5}rem`;
+                this.menu.style.height = `${this.menu.scrollHeight}px`;
                 this.iscollapsed = !this.iscollapsed;
             }
         }
-        
+
     }
 }
 function selectLang(lang) {

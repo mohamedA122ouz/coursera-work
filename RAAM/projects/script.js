@@ -45,6 +45,7 @@ let projectController = {
     },
     createAcard: async function () {
         let res = await this.getAsFetch();
+        let preferedLang = localStorage.getItem("preferedLang");
         let dom = document.querySelector("#info");
         let value = "";
         res.forEach(el => {
@@ -55,9 +56,9 @@ let projectController = {
             <iframe src="${el.link}" title="${el.name}" onclick="return false;"></iframe>
             </div>
             <div class="describe">
-            <p class="text">${localStorage.getItem("preferedLang") === "ar" ? el.descriptionAR : el.descriptionEN}</p>
+            <p class="text" style="direction:${preferedLang === "ar" ? "rtl" : "ltr"};" >${preferedLang === "ar" ? el.descriptionAR : el.descriptionEN}</p>
             </div><br>
-            <p class="button" onclick="mgGlobalLinks('${el.link}')">${localStorage.getItem("preferedLang") === "ar" ? "زياره" : "visit"}</p>
+            <p class="button" onclick="mgGlobalLinks('${el.link}')">${preferedLang === "ar" ? "زياره" : "visit"}</p>
             </div>
             `;
         });

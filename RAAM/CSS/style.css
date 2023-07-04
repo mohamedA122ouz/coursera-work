@@ -27,6 +27,7 @@ html {
 }
 
 body {
+    position: relative;
     min-width: 280px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
@@ -35,9 +36,11 @@ body {
     background-image: url("../photos/wallpaperflare.com_wallpaper\ \(7\).jpg");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background-size:cover;
+    min-height: 100vh;
+    background-attachment:fixed;
     color: white;
+    background-color: black;
     /* overflow-y: hidden; */
 }
 
@@ -129,9 +132,9 @@ header {
 }
 
 .info {
-    box-shadow: 0 0 70px -20px black;
+    box-shadow: 0 0 15px -5px white;
+    background-color: rgba(0, 0, 0, 0.6);
     margin: auto;
-    background-color: rgba(255, 255, 255, 0.1);
     height: max-content;
 }
 
@@ -295,7 +298,8 @@ h2 {
     margin: auto;
     border-radius: 20px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px -5px white;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .infoCard>.cardicon {
@@ -367,7 +371,7 @@ li {
     #me+div>p {
         width: max-content;
         max-width: 100%;
-        margin: auto;
+        /* margin: auto; */
         margin-left: 0;
         padding: 15px;
         font-size: 1rem;
@@ -430,7 +434,6 @@ li {
         margin-top: 20px;
         border-radius: 20px;
         padding: 20px;
-        background-color: rgba(255, 255, 255, 0.1);
     }
 
 }
