@@ -63,7 +63,7 @@ function mgLocalLinks(id) {
     document.body.appendChild(aa);
     aa.click();
     document.body.removeChild(aa);
-    animation.collapse();
+    !animation.iscollapsed && animation.collapse();
 }
 function mgGlobalLinks(url = "", target = "") {
     let aa = document.createElement("a");
@@ -80,5 +80,5 @@ function mgGlobalLinks(url = "", target = "") {
     document.body.appendChild(aa);
     aa.click();
     document.body.removeChild(aa);
-    animation.collapse();
+    !animation.iscollapsed && animation.collapse();
 }

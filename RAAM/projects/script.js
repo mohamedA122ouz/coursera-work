@@ -68,14 +68,14 @@ let projectController = {
     getAsAJAX: function (URL) {
         let localurl;
         if (!URL) {
-            localurl = window.location.origin + "/projects/files/file.json";
+            localurl = /*window.location.origin +*/ "/projects/files/file.json";
         }
         return get(URL || localurl);
     },
     getAsFetch: function (URL) {
         let localurl;
         if (!URL) {
-            localurl = window.location.origin + "/projects/files/file.json";
+            localurl = /*window.location.origin +*/ "/projects/files/file.json";
         }
         return fetch(URL || localurl, get).then((res) => {
             return res.json();
@@ -84,7 +84,7 @@ let projectController = {
     getAsAsync: async function (URL) {
         let localurl;
         if (!URL) {
-            localurl = window.location.origin + "/projects/files/file.json";
+            localurl = /*window.location.origin +*/"/projects/files/file.json";
         }
         return await fetch(URL || localurl);
     }
