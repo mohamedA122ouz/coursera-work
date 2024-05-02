@@ -217,8 +217,7 @@ function dtOutput(data, type, route) {
         youtubeDt.time = [];
         youtubeDt.playListID = [];
         youtubeDt.duration = [];
-        for (let i = 0; i < 5; i++) {
-            if(data.items[i].id.videoId == undefined){break;}
+        for (let i in data.items) {
             youtubeDt.fill = "done";
             youtubeDt.videoID[i] = data.items[i].id.videoId;
             //if i setup it correctly in css no need for it but it will help the reducing amount of data usage
@@ -543,7 +542,10 @@ var main = (function (event) {
 
     }
     DMCS(0);
-    let path = window.location.pathname;
+    let path = window.location.href;
+    path =path.substring(path.indexOf("watch?v=")+8).trim();
+    openiframe("openIframe",path);
+    console.log(path);
     console.log("This Site uses %cYoutube %cAPI!", "color:red;", "color:auto background:f2dd00;");
     document.querySelector("#youtubeSearchBox").focus();
     ul.addEventListener("blur", (event) => { if (atGlobal.showul) { atGlobal.showul = false; showul(); } });
