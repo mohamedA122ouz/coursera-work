@@ -217,8 +217,7 @@ function dtOutput(data, type, route) {
         youtubeDt.time = [];
         youtubeDt.playListID = [];
         youtubeDt.duration = [];
-        for (let i = 0; i < 5; i++) {
-            if(youtubeDt.videoID[i] == undefined){break;}
+        for (var i = 0; i < 5; i++) {
             youtubeDt.fill = "done";
             youtubeDt.videoID[i] = data.items[i].id.videoId;
             //if i setup it correctly in css no need for it but it will help the reducing amount of data usage
