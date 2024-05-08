@@ -266,11 +266,11 @@ function dtOutput(data, type, route) {
             youtubeDt.videoTitle[i] = data.items[i].snippet.title;
             youtubeDt.channelTitle[i] = data.items[i].snippet.channelTitle;
             try {
-
-                youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
-                youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
+                // youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
+                // youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
+                throw "er";
             } catch {
-
+                youtubeDt.date[i] = data.items[i].snippet.publishedAt;
                 console.log("date");
 
             }
@@ -653,8 +653,8 @@ var main = (function (event) {
                 var youtubeAPI2 = "http://localhost:3002/search?q=" + processedSearch;
                 var youtubeAPI3 = "https://youtube-6rrj.onrender.com/search?q=" + processedSearch;
                 var tryy = "data/data2.json";
-                // getdata(youtubeAPI2, "json", "mainroute");
-                getdata(youtubeAPI3, "json", "mainroute");
+                getdata(youtubeAPI2, "json", "mainroute");
+                // getdata(youtubeAPI3, "json", "mainroute");
                 // getdata(youtubeAPI, "json", "mainroute");
                 // getdata(tryy, "json", "mainroute");
                 // console.log(link);
