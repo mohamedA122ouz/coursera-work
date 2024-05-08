@@ -1,4 +1,26 @@
 ///////////////////////////////Convert section - processing//////////////////////////////////////////////////
+const injected = `<div class="details" onclick="openiframe({{index}})">
+<div class="thumbnail">
+    <div style="display: none;" class="listsign{{index}}">
+        <svg class="listStyle" style="color:white"
+            xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+        </svg>
+    </div>
+    <div class="v{{vindex}} duration"></div>
+    <img {{thumbnail}} alt="{{videoTitle}}">
+</div>
+<div class="text">
+    <span class="vTitle">
+        {{videoTitle}}
+    </span>
+    <br>
+    <span class="publishTime">{{date}}</span>
+    <br>
+    <span class="channelName">{{channel}}</span>
+</div>
+</div>`;
 function processInput(input) {
     var letterA = "أ".charCodeAt(0);
     var letterz = "ي".charCodeAt(0);
@@ -162,51 +184,63 @@ function showloading() {
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
 function getdata(dataSource, type, route) {
     // console.log(route);
-    var request = new XMLHttpRequest;
-    request.open("GET", dataSource, true);
-    request.send(null);
-    if (route == "mainroute")
-        showloading();
+    try {
 
-    getResponse(request, type, route);
+        var request = new XMLHttpRequest;
+        request.open("GET", dataSource, true);
+        request.send(null);
+        if (route == "mainroute")
+            showloading();
+
+        getResponse(request, type, route);
+    } catch {
+        request.status = 500;
+        getResponse(request, type, route);
+
+    }
 }
 function getResponse(request, type, route) {
-    request.onreadystatechange = function () {
-        if (request.status == 200 && request.readyState == 4) {
-            if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
-            else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
-            else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
-            //console.log(responseText);
-            var data = window.data;
-            dtOutput(responseText, type, route);
-            //console.log(request);
-            return request;
-        }
-        if(route == "mainroute"){
-            if (request.status == 408) {
-                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Response TimeOut</h2>";
+    try {
+
+        request.onreadystatechange = function () {
+            if (request.status == 200 && request.readyState == 4) {
+                if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
+                else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
+                else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
+                //console.log(responseText);
+                var data = window.data;
+                dtOutput(responseText, type, route);
+                //console.log(request);
+                return request;
             }
-            else if (request.status == 500) {
-                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Server Error</h2>";
-            }
-            else if (request.status == 403) {
-                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
-            }
-            else{
-                if(request.status != 0)
-                document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Some thing Went Wrong "+"</h2>";
-                else if(request.status == 200)
-                {
-                    document.querySelector("#videosContainer").innerHTML = "<h2>NO Error on connection site May be broken refresh please!</h2>";
+            if (route == "mainroute") {
+                if (request.status == 408) {
+                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Response TimeOut</h2>";
                 }
-                else
-                document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected -</h2>";
+                else if (request.status == 500) {
+                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Server Error</h2>";
+                }
+                else if (request.status == 403) {
+                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
+                }
+                else {
+                    if (request.status != 0)
+                        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
+                    else if (request.status == 200) {
+                        document.querySelector("#videosContainer").innerHTML = "<h2>NO Error on connection site May be broken refresh please!</h2>";
+                    }
+                    else
+                        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected -</h2>";
+                }
             }
         }
+    }catch(err){
+        console.log(err);
     }
 }
 ///////////////////////////////Processing Data - processing//////////////////////////////////////////////////
 function dtOutput(data, type, route) {
+    console.log(data);
     if (type == "json" && route == "mainroute") {
         window.youtubeDt = new Object;
         youtubeDt.thumbnail = [];
@@ -231,8 +265,15 @@ function dtOutput(data, type, route) {
             }
             youtubeDt.videoTitle[i] = data.items[i].snippet.title;
             youtubeDt.channelTitle[i] = data.items[i].snippet.channelTitle;
-            youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
-            youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
+            try {
+
+                youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
+                youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
+            } catch {
+
+                console.log("date");
+
+            }
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
             // console.log(youtubeDt.videoTitle[i]);
         }
@@ -241,18 +282,22 @@ function dtOutput(data, type, route) {
     }
     else if (type == "html" && route == "mainroute") {
         window.html = new Object;
-        html.dt = data;
+        html.dt = injected;
         builder();
     }
     else if (type == "json" && route == "second") {
+        try{
 
-        if (data.items[0].contentDetails.duration != undefined) {
-            youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
-            if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
-            else {
-                processDuration("both");
+            if (data.items[0].contentDetails.duration != undefined) {
+                youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
+                if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
+                else {
+                    processDuration("both");
+                }
+                //console.log(youtubeDt.duration);
             }
-            //console.log(youtubeDt.duration);
+        }catch(ex){
+            console.log(ex);
         }
 
     }
@@ -267,9 +312,9 @@ function processDuration(isitbuild) {
             something = something.replace("S", "_");
             let time = something;
             time = time.split('_');
-            time = time.filter(el=>el);
+            time = time.filter(el => el);
             time = time.map(el => {
-                return (+el<10?`0${el}`:el);
+                return (+el < 10 ? `0${el}` : el);
             });
             time = time.join(':');
             youtubeDt.duration[i] = time;
@@ -283,7 +328,7 @@ function processDuration(isitbuild) {
             //console.log(atGlobal.vArr[i]);
             //console.log(i);
             vDuration.textContent = youtubeDt.duration[ii];
-            
+
         }
     }
     //console.log(youtubeDt.duration);
@@ -298,7 +343,7 @@ function builder() {
             var holder = htmlitself;
             holder = holder.replace(new RegExp("{{videoTitle}}", "g"), youtubeDt.videoTitle[i]);
             if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined)//channel
-                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i]+ '" class = "channel"');
+                holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "channel"');
             else if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] != undefined) {//playlist
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class="videoIcon"');
                 atGlobal.list[listindex] = i
@@ -319,7 +364,7 @@ function builder() {
         }
         window.totalHtml = new Object;
         window.totalHtml = totalHtml;
-        document.querySelector("#videosContainer").innerHTML = totalHtml;
+        document.querySelector("#videosContainer").innerHTML = window.totalHtml;
         for (var i in atGlobal.list) {
             let listsign = document.querySelector(".listsign" + atGlobal.list[i]);
             if (listsign != null) {
@@ -383,7 +428,7 @@ function openiframe(i, vCode) {
             document.body.removeChild(a);
         }
     }
-    else if (i == "openIframe") {
+    else if (i == "openIframe" && vCode) {
         showloading();
         iframe = '<iframe id="waiting" style="display:block;" src="https://www.youtube.com/embed/' + vCode + '"?rel="0" frameborder="0" allowfullscreen></iframe>';
         document.querySelector("#videosContainer").innerHTML = iframe + "<hr>";
@@ -452,12 +497,12 @@ function DMCS(where) {
         localStorage.setItem("D", false);
     if (where == 0) {
         let k = localStorage.getItem("D");
-        if(k=='true')
-        atGlobal.onOROffDark = false;
+        if (k == 'true')
+            atGlobal.onOROffDark = false;
         else
-        atGlobal.onOROffDark = true;
+            atGlobal.onOROffDark = true;
     }
-//turning on or off the darkmode
+    //turning on or off the darkmode
     let dmode = document.querySelector('#dmode1');
     if (atGlobal.onOROffDark) {//this is (on) don't care with the name dmodeoff i badly named them 
         ball = document.querySelector('#ball');
@@ -489,7 +534,7 @@ function showul() {
     let el = document.querySelector('svg');
     el.style.transition = "250ms ease-out";
     if (atGlobal.showul) {
-        button.setAttribute('style','cursor:pointer;')
+        button.setAttribute('style', 'cursor:pointer;')
         button.setAttribute('onclick', 'DMCS(1)');
         ul.setAttribute('style', 'opacity:100%;');
         atGlobal.showul = false;
@@ -543,8 +588,8 @@ var main = (function (event) {
     }
     DMCS(0);
     let path = window.location.href;
-    path =path.substring(path.indexOf("watch?v=")+8).trim();
-    openiframe("openIframe",path);
+    path = path.substring(path.indexOf("watch?v=") + 8).trim();
+    //openiframe("openIframe",path);
     console.log(path);
     console.log("This Site uses %cYoutube %cAPI!", "color:red;", "color:auto background:f2dd00;");
     document.querySelector("#youtubeSearchBox").focus();
@@ -605,8 +650,12 @@ var main = (function (event) {
                 }
                 // console.log(processedSearch);
                 var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4&part=id,snippet";
+                var youtubeAPI2 = "http://localhost:3002/search?q=" + processedSearch;
+                var youtubeAPI3 = "https://youtube-6rrj.onrender.com/search?q=" + processedSearch;
                 var tryy = "data/data2.json";
-                getdata(youtubeAPI, "json", "mainroute");
+                // getdata(youtubeAPI2, "json", "mainroute");
+                getdata(youtubeAPI3, "json", "mainroute");
+                // getdata(youtubeAPI, "json", "mainroute");
                 // getdata(tryy, "json", "mainroute");
                 // console.log(link);
             }
