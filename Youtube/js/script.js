@@ -653,8 +653,8 @@ var main = (function (event) {
                 var youtubeAPI2 = "http://localhost:3002/search?q=" + processedSearch;
                 var youtubeAPI3 = "https://youtube-6rrj.onrender.com/search?q=" + processedSearch;
                 var tryy = "data/data2.json";
-                getdata(youtubeAPI2, "json", "mainroute");
-                // getdata(youtubeAPI3, "json", "mainroute");
+                // getdata(youtubeAPI2, "json", "mainroute");
+                getdata(youtubeAPI3, "json", "mainroute");
                 // getdata(youtubeAPI, "json", "mainroute");
                 // getdata(tryy, "json", "mainroute");
                 // console.log(link);
