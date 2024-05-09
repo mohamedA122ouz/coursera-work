@@ -266,6 +266,7 @@ function dtOutput(data, type, route) {
             youtubeDt.videoTitle[i] = data.items[i].snippet.title;
             youtubeDt.channelTitle[i] = data.items[i].snippet.channelTitle;
             try {
+                youtubeDt.duration[i] = data.items[i].contentDetails.duration;
                 // youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
                 // youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
                 throw "er";
@@ -292,7 +293,9 @@ function dtOutput(data, type, route) {
                 youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
                 if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
                 else {
-                    processDuration("both");
+                    // processDuration("both");
+                    processDuration("show");
+
                 }
                 //console.log(youtubeDt.duration);
             }
@@ -322,12 +325,12 @@ function processDuration(isitbuild) {
         }
     }
     if (isitbuild == "show" || isitbuild == "both") {
-        for (var i in atGlobal.vArr) {
+        for (var i in youtubeDt.duration) {
             var ii = parseInt(i) + 1;
-            let vDuration = document.querySelector(".v" + atGlobal.vArr[i]);
+            let vDuration = document.querySelector(".v" + i);
             //console.log(atGlobal.vArr[i]);
             //console.log(i);
-            vDuration.textContent = youtubeDt.duration[ii];
+            vDuration.textContent = youtubeDt.duration[i];
 
         }
     }
@@ -383,16 +386,16 @@ function builder() {
                 listsignst.borderRadius = " 0 0 1vw 0";
             }
         }
-        getDuration();
+        // getDuration();
+        processDuration("show");
         // console.log(totalHtml);
         window.lock = false;
     }
 }
 function getDuration() {
-    youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4';
-    atGlobal.index2++;
-    getdata(youtubeAPI2, "json", "second");
-
+    // youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4';
+    // atGlobal.index2++;
+    // getdata(youtubeAPI3, "json", "second");
 }
 ///////////////////////////////Open Iframe - inhtml//////////////////////////////////////////////////
 function openiframe(i, vCode) {
@@ -410,7 +413,7 @@ function openiframe(i, vCode) {
         else if (youtubeDt.playListID[i] != undefined) {
             var channel = "https://www.youtube.com/playlist?list=" + youtubeDt.playListID[i];
             var a = document.createElement('a');
-            a.style.display = "none"
+            a.style.display = "none";
             a.href = channel;
             a.target = "_blank";
             document.body.appendChild(a);
@@ -553,6 +556,9 @@ function hideul() {
     let ul = document.querySelector('ul');
     ul.setAttribute('style', 'opacity:0%;');
     atGlobal.showul = true;
+}
+function openChannel(url){
+    getdata("https://youtube-6rrj.onrender.com/search?q="+url,"json","mainroute");
 }
 ///////////////////////////////////////////MAIN FUNCTION//////////////////////////////////////////////////
 var main = (function (event) {
