@@ -1,4 +1,5 @@
 ///////////////////////////////Convert section - processing//////////////////////////////////////////////////
+let interval = null;
 const injected = `<div class="details" onclick="openiframe({{index}})">
 <div class="thumbnail">
     <div style="display: none;" class="listsign{{index}}">
@@ -21,71 +22,6 @@ const injected = `<div class="details" onclick="openiframe({{index}})">
     <span class="channelName">{{channel}}</span>
 </div>
 </div>`;
-function processInput(input) {
-    var letterA = "أ".charCodeAt(0);
-    var letterz = "ي".charCodeAt(0);
-    var search = input;
-    var processed = "";
-    // console.log("YouTube: ");
-    // console.log(search);
-    for (var i = 0; i < search.length; i++) {
-        if (search[i] == ' ')
-            processed += search[i] = '+';
-        else if ((search[i].charCodeAt(0) >= 65) && (search[i].charCodeAt(0) <= 90 || search[i].charCodeAt(0) >= 97) && (search[i].charCodeAt(0) <= 122) || ((search[i].charCodeAt(0) >= letterA) && (search[i].charCodeAt(0) <= letterz)))
-            processed += search[i];
-        else {
-            var decimalchar = search[i].charCodeAt(0);
-            processed += "%" + tohexa(decimalchar);
-        }
-    }
-    return processed;
-}
-function tohexa(symbols) {
-    var number = symbols;
-    var remains = 0;
-    var deleter = 0;
-    var ans = [];
-    ans.length = 30;
-    var i = 0;
-    // console.log(symbols);
-    do {
-        remains = number / 16;
-        deleter = Math.floor(number / 16);
-        remains = remains - deleter;
-        ans[i] = Math.floor(remains * 16);
-        number = deleter;
-        i++;
-    } while (number != 0);
-    i--;
-    var hexasym = "";
-    for (i; i >= 0; i--) {
-        if (ans[i] < 10)
-            hexasym += ans[i];
-
-        else if (ans[i] === 10)
-            hexasym += "A";
-
-        else if (ans[i] === 11)
-            hexasym += "B";
-
-        else if (ans[i] === 12)
-            hexasym += "C";
-
-        else if (ans[i] === 13)
-            hexasym += "D";
-
-        else if (ans[i] === 14)
-            hexasym += "E";
-
-        else if (ans[i] === 15)
-            hexasym += "F";
-        else {
-            console.log("some thing went wrong while convert to hexadecimal");
-            return "+";
-        }
-    }
-    return hexasym;
-}
 ///////////////////////////////Open Section - inhtml//////////////////////////////////////////////////
 
 function showURLText(type) {
@@ -181,65 +117,136 @@ function showloading() {
     document.querySelector("#videosContainer").style.display = "block";
     document.querySelector("#videosContainer").innerHTML = '<div id="looding-icon"></div>';
 }
-///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
-function getdata(dataSource, type, route) {
-    // console.log(route);
-    try {
-
-        var request = new XMLHttpRequest;
-        request.open("GET", dataSource, true);
-        request.send(null);
-        if (route == "mainroute")
-            showloading();
-
-        getResponse(request, type, route);
-    } catch {
-        request.status = 500;
-        getResponse(request, type, route);
-
-    }
-}
-function getResponse(request, type, route) {
-    try {
-
-        request.onreadystatechange = function () {
-            if (request.status == 200 && request.readyState == 4) {
-                if (type == "json") { responseText = JSON.parse(request.responseText); dtOutput(responseText, type); }
-                else if (type == "json" && route == "dtonly") { atGlobal.visitCount = JSON.parse(request.responseText); }
-                else if (type == "html" || type == "text") { responseText = request.responseText; dtOutput(responseText, type); }
-                //console.log(responseText);
-                var data = window.data;
-                dtOutput(responseText, type, route);
-                //console.log(request);
-                return request;
+class Emotion {
+    static emojies = {
+        sad: ['😣', '😓', '😢', '😭'],
+        happy: ['😁', '😄', '😉', '😊', '😎', '🤩'],
+        waiting: ['🤨', '🤔', '😒', '🥱', '😪', '😴'],
+        frasted: ['😐', '😑', '🙁', '☹', '😠', '😡', '🤬'],
+        transition: ['😯'],
+        E: ['💀']
+    };
+    static COOL = Emotion.emojies.happy[4];
+    static STAR = Emotion.emojies.happy[5];
+    static CRY = Emotion.emojies.sad[3];
+    static wink = Emotion.emojies.happy[2];
+    static FRASTRATED = Emotion.emojies.frasted[5];
+    static SLEEPY = Emotion.emojies.waiting[3];
+    static SLEEPING = Emotion.emojies.waiting[5];
+    static EXTREAM = 0x20;
+    static HARD = 0x21;
+    static MEDIUM = 0x22;
+    static BASIC = 0x23;
+    static FIRST = 0x24;
+    static randomNumberInRange = (min, max) => parseInt(Math.random() * (max - min) + min);
+    static feelingStrengthEmotion(emotion, feelingStrength) {
+        let savedEmojie = Emotion.emojies[emotion];
+        if (emotion !== "transition") {
+            if (feelingStrength == this.EXTREAM) {
+                return savedEmojie[savedEmojie.length - 1];
+            } else if (feelingStrength == this.HARD) {
+                return ((Math.random * 2) % 2) ? [savedEmojie.length - 2] : [savedEmojie.length - 3];
             }
-            if (route == "mainroute") {
-                if (request.status == 408) {
-                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Response TimeOut</h2>";
-                }
-                else if (request.status == 500) {
-                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "<br> Server Error</h2>";
-                }
-                else if (request.status == 403) {
-                    document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
-                }
-                else {
-                    if (request.status != 0)
-                        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + request.status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
-                    else if (request.status == 200) {
-                        document.querySelector("#videosContainer").innerHTML = "<h2>NO Error on connection site May be broken refresh please!</h2>";
-                    }
-                    else
-                        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected -</h2>";
-                }
+            else if (this.MEDIUM == feelingStrength) {
+                let randomEmojyIndex = this.randomNumberInRange(2, savedEmojie.length - 3);
+                return savedEmojie[randomEmojyIndex];
             }
+            else if (this.MEDIUM === feelingStrength) {
+                let randomEmojyIndex = this.randomNumberInRange(2, savedEmojie.length - 3);
+                return savedEmojie[randomEmojyIndex];
+            } else if (feelingStrength == this.HARD) {
+                return ((Math.random * 2) % 2) ? [savedEmojie.length - 2] : [savedEmojie.length - 3];
+            }
+            else if (this.FIRST === feelingStrength) {
+                return savedEmojie[0];
+            }
+            else
+                return savedEmojie[0];
         }
-    }catch(err){
-        console.log(err);
+        return savedEmojie[0];
+    }
+    static randomEmotion(emotion){
+        let randomNum = this.randomNumberInRange(0,Emotion.emojies[emotion].length);
+        return Emotion.emojies[emotion][randomNum];
+    }
+    static showLoading() {
+        let container = document.querySelector("#videosContainer");
+        container.style.display = "block";
+        let counter = 0;
+        let i = -1;
+        interval = setInterval(() => {
+            i = (++i) % (this.emojies["waiting"].length);
+            container.innerHTML = `<div style="font-size:32px;">${this.emojies["waiting"][i]}</div>`;
+            if (i === 0) {
+                counter++;
+            }
+            if (counter === 4 && i == (this.emojies["waiting"].length - 2)) {
+                container.innerHTML = `<div style="font-size:32px;">${Emotion.FRASTRATED}</div>`;
+            }
+            else if (counter === 4 && i == (this.emojies["waiting"].length - 1)) {
+                clearInterval(interval);
+                showloading();
+            }
+        }, 700);
+    }
+    static stopLoadingEmojy(Emojy) {
+        return new Promise((acc, rej) => {
+            if (interval !== null) {
+                let container = document.querySelector("#videosContainer");
+                clearInterval(interval);
+                interval = null;
+                if (Emojy) {
+                    container.innerHTML = `<div style="font-size:32px;">${Emojy}</div>`;
+                }
+            }
+            setTimeout(() => {
+                acc();
+            }, 500);
+        })
     }
 }
+///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
+async function showError(status) {
+    await Emotion.stopLoadingEmojy(Emotion.emojies.E[0]);
+    // await Emotion.stopLoadingEmojy(Emotion.randomEmotion("sad"));
+    if (status == 408) {
+        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Response TimeOut ⏰</h2>";
+    }
+    else if (status == 500) {
+        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Server Error 🛠</h2>";
+    }
+    else if (status == 403) {
+        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
+    }
+    else {
+        if (status != 0 && status != 200)
+            document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
+        else if (status == 200) {
+            document.querySelector("#videosContainer").innerHTML = "<h2>Sorry😢 it's not you it is us 😔this site is broken right now😖 try again later🛠</h2>";
+        }
+        else
+            document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected ✂🔗-</h2>";
+    }
+}
+
+async function getdata(url, type, route) {
+    // showloading();
+    Emotion.showLoading();
+    try {
+        let data = await fetch(url);
+        if (data.status === 200) {
+            data = await data.json();
+            dtOutput(data, type, route);
+        }
+        else
+            showError(data.status);
+    } catch {
+        showError(500);
+    }
+}
+
 ///////////////////////////////Processing Data - processing//////////////////////////////////////////////////
-function dtOutput(data, type, route) {
+async function dtOutput(data, type, route) {
     console.log(data);
     if (type == "json" && route == "mainroute") {
         window.youtubeDt = new Object;
@@ -278,75 +285,30 @@ function dtOutput(data, type, route) {
             youtubeDt.playListID[i] = data.items[i].id.playlistId;
             // console.log(youtubeDt.videoTitle[i]);
         }
-        //console.log(route);
-        getdata("html/search.html", "html", "mainroute");
-    }
-    else if (type == "html" && route == "mainroute") {
-        window.html = new Object;
-        html.dt = injected;
         builder();
     }
-    else if (type == "json" && route == "second") {
-        try{
-
-            if (data.items[0].contentDetails.duration != undefined) {
-                youtubeDt.duration[atGlobal.index2] = data.items[0].contentDetails.duration;
-                if (atGlobal.index2 < atGlobal.vArr.length) { getDuration(); }
-                else {
-                    // processDuration("both");
-                    processDuration("show");
-
-                }
-                //console.log(youtubeDt.duration);
-            }
-        }catch(ex){
-            console.log(ex);
-        }
-
-    }
 }
-function processDuration(isitbuild) {
-    if (isitbuild == "build" || isitbuild == "both") {
-        for (let i in youtubeDt.duration) {
-            var something = youtubeDt.duration[i];
-            something = something.replace("PT", "");
-            something = something.replace("H", "_");
-            something = something.replace("M", "_");
-            something = something.replace("S", "_");
-            let time = something;
-            time = time.split('_');
-            time = time.filter(el => el);
-            time = time.map(el => {
-                return (+el < 10 ? `0${el}` : el);
-            });
-            time = time.join(':');
-            youtubeDt.duration[i] = time;
-            //console.log(time);
-        }
+function processDuration() {
+    for (var i in youtubeDt.duration) {
+        var ii = parseInt(i) + 1;
+        let vDuration = document.querySelector(".v" + i);
+        vDuration.textContent = youtubeDt.duration[i];
     }
-    if (isitbuild == "show" || isitbuild == "both") {
-        for (var i in youtubeDt.duration) {
-            var ii = parseInt(i) + 1;
-            let vDuration = document.querySelector(".v" + i);
-            //console.log(atGlobal.vArr[i]);
-            //console.log(i);
-            vDuration.textContent = youtubeDt.duration[i];
-
-        }
-    }
-    //console.log(youtubeDt.duration);
 }
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
-function builder() {
-    if (window.lock) {
+async function builder() {
+    try {
+
         var listindex = 0;
         var totalHtml = "";
-        var htmlitself = html.dt;
+        var htmlitself = injected;
         for (let i in youtubeDt.videoTitle) {
             var holder = htmlitself;
             holder = holder.replace(new RegExp("{{videoTitle}}", "g"), youtubeDt.videoTitle[i]);
-            if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined)//channel
+            if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] == undefined) {//channel
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class = "channel"');
+                holder = holder.replace("openiframe({{index}})", `openChannel('${youtubeDt.date[i]}')`);
+            }
             else if ((youtubeDt.videoID[i]) == undefined && youtubeDt.playListID[i] != undefined) {//playlist
                 holder = holder.replace("{{thumbnail}}", 'src="' + youtubeDt.thumbnail[i] + '" class="videoIcon"');
                 atGlobal.list[listindex] = i
@@ -367,35 +329,32 @@ function builder() {
         }
         window.totalHtml = new Object;
         window.totalHtml = totalHtml;
+        await Emotion.stopLoadingEmojy(Emotion.randomEmotion("happy"));
         document.querySelector("#videosContainer").innerHTML = window.totalHtml;
         for (var i in atGlobal.list) {
             let listsign = document.querySelector(".listsign" + atGlobal.list[i]);
             if (listsign != null) {
-                listsignst = listsign.style;
-                listsignst.display = "block";
-                listsignst.position = "absolute";
-                listsignst.left = "0px";
-                listsignst.top = "0px";
-                listsignst.fontSize = "2vw";
-                listsignst.zIndex = "12";
-                listsignst.backgroundColor = "black";
-                listsignst.opacity = "50%"
-                listsignst.height = "20%";
-                listsignst.width = "15%";
-                listsignst.padding = "1%";
-                listsignst.borderRadius = " 0 0 1vw 0";
+                listsign.style.cssText = `
+            display:block;
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:12;
+            font-size:2vw;
+            background-color:black;
+            opacity:50%;
+            height:20%;
+                width:15%;
+                padding:1%;
+                border-radius:0 0 1vw 0;
+                `;
             }
         }
-        // getDuration();
-        processDuration("show");
-        // console.log(totalHtml);
-        window.lock = false;
+        processDuration();
+        // console.log(totalHtml);    
+    } catch {
+        showError(200);
     }
-}
-function getDuration() {
-    // youtubeAPI2 = 'https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeDt.videoID[atGlobal.vArr[atGlobal.index2]] + '&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4';
-    // atGlobal.index2++;
-    // getdata(youtubeAPI3, "json", "second");
 }
 ///////////////////////////////Open Iframe - inhtml//////////////////////////////////////////////////
 function openiframe(i, vCode) {
@@ -442,18 +401,23 @@ function openiframe(i, vCode) {
 function mksure(i, ii) {
     // window.outPut = false;
     // console.log(ii);
-    let waiting = fetch(atGlobal.IP());
-    waiting.then(res => {
-        if (res.status == 404) {
-            window.outPut = true;
-            if (i == 1) {
-                showbtnDown1();
+    try {
+
+        let waiting = fetch(atGlobal.IP());
+        waiting.then(res => {
+            if (res.status == 404) {
+                window.outPut = true;
+                if (i == 1) {
+                    showbtnDown1();
+                }
+                else {
+                    showbtnDown2(ii);
+                }
             }
-            else {
-                showbtnDown2(ii);
-            }
-        }
-    });
+        });
+    } catch {
+        console.log("error");
+    }
 }
 function showbtnDown1() {
     // console.log(atGlobal.connect);
@@ -557,8 +521,9 @@ function hideul() {
     ul.setAttribute('style', 'opacity:0%;');
     atGlobal.showul = true;
 }
-function openChannel(url){
-    getdata("https://youtube-6rrj.onrender.com/search?q="+url,"json","mainroute");
+function openChannel(url) {
+    // getdata("https://youtube-6rrj.onrender.com/search?q="+url,"json","mainroute");
+    getdata(`http://localhost:3002/get?q=${url}`, "json", "mainroute");
 }
 ///////////////////////////////////////////MAIN FUNCTION//////////////////////////////////////////////////
 var main = (function (event) {
@@ -640,7 +605,7 @@ var main = (function (event) {
                 // console.log("YouTube: ");
                 getSearchBox = document.querySelector('#youtubeSearchBox').value;
                 // console.log(search);
-                var processedSearch = processInput(getSearchBox);
+                var processedSearch = (getSearchBox);
                 var a = document.querySelector("#openplace > a");
                 var h1 = document.querySelector(".lable").style;
                 var searchBox = document.querySelector("#youtubeSearchBox").style;
@@ -659,8 +624,8 @@ var main = (function (event) {
                 var youtubeAPI2 = "http://localhost:3002/search?q=" + processedSearch;
                 var youtubeAPI3 = "https://youtube-6rrj.onrender.com/search?q=" + processedSearch;
                 var tryy = "data/data2.json";
-                // getdata(youtubeAPI2, "json", "mainroute");
-                getdata(youtubeAPI3, "json", "mainroute");
+                getdata(youtubeAPI2, "json", "mainroute");
+                // getdata(youtubeAPI3, "json", "mainroute");
                 // getdata(youtubeAPI, "json", "mainroute");
                 // getdata(tryy, "json", "mainroute");
                 // console.log(link);

@@ -61,7 +61,11 @@
     <div id="videosContainer">
     </div>
     <script src="js/script.js"></script>
-    <footer>&copy;2022 - 2023 Mohamed@122ouz</footer>
+    <footer></footer>
+    <script>
+        let htmlText = `&copy;2022 - ${new Date().getFullYear()} Mohamed@122ouz😎`;
+        document.querySelector("footer").innerHTML = htmlText;
+    </script>
 </body>
 
 </html>
