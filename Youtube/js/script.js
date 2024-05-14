@@ -121,14 +121,16 @@ class Emotion {
     static emojies = {
         sad: ['😣', '😓', '😢', '😭'],
         happy: ['😁', '😄', '😉', '😊', '😎', '🤩'],
-        waiting: ['🤨', '🤔', '😒', '🥱', '😪', '😴'],
+        waiting: [['🤨', '🤔', '😒', '🥱', '😪', '😴'], ['👶🏾', '🧒🏾', '👦🏾', '🧑🏾', '👨🏾', '🧓🏾', '👴🏾'], ['🕛', '🕧', '🕐', '🕜', '🕑', '🕝', '🕒', '🕞', '🕓', '🕟', '🕔', '🕠', '🕕', '🕡', '🕖', '🕢', '🕗', '🕣', '🕘', '🕤', '🕙', '🕥', '🕚', '🕦']],
         frasted: ['😐', '😑', '🙁', '☹', '😠', '😡', '🤬'],
         transition: ['😯'],
-        E: ['💀']
+        E: ['💀','☠']
     };
+    static #emojiElement = (emoji) => `<div style="font-size:32px;text-align:center;">${emoji}</div>`;
     static COOL = Emotion.emojies.happy[4];
     static STAR = Emotion.emojies.happy[5];
     static CRY = Emotion.emojies.sad[3];
+    static THINKING = Emotion.emojies.waiting[0][1];
     static wink = Emotion.emojies.happy[2];
     static FRASTRATED = Emotion.emojies.frasted[5];
     static SLEEPY = Emotion.emojies.waiting[3];
@@ -140,22 +142,34 @@ class Emotion {
     static FIRST = 0x24;
     static randomNumberInRange = (min, max) => parseInt(Math.random() * (max - min) + min);
     static feelingStrengthEmotion(emotion, feelingStrength) {
-        let savedEmojie = Emotion.emojies[emotion];
+        let savedEmojie;
+        if (emotion.includes("waiting")) {
+            let num = parseInt(emotion);
+            let numberLength = (num + "").length;
+            try {
+                savedEmojie = Emotion.emojies[emotion.substring(numberLength)];
+                savedEmojie = savedEmojie[parseInt(emotion)];
+                if (!savedEmojie)
+                    throw "error";
+            } catch {
+                return Emotion.emojies.transition[0];
+            }
+        }
+        else
+            savedEmojie = Emotion.emojies[emotion]
         if (emotion !== "transition") {
             if (feelingStrength == this.EXTREAM) {
                 return savedEmojie[savedEmojie.length - 1];
             } else if (feelingStrength == this.HARD) {
-                return ((Math.random * 2) % 2) ? [savedEmojie.length - 2] : [savedEmojie.length - 3];
+                return ((this.randomNumberInRange(0, 10)) % 2) ? savedEmojie[savedEmojie.length - 2] : savedEmojie[savedEmojie.length - 3];
             }
             else if (this.MEDIUM == feelingStrength) {
-                let randomEmojyIndex = this.randomNumberInRange(2, savedEmojie.length - 3);
-                return savedEmojie[randomEmojyIndex];
+                let randomemojiIndex = this.randomNumberInRange(2, savedEmojie.length - 3);
+                return savedEmojie[randomemojiIndex];
             }
-            else if (this.MEDIUM === feelingStrength) {
-                let randomEmojyIndex = this.randomNumberInRange(2, savedEmojie.length - 3);
-                return savedEmojie[randomEmojyIndex];
-            } else if (feelingStrength == this.HARD) {
-                return ((Math.random * 2) % 2) ? [savedEmojie.length - 2] : [savedEmojie.length - 3];
+            else if (this.BASIC === feelingStrength) {
+                let randomemojiIndex = this.randomNumberInRange(0, 2);
+                return savedEmojie[randomemojiIndex];
             }
             else if (this.FIRST === feelingStrength) {
                 return savedEmojie[0];
@@ -165,38 +179,42 @@ class Emotion {
         }
         return savedEmojie[0];
     }
-    static randomEmotion(emotion){
-        let randomNum = this.randomNumberInRange(0,Emotion.emojies[emotion].length);
+    static randomEmotion(emotion) {
+        let randomNum = this.randomNumberInRange(0, Emotion.emojies[emotion].length);
         return Emotion.emojies[emotion][randomNum];
     }
     static showLoading() {
-        let container = document.querySelector("#videosContainer");
-        container.style.display = "block";
-        let counter = 0;
-        let i = -1;
-        interval = setInterval(() => {
-            i = (++i) % (this.emojies["waiting"].length);
-            container.innerHTML = `<div style="font-size:32px;">${this.emojies["waiting"][i]}</div>`;
-            if (i === 0) {
-                counter++;
-            }
-            if (counter === 4 && i == (this.emojies["waiting"].length - 2)) {
-                container.innerHTML = `<div style="font-size:32px;">${Emotion.FRASTRATED}</div>`;
-            }
-            else if (counter === 4 && i == (this.emojies["waiting"].length - 1)) {
-                clearInterval(interval);
-                showloading();
-            }
-        }, 700);
+        if(interval === null){
+
+            let container = document.querySelector("#videosContainer");
+            container.style.display = "block";
+            let counter = 0;
+            let i = -1;
+            let chooseRandom = Emotion.randomNumberInRange(0, this.emojies["waiting"].length);
+            interval = setInterval(() => {
+                i = (++i) % (this.emojies["waiting"][chooseRandom].length);
+                container.innerHTML = Emotion.#emojiElement(this.emojies["waiting"][chooseRandom][i]);
+                if (i === 0) {
+                    counter++;
+                }
+                if (counter === 4 && i == (this.emojies["waiting"].length - 2)) {
+                    container.innerHTML = this.#emojiElement(Emotion.FRASTRATED);
+                }
+                else if (counter === 4 && i == (this.emojies["waiting"].length - 1)) {
+                    clearInterval(interval);
+                    showloading();
+                }
+            }, 700);
+        }
     }
-    static stopLoadingEmojy(Emojy) {
+    static stopLoadingemoji(emoji) {
         return new Promise((acc, rej) => {
             if (interval !== null) {
                 let container = document.querySelector("#videosContainer");
                 clearInterval(interval);
                 interval = null;
-                if (Emojy) {
-                    container.innerHTML = `<div style="font-size:32px;">${Emojy}</div>`;
+                if (emoji) {
+                    container.innerHTML = this.#emojiElement(emoji);
                 }
             }
             setTimeout(() => {
@@ -207,26 +225,35 @@ class Emotion {
 }
 ///////////////////////////////Connect Server - processing//////////////////////////////////////////////////
 async function showError(status) {
-    await Emotion.stopLoadingEmojy(Emotion.emojies.E[0]);
-    // await Emotion.stopLoadingEmojy(Emotion.randomEmotion("sad"));
+
+    // await Emotion.stopLoadingemoji(Emotion.randomEmotion("sad"));
     if (status == 408) {
+        await Emotion.stopLoadingemoji(Emotion.randomEmotion("transition"));
         document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Response TimeOut ⏰</h2>";
     }
     else if (status == 500) {
+        await Emotion.stopLoadingemoji(Emotion.emojies.E[0]);
         document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Server Error 🛠</h2>";
     }
     else if (status == 403) {
+        await Emotion.stopLoadingemoji(Emotion.randomEmotion("frasted",Emotion.EXTREAM));
         document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
     }
     else {
-        if (status != 0 && status != 200)
+        if (status != 0 && status != 200){
+            await Emotion.stopLoadingemoji(Emotion.THINKING);
             document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
+        }
         else if (status == 200) {
+            await Emotion.stopLoadingemoji(Emotion.emojies.E[1]);
             document.querySelector("#videosContainer").innerHTML = "<h2>Sorry😢 it's not you it is us 😔this site is broken right now😖 try again later🛠</h2>";
         }
-        else
-            document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>&nbsp;&nbsp;Some thing Went Wrong<br>- You are may be not connected ✂🔗-</h2>";
+        else{
+            await Emotion.stopLoadingemoji(Emotion.randomEmotion("sad"));
+            document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>Cannot Connect Server ✂🔗</h2>";
+        }
     }
+
 }
 
 async function getdata(url, type, route) {
@@ -240,8 +267,9 @@ async function getdata(url, type, route) {
         }
         else
             showError(data.status);
-    } catch {
-        showError(500);
+    } catch (ex) {
+        console.log(ex);
+        showError(0);
     }
 }
 
@@ -329,7 +357,7 @@ async function builder() {
         }
         window.totalHtml = new Object;
         window.totalHtml = totalHtml;
-        await Emotion.stopLoadingEmojy(Emotion.randomEmotion("happy"));
+        await Emotion.stopLoadingemoji(Emotion.randomEmotion("happy"));
         document.querySelector("#videosContainer").innerHTML = window.totalHtml;
         for (var i in atGlobal.list) {
             let listsign = document.querySelector(".listsign" + atGlobal.list[i]);
