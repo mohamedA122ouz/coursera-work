@@ -19,11 +19,14 @@ const injected = `<div class="details" onclick="openiframe({{index}})">
     <br>
     <span class="publishTime">{{date}}</span>
     <br>
+    <div class="channelDetails">
+    <img src="{{imgTh}}" alt="{{imgThName}}"/>
     <span class="channelName">{{channel}}</span>
+    </div>
 </div>
 </div>`;
 ///////////////////////////////Open Section - inhtml//////////////////////////////////////////////////
-
+const customError = 0x45;
 function showURLText(type) {
     if (window.lastType == type) {
         atGlobal.sameBt = true;
@@ -229,24 +232,27 @@ async function showError(status) {
     // await Emotion.stopLoadingemoji(Emotion.randomEmotion("sad"));
     if (status == 408) {
         await Emotion.stopLoadingemoji(Emotion.randomEmotion("transition"));
-        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Response TimeOut ⏰</h2>";
+        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>ERROR CODE: " + status + "<br> Response TimeOut ⏰</h2>";
+    }else if(status === customError){
+        await Emotion.stopLoadingemoji(Emotion.emojies.transition[0]);
+        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>😵‍💫No results found 🫗<br>(Contact the Admin to check whether it is an error😥)</h2>";
     }
     else if (status == 500) {
         await Emotion.stopLoadingemoji(Emotion.emojies.E[0]);
-        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "<br> Server Error 🛠</h2>";
+        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>ERROR CODE: " + status + "<br> Server Error 🛠</h2>";
     }
     else if (status == 403) {
         await Emotion.stopLoadingemoji(Emotion.randomEmotion("frasted",Emotion.EXTREAM));
-        document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
+        document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>ERROR CODE: " + status + "&nbsp;&nbsp;Forbidden<br>Google Quota End For Today Try to <mark>click search on Youtube</mark> Above, sorry for that but it's my limitation</h2>";
     }
     else {
         if (status != 0 && status != 200){
             await Emotion.stopLoadingemoji(Emotion.THINKING);
-            document.querySelector("#videosContainer").innerHTML = "<h2>ERROR CODE: " + status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
+            document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>ERROR CODE: " + status + "&nbsp;&nbsp;Some thing Went Wrong " + "</h2>";
         }
         else if (status == 200) {
             await Emotion.stopLoadingemoji(Emotion.emojies.E[1]);
-            document.querySelector("#videosContainer").innerHTML = "<h2>Sorry😢 it's not you it is us 😔this site is broken right now😖 try again later🛠</h2>";
+            document.querySelector("#videosContainer").innerHTML = "<h2 style='text-align:center;'>Sorry😢 it's not you it is us 😔this site is broken right now😖 try again later🛠</h2>";
         }
         else{
             await Emotion.stopLoadingemoji(Emotion.randomEmotion("sad"));
@@ -276,7 +282,10 @@ async function getdata(url, type, route) {
 ///////////////////////////////Processing Data - processing//////////////////////////////////////////////////
 async function dtOutput(data, type, route) {
     console.log(data);
-    if (type == "json" && route == "mainroute") {
+    if(data.items.length === 0){
+        showError(customError);
+    }
+    else if (type == "json" && route == "mainroute") {
         window.youtubeDt = new Object;
         youtubeDt.thumbnail = [];
         youtubeDt.videoID = [];
@@ -286,6 +295,7 @@ async function dtOutput(data, type, route) {
         youtubeDt.time = [];
         youtubeDt.playListID = [];
         youtubeDt.duration = [];
+        youtubeDt.channelImg = [];
         for (let i in data.items) {
             youtubeDt.fill = "done";
             youtubeDt.videoID[i] = data.items[i].id.videoId;
@@ -304,6 +314,7 @@ async function dtOutput(data, type, route) {
                 youtubeDt.duration[i] = data.items[i].contentDetails.duration;
                 // youtubeDt.date[i] = data.items[i].snippet.publishedAt.split('T')[0];
                 // youtubeDt.time[i] = data.items[i].snippet.publishedAt.split('T')[1].replace("Z", "");
+                youtubeDt.channelImg[i] = data.items[i].channelImg;
                 throw "er";
             } catch {
                 youtubeDt.date[i] = data.items[i].snippet.publishedAt;
@@ -326,7 +337,6 @@ function processDuration() {
 ///////////////////////////////Vidoeos Container - inhtml//////////////////////////////////////////////////
 async function builder() {
     try {
-
         var listindex = 0;
         var totalHtml = "";
         var htmlitself = injected;
@@ -352,6 +362,13 @@ async function builder() {
             holder = holder.replace(new RegExp("{{date}}", "g"), youtubeDt.date[i]);
             holder = holder.replace(new RegExp("{{channel}}", "g"), youtubeDt.channelTitle[i]);
             holder = holder.replace(new RegExp("{{downloadLink}}", "g"), "");
+            if(youtubeDt.channelImg[i]){
+                holder = holder.replace(new RegExp("{{imgTh}}", "g"), youtubeDt.channelImg[i]);
+                holder = holder.replace(new RegExp("{{imgThName}}", "g"), youtubeDt.channelTitle[i] + " image");
+            }else{
+                holder = holder.replace(new RegExp(`<img src="{{imgTh}}" alt="{{imgThName}}"/>`, "g"), "");
+            }
+
             // console.log(window.youtubeDt.videoTitle[i]);
             totalHtml += holder;
         }
@@ -427,8 +444,6 @@ function openiframe(i, vCode) {
 }
 ///////////////////////////////Make Sure Server Connected//////////////////////////////////////////////////
 function mksure(i, ii) {
-    // window.outPut = false;
-    // console.log(ii);
     try {
 
         let waiting = fetch(atGlobal.IP());
@@ -650,10 +665,13 @@ var main = (function (event) {
                 // console.log(processedSearch);
                 var youtubeAPI = "https://youtube.googleapis.com/youtube/v3/search?videoDuration=any&q=" + processedSearch + "&key=AIzaSyB6MotaWQKv2-yljeI68UhM2X2x_iMRyB4&part=id,snippet";
                 var youtubeAPI2 = "http://localhost:3002/search?q=" + processedSearch;
+                var youtubeAPI6 = "http://192.168.1.5:3002/search?q=" + processedSearch;
                 var youtubeAPI3 = "https://youtube-6rrj.onrender.com/search?q=" + processedSearch;
                 var tryy = "data/data2.json";
-                // getdata(youtubeAPI2, "json", "mainroute");
-                getdata(youtubeAPI3, "json", "mainroute");
+                //getdata(youtubeAPI2, "json", "mainroute");
+                getdata(youtubeAPI6, "json", "mainroute");
+                youtubeDt = {};
+                // getdata(youtubeAPI3, "json", "mainroute");
                 // getdata(youtubeAPI, "json", "mainroute");
                 // getdata(tryy, "json", "mainroute");
                 // console.log(link);

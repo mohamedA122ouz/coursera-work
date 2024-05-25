@@ -239,28 +239,37 @@ h2 {
     border-radius: 2vw;
     position: relative;
     display: none;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
 
 }
 /* 155px height and 275px width in youtube with a ratio 31/55*/
 div.thumbnail {
-    width: 330px;
-    height: 186px;
+    aspect-ratio: 16/9;
+    width: 400px;
+    height: auto;
     position: relative;
     display: inline-block;
-    vertical-align: top;
+    margin: auto 0;
     overflow: hidden;
+}
+div.thumbnail>img {
+    aspect-ratio: 16/9;
+    width: 100%;
 }
 
 .text {
     display: inline-block;
     padding-left: 1vw;
+    width: 68%;
 }
 
 .vTitle {
 
     font-size: 1.4rem;
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
     max-width: 50vw;
     padding-top: 10px;
 
@@ -292,10 +301,11 @@ div.thumbnail {
 .channel {
     position: relative;
     border-radius: 50%;
-    left: 12%;
-    width: 186px;
-    height: 186px;
-    vertical-align: top;
+    aspect-ratio: 1 / 1 !important;
+    height: 100% !important;
+    width: auto !important;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 
@@ -493,6 +503,18 @@ ul>span {
     width:100%;
     top:0px;
 }
+.channelDetails{
+    display: flex;
+    gap: 1rem;
+}
+.channelDetails>img{
+    width: 2.5rem;
+    border-radius: 50%;
+}
+.channelDetails>span{
+    margin: auto;
+    margin-left: 0;
+}
 /*///////////Small screens////*************************************************/
 @media (max-width:960px) {
 
@@ -525,12 +547,13 @@ ul>span {
     .text {
         display: inline-block;
         padding-left: 1vw;
-
+        width: 100%;
     }
 
+
     div.thumbnail {
-        width: 120px;
-        height: 95px;
+        width: auto;
+        height: auto;
         position: relative;
         display: inline-block;
         vertical-align: top;
@@ -539,8 +562,7 @@ ul>span {
 
     .vTitle {
         padding-top: 10px;
-        font-size: 0.7rem;
-        width: calc(70vw - 120px);
+        font-size: 1rem;
         max-width: 50vw;
 
     }
@@ -566,6 +588,7 @@ ul>span {
 
     .details {
         margin-top: 1vh;
+        flex-direction: column;
     }
 
     /*/////////////Loading Icon///////////////*/
@@ -596,8 +619,8 @@ ul>span {
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 9vh;
-        width: 70vw;
-        height: 40vw;
+        width: 83vw;
+        height: 44vw;
     }
 
     #youtubeSearchBox {
@@ -625,6 +648,8 @@ ul>span {
 
     .videoIcon {
         width: 100%;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
     }
 
     /*////////////////Darkmode Button///////////////*/
