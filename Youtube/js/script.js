@@ -188,7 +188,6 @@ class Emotion {
     }
     static showLoading() {
         if(interval === null){
-
             let container = document.querySelector("#videosContainer");
             container.style.display = "block";
             let counter = 0;
@@ -566,7 +565,7 @@ function hideul() {
 }
 function openChannel(url) {
     // getdata("https://youtube-6rrj.onrender.com/search?q="+url,"json","mainroute");
-    getdata(`http://localhost:3002/get?q=${url}`, "json", "mainroute");
+    getdata(`http://localhost:3002/channel?q=${url}`, "json", "mainroute");
 }
 ///////////////////////////////////////////MAIN FUNCTION//////////////////////////////////////////////////
 var main = (function (event) {
