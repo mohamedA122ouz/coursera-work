@@ -630,12 +630,12 @@ var main = (function (event) {
         });
     document.querySelector('#youtubeSearchBox').addEventListener("keypress", getSearchcontent);
     function getSearchcontent(event) {
+        // console.log("");
         var h1_1 = document.querySelector(".collapsed");
         if (h1_1 && (document.querySelector("#youtubeSearchBox").value == null || document.querySelector("#youtubeSearchBox").value == undefined)) {
             h1_1.animation = "800ms ease-out hideIcon forwards";
             h1_1.removeAttribute("class");
         }
-
         if (document.querySelector("#youtubeSearchBox").value != "") {
             window.lock = new Object;
             youtubeDt.fill = "null"
