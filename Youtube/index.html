@@ -10,10 +10,16 @@
     <link rel="stylesheet" href="css/SFEWSDEFAULT-M.css">
     <link rel="stylesheet" href="css/CFEWSFC-D.css" id="dmode1">
     <!-- <script src="/js/Server/index.js"></script> -->
+    <script>
+        setInterval(()=>{
+            fetch("https://youtube-6rrj.onrender.com/awake").then(res=>res.text()).then(res=>console.log(res));
+        },300000);
+    </script>
     <title>Youtube</title>
 </head>
+
 <body>
-    <h1 style="display:none;">Youtube Search By Mo122ouz</h1>
+    <h1 style="display:none;">Youtube Search By Mohamed Ghonim</h1>
     <div id="settings">
         <svg onclick="showul()" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-gear"
             viewBox="0 0 16 16">
@@ -52,7 +58,8 @@
         <a href="#" onclick="showURLText('Open')" style="margin-left: 10px;">open&nbsp;Video&nbsp;Location</a>
         <br>
         <form>
-            <input type="text" id="URLText" title="Enter Youtube Video URL" placeholder="Enter Url"style="margin-top: 20px;display: none;" required>
+            <input type="text" id="URLText" title="Enter Youtube Video URL" placeholder="Enter Url"
+                style="margin-top: 20px;display: none;" required>
             <button class="down dbt"><span id="download">Download From Link</span></button>
             <button onclick="openfunc()" id="obt"><span id="open">open</span>
             </button>
